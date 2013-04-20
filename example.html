@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--[if IE]><script language="javascript" type="text/javascript" src="/sites/all/modules/flot/flot/excanvas.min.js"></script><![endif]-->
+<link rel="shortcut icon" href="/misc/favicon.ico" type="image/x-icon" />
+  <title>Add colouring (and description) to password checker | drupal.org</title>
+  <link type="text/css" rel="stylesheet" media="all" href="http://drupal.org/files/css/css_b7219c91063aff8091ec88e573006288.css" />
+  <!--script type="text/javascript" src="http://drupal.org/files/js/js_ac4fe27d45a93b165df2b383d20df5e6.js"></script-->
+  <script type="text/javascript" src="drupal.js"></script>
+  <script type="text/javascript" src="procid.user.js"></script>
+<script type="text/javascript">
+</script>
+<script type="text/javascript">
+</script>
+  <!--[if lte IE 6]><style>img, div#header-screen, a { behavior: url("/sites/all/themes/bluecheese/iepngfix.htc") }</style><![endif]-->
+</head>
+
+<body class="not-front not-logged-in page-node node-type-project-issue no-sidebars drupalorg-site-main">
+  <div id="skip-links">
+    <a href="#content">Skip to main content</a>
+    <a href="#search">Skip to search</a>
+  </div>
+
+    <div id="header" class="clear-block">
+    <div id="header-screen" class="clear-block">
+      <div id="header-inner" class="container-12 clear-block">
+        <div id="nav-header" class="grid-12">
+          <ul><li class="menu-2 first"><a href="/start" title="Getting Started with Drupal">Get Started</a></li>
+<li class="menu-4"><a href="/community" title="Drupal Community">Community</a></li>
+<li class="menu-16434"><a href="/documentation" title="Drupal Documentation">Documentation</a></li>
+<li class="menu-14"><a href="/support" title="Support for using Drupal">Support</a></li>
+
+<li class="menu-10468"><a href="/download" title="Download and Extend Drupal">Download &amp; Extend</a></li>
+<li class="menu-10"><a href="/drupal-services" title="Buy Drupal Products and Services">Marketplace</a></li>
+<li class="menu-25050 last"><a href="/about" title="About Drupal">About</a></li>
+</ul>        </div> <!-- /#nav-header -->
+
+        <div id="header-content" class="grid-12">
+          <div id="header-left" class="grid-7 alpha">
+            <div id="header-left-inner" class="grid-6 alpha">
+
+              <div id="site-name"><a href="/" title="Drupal">Drupal</a></div>
+                          </div> <!-- /#header-left-inner -->
+          </div> <!-- /#header-left -->
+
+          <div id="header-right" class="grid-5 omega">
+            <div id="header-right-inner">
+              <form action="/search/site"  accept-charset="UTF-8" method="post" id="search-theme-form">
+<div><div id="search">
+
+  <div class="form-item" id="edit-search-theme-form-1-wrapper">
+ <input type="text" maxlength="128" name="search_theme_form" id="edit-search-theme-form-1" size="15" value="" placeholder="Search drupal.org" class="form-text" />
+</div>
+  <!--input type="image" id="search-theme-form-submit" src="/sites/all/themes/bluecheese/images/btn-search.png" alt="Search" name="op" /-->
+  <div id="search-theme-form-advanced"><fieldset class=" collapsible collapsed"><legend>Refine your search</legend><div class="form-radios"><div class="form-divider"><div class="form-item" id="edit-meta-type--wrapper">
+ <label class="option" for="edit-meta-type-"><input type="radio" id="edit-meta-type-" name="meta_type" value=""  checked="checked"  class="form-radio" /> All</label>
+</div>
+<div class="form-item" id="edit-meta-type-module-wrapper">
+ <label class="option" for="edit-meta-type-module"><input type="radio" id="edit-meta-type-module" name="meta_type" value="module"   class="form-radio" /> Modules</label>
+
+</div>
+<div class="form-item" id="edit-meta-type-theme-wrapper">
+ <label class="option" for="edit-meta-type-theme"><input type="radio" id="edit-meta-type-theme" name="meta_type" value="theme"   class="form-radio" /> Themes</label>
+</div>
+</div><div class="form-item" id="edit-meta-type-documentation-wrapper">
+ <label class="option" for="edit-meta-type-documentation"><input type="radio" id="edit-meta-type-documentation" name="meta_type" value="documentation"   class="form-radio" /> Documentation</label>
+</div>
+<div class="form-item" id="edit-meta-type-forum-issues-wrapper">
+ <label class="option" for="edit-meta-type-forum-issues"><input type="radio" id="edit-meta-type-forum-issues" name="meta_type" value="forum-issues"   class="form-radio" /> Forums & Issues</label>
+
+</div>
+<div class="form-item" id="edit-meta-type-group-wrapper">
+ <label class="option" for="edit-meta-type-group"><input type="radio" id="edit-meta-type-group" name="meta_type" value="group"   class="form-radio" /> Groups</label>
+</div>
+</div></fieldset>
+</div>
+  <input type="hidden" name="form_build_id" id="form-b7dddc583f05a6db6827be384d234fb7" value="form-b7dddc583f05a6db6827be384d234fb7"  />
+<input type="hidden" name="form_id" id="edit-search-theme-form" value="search_theme_form"  />
+</div>
+
+</div></form>
+            </div> <!-- /#header-right-inner -->
+
+          </div> <!-- /#header-right -->
+        </div> <!-- /#header-content -->
+
+        <div id="nav-masthead" class="grid-12">
+          <ul><li class="homepage first"><a href="/home">Drupal Homepage</a></li>
+<li class="login-register last"><a href="/user?destination=node%2F331893%3Fmode%3D2%26sort%3D2">Log in / Register</a></li>
+</ul>        </div> <!-- /#nav-masthead -->
+
+      </div> <!-- /#header-inner -->
+    </div>
+  </div> <!-- /#header -->
+
+  <div id="page" class="container-12 clear-block">
+    <div id="page-inner">
+
+      <div id="page-heading" class="grid-12">
+
+                  <div id="page-title-tools" class="clear-block">
+
+            <div class="grid-8 alpha">
+                                                <div id="page-title" class="h2">Download &amp; Extend</div>
+                                          </div>
+
+                          <div id="page-tools" class="grid-4 omega">
+                              </div> <!-- /#page-tools -->
+
+                      </div> <!-- /#page-title-tools -->
+
+                      <div id="nav-content" class="clear-block">
+              <ul class="links"><li class="home first"><a href="/download">Download &amp; Extend Home</a></li>
+<li class="core active"><a href="/project/drupal" class="active">Drupal Core</a></li>
+<li class="distributions"><a href="/project/distributions">Distributions</a></li>
+<li class="modules"><a href="/project/modules">Modules</a></li>
+
+<li class="themes last"><a href="/project/themes">Themes</a></li>
+</ul>            </div> <!-- /#nav-content -->
+          
+          <div class="breadcrumb"><a href="/project/issues/drupal">Issues</a></div>
+                      <h1 id="page-subtitle">Add colouring (and description) to password checker</h1>
+          
+        
+      </div> <!-- /#page-heading -->
+
+      <div id="column-left" class="grid-12">
+
+        
+        
+        <div id="content" class="clear-block">
+                    
+          <div id="content-inner" class="clear-block"><div id="node-331893" class="node clear-block node-type-project_issue">
+
+  
+  
+      <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>November 8, 2008 at 8:06pm</em></div>
+  
+  <div class="node-content">
+    <div class="project-issue"><div id="project-summary-container" class="clear-block">
+
+  <div id="project-issue-summary-links">
+    <div class="project-issue-follow-count">27 followers</div>    <div class="item-list"><h3>Jump to:</h3><ul class="internal-links"><li class="first"><a href="/node/331893#comment-5874914" class="active">Most recent comment</a></li>
+<li class="last"><a href="/node/331893#comment-5775992" class="active">Most recent attachment</a></li>
+</ul></div>  </div>
+  <div id="project-issue-summary-table" class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Project:</td><td>Drupal core</td> </tr>
+
+ <tr class="even"><td>Version:</td><td>8.x-dev</td> </tr>
+ <tr class="odd"><td>Component:</td><td>user.module</td> </tr>
+ <tr class="even"><td>Category:</td><td>task</td> </tr>
+ <tr class="odd"><td>Priority:</td><td>normal</td> </tr>
+
+ <tr class="even"><td>Assigned:</td><td>nigel</td> </tr>
+ <tr class="odd"><td>Status:</td><td>closed (fixed)</td> </tr>
+ <tr class="even"><td>Issue tags:</td><td><a href="/project/issues/search/drupal?issue_tags=accessibility">accessibility</a>, <a href="/project/issues/search/drupal?issue_tags=JavaScript">JavaScript</a>, <a href="/project/issues/search/drupal?issue_tags=Usability">Usability</a></td> </tr>
+
+</tbody>
+</table>
+</div>
+</div>
+<h2>Issue Summary</h2><p>The new password checker in Drupal 7 is very slick. It would be cool if it were just a *little* bit slicker. ;)</p>
+<p>For example, when I install local development versions of Drupal, I frequently use the username a and the password of a because I am SO lazy. ;)</p>
+<p>But it ends up looking like this:</p>
+<p><img src="http://img.skitch.com/20081108-g7m9aku7y92m3mcjc651e1h45q.png" alt="Everything's A-OK!" /></p>
+<p>All I see is green, so that makes me think things are great. And under absolutely no circumstances is 'a' a good password. ;)</p>
+<p>I really like the functionality of <a href="https://www.google.com/accounts/NewAccount:" title="https://www.google.com/accounts/NewAccount:">https://www.google.com/accounts/NewAccount:</a></p>
+
+<p><img src="http://img.skitch.com/20081108-c342afs7nh4i5ijap6u1exftii.png" "Google says NO." /></p>
+<p>If you type in aaaaaaaa (8 a characters, since the password must be at least 8 characters) and it will show up as 1/3 filled up and dark red and say "Weak" next to it.  If you add a '1' to the password, it will then fill up halfway and be yellow and say "Fair" next to it. If you add a capital A it will then jump up all the way, colour it green and say "Strong".</p>
+<p>I believe Weak, Fair, and Strong are likely for accessibility since colours don't always translate for folks. I'm not sure where in the interface we have room to add this text, but we should try. And at the very least I would love for that tiny little bar to be red if it's &lt; 30% filled and yellow if it's &lt; 75% filled.</p>
+</div>  </div>
+
+  <div class="node-footer"><span class="links"><span class="comment_forbidden"><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></span></div></div>
+
+  <div id="comments">
+    <h2>Comments</h2>
+    <a id="comment-1098877"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1098877" class="active">#1</a></h3>
+    <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>November 8, 2008 at 8:20pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Title:</td><td>Add colouring to password checker</td><td>&raquo; Add colouring (and description) to password checker</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>Correcting title.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1098947"></a>
+
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1098947" class="active">#2</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>November 8, 2008 at 9:13pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Aww, almost got away with it! This has been a highly requested feature in the previous ticket around this. We initially said no to this request for the following reasons :</p>
+<ol><li>
+The visual emphasis would be put too strongly on the password, that it would again scream at you - scaring people off.
+</li>
+<li>
+The way we structure the password validator now, should make it clear that as you're filling in the password checker the green bar will full up, assuming people don't use "a" as a password some of the suggestions would disappear and you would be left with a couple - which should trigger the behaviour of filling it up (as filling it in removed some recommendations).
+</li>
+<li>
+We wanted to lay the strong visual emphasis on password matching, which is for the user the more important information (as otherwise he cant complete the form)
+</li>
+</ol><p>The scenario you purposed could very well be true, that people go like "its green" so its good - while you want to trigger "I can make it greener". But so could the scenario "it's not really green at all, lemme fill it up"  its kind of something we should test rather then just assume one scenario. </p>
+<p>About adding description, it could definitely help for accessibility and maybe also people who don't really take the time to associate colour and just read and click submit. But I am not sure how we could place that in the interface and whether or not it really triggers those folks - to avoid adding even more clutter we should really think about this one)</p>
+
+<p>To many people it sounded as an obvious solution, so it might be weird that we initially decided against it. But you have to consider that sometimes what big other sites do, might not work for people using Drupal.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1098971"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1098971" class="active">#3</a></h3>
+    <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>November 8, 2008 at 9:37pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>So I want to clarify something as someone who was there witnessing poor users struggle with the password checker at U of M.</p>
+<p>The problem wasn't the colour taking focus away from the fact that passwords didn't match. The problem was the *proportion* of the coloured big ugly box related to other things in the form, and how it magically popped out of nowhere:</p>
+<p><img src="http://img.skitch.com/20081108-g3qhmc2jtccfxj2itkk3rw3349.png" alt="Big Ugly box" /></p>
+<p>If you really want to make the password match status more visible, stick a little checkmark/stop sign logo next to it like we have in admin/reports/status. But I think that might clutter the form unnecessarily. The colour is diminished here already because the area the colour takes up is MUCH smaller than it was before.</p>
+<p>Here's why I filed this issue, and a summary of my arguments "pro" this:<br />
+* I got hung up here for a good 30 seconds or so thinking there was a bug. Since this was confusing for me -- I'm a user of Drupal too :P -- it's likely going to be confusing for others as well. alpritt pointed out though that I'm not exactly a "typical" user of Drupal, which might be true, but people who use Drupal every day are *also* our target market, remember. ;)<br />
+* yoroy pointed out that red is wrong because red means "stop" "error condition" etc. However, green is normally a colour that means "Yay! everything is great!" and in NO way is "a" a great password. :P<br />
+* Furthermore, this green bar is not a check for "did someone fill in the form" (otherwise we'd have green bars next to ALL of our required fields), it is an indicator for the strength of the password. And in terms of password strength, "a" *is* an error condition: it's horribly insecure.<br />
+
+* Every dynamic password checker I can remember using on any site does it the way Google does it. Jakob Nielsen points out that other people use other sites more than yours, so I'm not sure why we're not conforming to user expectations here.<br />
+* Bojhan pointed out that the above wan't true; Yahoo! does not use colour this way. However, it uses four separate rectangles to indicate the "how far along are you" which tells me there are 4 steps to secure passwords. Ours is just a bar along a single continuum so the correlation is not a direct match.</p>
+<p>I think those were all the major points from our discussion.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1099053"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1099053" class="active">#4</a></h3>
+    <div class="submitted">Posted by <a href="/user/91319" title="View user profile.">alpritt</a> on <em>November 8, 2008 at 10:43pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Component:</td><td>javascript</td><td>&raquo; usability</td> </tr>
+</tbody>
+</table>
+</div></div><p>@webchick:</p>
+
+<p>My point was not that you are a highly experienced user of Drupal, but more that you have been involved in this specific issue. So you fall on the developer rather than user side, and so are more likely to be looking for problems. So, yes, there may be an issue here; but there is not necessarily one. We need to test against naive users to get a proper understanding.</p>
+<p>I took a look at a couple of dozen password checkers before designing the current implementation. The current design is a lot closer to the norm, than what we had before. But as for getting closer to it, I'm not sure we can because there is really not a consistent design between them. So, at this more subtle stage, I again think we really need to test. I could argue the merits for the change either way.</p>
+<p>Another option may be to go from grey to green.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1099081"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1099081" class="active">#5</a></h3>
+    <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>November 8, 2008 at 11:10pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <blockquote><p>
+Another option may be to go from grey to green.
+</p></blockquote>
+<p>I think you meant green to grey. :) If so, I think that would definitely help. If the bar had been purple or grey or polkadots I don't think my brain would've triggered the "wtf?" It was the fact that green == OK that messed me up.</p>
+<p>Could we talk about that in a separate issue though, since this one is about colourizing them?</p>
+<p>I agree that I'm too close to the issue, and that the way to figure out the way forward is with actual user testing. So if someone rolls a patch for this and we get it committed, we can get two groups of users: one testing UNSTABLE-X (2 or 3 or whatever has the old behaviour) and one testing HEAD with the new way, and take notes on who was least confused. :D</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1099207"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1099207" class="active">#6</a></h3>
+    <div class="submitted">Posted by <a href="/user/91319" title="View user profile.">alpritt</a> on <em>November 9, 2008 at 1:48am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Rather than red to green, I mean. So at 5% it would be grey and then the colour would gradually become more saturated until at 100% it is a nice intense green.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1126758"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1126758" class="active">#7</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>November 26, 2008 at 11:31am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>active</td><td>&raquo; needs review</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>Hi folks,</p>
+<p>Attached is a patch to implement the password strength meter like google's one. It's my first cut, and probably needs some tidy up. I took some liberties by floating things in order to get the layout right in a hurry, and I have completely ignored the drupal translation system for the weak/fair/strong words, just to name two problems :)</p>
+<p>Attached is also a screenshot of it in action, in case the patch doesn't apply for some reason. It works for me using latest drupal 7 head, in firefox 3.</p>
+
+  
+<div id="pift-results-331893-1126758"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password-strength-meter.patch">password-strength-meter.patch</a></td><td>3.46 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/1877">View details</a></td> </tr>
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/password-strength-meter.png">password-strength-meter.png</a></td><td>30.69 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1139998"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1139998" class="active">#8</a></h3>
+    <div class="submitted">Posted by <a href="/user/49989" title="View user profile.">Bevan</a> on <em>December 4, 2008 at 9:35pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>I didn't apply or execute the code but on code review this looks fine, except that it needs testing with RTL languages and will probably need some changes to system-rtl.css (or it's equivalent).</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1140014"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1140014" class="active">#9</a></h3>
+    <div class="submitted">Posted by <a href="/user/188162" title="View user profile.">Josh Waihi</a> on <em>December 4, 2008 at 9:45pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>tested, its better than before but the colors are a little strong still</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1164967"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1164967" class="active">#10</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>December 20, 2008 at 9:49pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I'mna re-roll the patch with the following changes:</p>
+<p>* Against latest drupal 7<br />
+* Fixes for RTL languages (which at this stage I am assuming will be CSS changes to float stuff the other way)<br />
+* Reduce strength of colours<br />
+* Hook words into the translation system</p>
+
+<p>The colours are always going to be subjective - I'll throw a drupal up somewhere that people can see it in action and solicit some feedback then.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1165836"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1165836" class="active">#11</a></h3>
+    <div class="submitted">Posted by <a href="/user/195978" title="View user profile.">Shannon Lucas</a> on <em>December 21, 2008 at 7:32pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>I expect that there is enough global exposure to European/American culture that using red, orange, and green is safe. I think we need to emphasize that a weak password is Danger-Will-Robinson bad. Neither green nor gray convey that meaning. Even outside of European and American cultures, gray carries a neutral or indefinite connotation.</p>
+<p>I'm attaching the strength meter Microsoft uses on their online sign-up form. It has only four states. The gray state is used before the user has entered anything into the password field.</p>
+<p><img src="http://drupal.org/files/issues/ms-passport.png" alt="MS Password Strength Meter" /></p>
+<p>There are three visual indicators here: the color, the length of the bar, and the black text inside the bar (compared to the dimmed text).</p>
+
+  
+<div id="pift-results-331893-1165836"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class=" odd"><td><a href="http://drupal.org/files/issues/ms-passport.png">ms-passport.png</a></td><td>7.77 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1173297"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1173297" class="active">#12</a></h3>
+    <div class="submitted">Posted by <a href="/user/1" title="View user profile.">Dries</a> on <em>December 28, 2008 at 5:37pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I think this is a good patch, but it seems like we're not 100% done discussing the colors yet.  Bump.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1181863"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1181863" class="active">#13</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>January 4, 2009 at 10:01am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I've been away - will look at it sometime soon.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1181866"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1181866" class="active">#14</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>January 4, 2009 at 10:03am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Assigned to:</td><td>Anonymous</td><td>&raquo; nigel</td> </tr>
+ <tr class="even"><td>Status:</td><td>needs review</td><td>&raquo; needs work</td> </tr>
+
+</tbody>
+</table>
+</div></div><p>Since we all agree about the status...</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+
+<a id="comment-1182610"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1182610" class="active">#15</a></h3>
+    <div class="submitted">Posted by <a href="/user/188162" title="View user profile.">Josh Waihi</a> on <em>January 4, 2009 at 10:46pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>I think Shannon Lucas is on the right track however, it doesn't seem right that with the change of a single character I could go from having a password with 1/3 the right strength to 2/3. Would a percentage be a better indicator? much like that talked about in #6. A full colored bar that starts of with a weak red that turns into a strong green as the password strength gets better? and of course also with text explanation weak|average|strong|awesome|are you gonna remember this?|ridiculous - we could it down maybe</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1182730"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1182730" class="active">#16</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>January 5, 2009 at 12:21am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Percentage is a bad indicator, it might be weird to jump so suddenly - but it just colour bars would require less "figuring it out".</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1304174"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1304174" class="active">#17</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>March 1, 2009 at 4:35am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Component:</td><td>usability</td><td>&raquo; user.module</td> </tr>
+ <tr class="even"><td>Status:</td><td>needs work</td><td>&raquo; needs review</td> </tr>
+
+</tbody>
+</table>
+</div></div><p>Okay, I finally found some time, and have made a new patch. Screenshot attached too. I haven't got time to set up an install with it right now, but if it's necessary I'm sure it can be arranged.</p>
+<p>I fixed the issues I said I would fix in #10. Please let me know if there are other things that need fixing.</p>
+<p>Personally, I'm not sure about the weaker colours - having washed out colours makes the text harder to read. But it's up to you guys.</p>
+
+  
+<div id="pift-results-331893-1304174"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password-strength-meter-2.patch">password-strength-meter-2.patch</a></td><td>4.9 KB</td><td>Idle</td><td>Fetch test file: failed to retrieve [issues] from project client.</td><td><a href="http://qa.drupal.org/pifr/test/17776">View details</a></td> </tr>
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/password-strength-meter-2.png">password-strength-meter-2.png</a></td><td>29.49 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1304374"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1304374" class="active">#18</a></h3>
+    <div class="submitted">Posted by <a href="/user/18703" title="View user profile.">Amazon</a> on <em>March 1, 2009 at 7:04am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>This patch is not linked correctly.  I noticed it looking at the testing.drupal.org logs.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1304732"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1304732" class="active">#19</a></h3>
+    <div class="submitted">Posted by <a href="/user/61837" title="View user profile.">nigel</a> on <em>March 1, 2009 at 11:37am</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>Indeed. Here it is hosted elsewhere: <a href="http://stuff.nigel.mcnie.name/password-strength-meter-2.patch" title="http://stuff.nigel.mcnie.name/password-strength-meter-2.patch" rel="nofollow">http://stuff.nigel.mcnie.name/password-strength-meter-2.patch</a> - picture: <a href="http://stuff.nigel.mcnie.name/password-strength-meter-2.png" title="http://stuff.nigel.mcnie.name/password-strength-meter-2.png" rel="nofollow">http://stuff.nigel.mcnie.name/password-strength-meter-2.png</a></p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1321846"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1321846" class="active">#20</a></h3>
+    <div class="submitted">Posted by <a href="/user/232164" title="View user profile.">wretched sinner...</a> on <em>March 5, 2009 at 11:39pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Marked <span class="project-issue-status-3 project-issue-status-info"><a href="/node/392320" title="Status: closed (duplicate)">#392320: Password widget strength bar colour</a></span> as a duplicate of this issue.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1321946"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1321946" class="active">#21</a></h3>
+    <div class="submitted">Posted by <a href="/user/138216" title="View user profile.">karschsp</a> on <em>March 6, 2009 at 12:07am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>subscribe</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1322526"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1322526" class="active">#22</a></h3>
+    <div class="submitted">Posted by <a href="/user/62965" title="View user profile.">Xano</a> on <em>March 6, 2009 at 4:28am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Subscribing.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1353266"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1353266" class="active">#23</a></h3>
+    <div class="submitted">Posted by <a href="/user/62965" title="View user profile.">Xano</a> on <em>March 13, 2009 at 6:56pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>This patch changes the colour and label of the strength indicator, while the original layout remains. Colour changes are fluid, label changes occur at 35% and 75%.</p>
+
+  
+<div id="pift-results-331893-1353266"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_00.patch">password_colouring_00.patch</a></td><td>3.82 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/5178">View details</a></td> </tr>
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/Picture 9_12.png">Picture 9.png</a></td><td>25.29 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1353276"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1353276" class="active">#24</a></h3>
+    <div class="submitted">Posted by <a href="/user/62965" title="View user profile.">Xano</a> on <em>March 13, 2009 at 7:00pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1363556"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1363556" class="active">#25</a></h3>
+    <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>March 16, 2009 at 8:50pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>I find myself getting a bit overwhelmed by so many visual indicators. The latest patch gives colours (at least 6 of them), bar size, and a word. Remember that we're trying to NOT scream at people on this form, lest we go back to the problems with the old password checker. The current one actually tested pretty well so I'm not sure this is as much a priority as we previously thought it was, but I defer to the UX team about that.</p>
+<p>Also, I noticed that if I type in a strong password and then delete the password contents and then type 'a', it gives me a short green bar rather than a short red bar.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1465546"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1465546" class="active">#26</a></h3>
+    <div class="submitted">Posted by <a href="/user/188162" title="View user profile.">Josh Waihi</a> on <em>April 12, 2009 at 2:19am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I find a current problem with the current password checker is that I don't use the mouse to scroll down the install page but just tab my way through it, which means when I get to the password fields, I don't see the meter below, I have no idea how strong or weak my password is. Would it be a better idea to but the password meter/checker thingy on the side or above for accessiblity reasons?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1469166"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1469166" class="active">#27</a></h3>
+    <div class="submitted">Posted by <a href="/user/1" title="View user profile.">Dries</a> on <em>April 13, 2009 at 11:55am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; needs work</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>Webchick's comment in #25 suggests that there is a bug. Marking this 'code needs work'.  6 colours seems too much -- how about 3 colors?  Red, yellow and green?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1478140"></a>
+
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1478140" class="active">#28</a></h3>
+    <div class="submitted">Posted by <a href="/user/91319" title="View user profile.">alpritt</a> on <em>April 15, 2009 at 1:38pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>@26:</p>
+<p><span class="project-issue-status-7 project-issue-status-info"><a href="/node/325877" title="Status: closed (fixed)">#325877: Password checker breaks if no description</a></span> deals with this by automatically scrolling the password meter, etc into view if it is off-screen. (Or rather it will when I finally re-roll it.)</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1857922"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1857922" class="active">#29</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>July 27, 2009 at 4:02pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Issue tags:</td><td></td><td>+<a href="/project/issues/search/drupal?issue_tags=accessibility">accessibility</a></td> </tr>
+</tbody>
+</table>
+
+</div></div><p>tagging</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-1971882"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1971882" class="active">#30</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>August 26, 2009 at 1:46pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>This patch still applies, however in my first test I didn't get the color display.  I updated the CVS and got "Fatal error: Class 'DrupalDefaultEntityController' not found" so I'm going to sit on this and hopefully test more later.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-1972924"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1972924" class="active">#31</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>August 26, 2009 at 5:34pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>Subscribe. Let's try and keep it as simple as possible.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-1973384"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-1973384" class="active">#32</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>August 26, 2009 at 7:35pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Wondering if this is something that can be worked on after code freeze?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2001702"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2001702" class="active">#33</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 3, 2009 at 1:46pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs work</td><td>&raquo; needs review</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>I've re-rolled the patch as it didn't apply. The test now doesn't seem to produce the error I reported in #30 - perhaps it was just my system or perhaps the code's just improved.</p>
+<p>I've attached various screenshots of the form.  It's looking good!</p>
+<p>I do think this is RTBC (I just moved the code around and changed quote types to single quotes), but I'm not in a position to do it.</p>
+
+  
+<div id="pift-results-331893-2001702"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_01.patch">password_colouring_01.patch</a></td><td>3.5 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13018">View details</a></td> </tr>
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/screenshot-117.png">screenshot-117.png</a></td><td>26.88 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+ <tr class=" odd"><td><a href="http://drupal.org/files/issues/screenshot-118.png">screenshot-118.png</a></td><td>26.79 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/screenshot-119.png">screenshot-119.png</a></td><td>24.46 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+ <tr class=" odd"><td><a href="http://drupal.org/files/issues/screenshot-120.png">screenshot-120.png</a></td><td>22.72 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+ <tr class=" even"><td><a href="http://drupal.org/files/issues/screenshot-121.png">screenshot-121.png</a></td><td>18.13 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2019402"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2019402" class="active">#34</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 8, 2009 at 8:05pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>+1 for this patch. I cannot evaluate the visual effect, but it is critical that the colored password strength bar also has textual representation, which this patch provides.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2019722"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2019722" class="active">#35</a></h3>
+    <div class="submitted">Posted by <a href="/user/61393" title="View user profile.">Jeff Burnz</a> on <em>September 8, 2009 at 9:13pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p></p><div class="codeblock"><code>+++ modules/user/user.js	3 Sep 2009 13:34:07 -0000<br />@@ -19,7 +19,8 @@ Drupal.behaviors.password = {<br />+      var passwordMeter = '&lt;div id="password-strength"&gt;&lt;div class="password-strength-title"&gt;' + translate.strengthTitle + '&lt;/div&gt;&lt;div id="password-indicator"&gt;&lt;div id="indicator"&gt;&lt;/div&gt;&lt;div id="label"&lt;/div&gt;&lt;/div&gt;';</code></div>
+
+<p>Looks like a broken div in there Mike.</p>
+<p><em>This review is powered by <a href="http://drupal.org/project/dreditor" rel="nofollow">Dreditor</a>.</em></p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-2019782"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2019782" class="active">#36</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 8, 2009 at 9:28pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>Thanks.  I didn't notice the html error in patch password_colouring_00.patch which I was working from.</p>
+<p>It's fixed now (and still works).</p>
+
+  
+<div id="pift-results-331893-2019782"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_02.patch">password_colouring_02.patch</a></td><td>3.5 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13331">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2023136"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2023136" class="active">#37</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 9, 2009 at 6:26pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>We can do the text, but I see no reason at all to do all the colors.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2023158"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2023158" class="active">#38</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 9, 2009 at 6:30pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I think we definitely need the text.  If we do the colours there should be a easy, and documented, way for themers to override the colours.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2023186"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2023186" class="active">#39</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 9, 2009 at 6:34pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Please see #2, drop the colors, and just go with the text. </p>
+<p>@Everett #38 that it should be easy, and documented should already be implied in any way we go.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2023842"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2023842" class="active">#40</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 9, 2009 at 8:52pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>The attached patch adds only the password strength label, and does not modify anything to do with coloring.</p>
+
+  
+<div id="pift-results-331893-2023842"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_strength_label_01.patch">password_strength_label_01.patch</a></td><td>2.88 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13380">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2024454"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2024454" class="active">#41</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 9, 2009 at 11:03pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Subscribing. Oh, we desperately need more information in the handbook on evaluating color contrast.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2024562"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2024562" class="active">#42</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 9, 2009 at 11:31pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@Everett - that patch didn't work for coloring &amp; positioning issues.</p>
+<p>I like the red, and would much rather go with #36.  However, if folks aren't sure about the red and want to stick with the existing green and add in the text I'd like to offer the following.</p>
+<p>The shades of green change, but think it gets the point across nicely without worrying about what the colors mean.</p>
+
+  
+
+<div id="pift-results-331893-2024562"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_03.patch">password_colouring_03.patch</a></td><td>3.43 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13396">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2024938"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2024938" class="active">#43</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 10, 2009 at 2:47am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>I still prefer the colour option discussed in #11 the best.  I changed the js so it would just show the 3 colors.  Red for weak passwords, yellow for fair ones and green for strong ones.</p>
+<p>The text is there so that if your colour bland this should be fine.</p>
+<p>I've also upped the definition of a strong password.</p>
+<p>6 characters and one capital is not a strong password!  Now you have to hit 85% in order to get a nice green password.  So yes, you have to use a number or something like that.</p>
+
+  
+<div id="pift-results-331893-2024938"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_04.patch">password_colouring_04.patch</a></td><td>3.64 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13406">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2025042"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2025042" class="active">#44</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 10, 2009 at 4:03am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Mike, once again trying to participate in several threads at once has me finishing a post after the discussion has moved on. Gotta stop doing that.</p>
+<p>I'm glad that you went back to the color scheme in #11. The "red-yellow-green" metaphor to traffic signals is clean and works well for everyone who can distinguish those colors, regardless of whether they can see the true hues. The text is essential, so it's fantastic that it's there.</p>
+<p><em>Here's my original post, which I won't edit because it makes other strong and valid points:</em><br />
+Reading through this thread, I see that the verdict on color has gone back and forth. I have a lot more confidence in sites that use color and text to encourage me to develop a strong password. I'll bet most other Web users do, too.</p>
+<p>The text is essential. The color is an enhancement. One caveat: If color is used, check it with one of the many free color contrast analysis tools available online. If used as a background, make sure it is light enough that it doesn't reduce the contrast ratio with the text below 4.5:1 \97 preferably closer to 7:1. (In these patches, the text seems to be running small.) And if the color is used for text, be sure that it is dark enough that its contrast ratio to the background is in that same range.</p>
+
+<p>Otherwise, a lot of us will be relying on screen readers to operate this interface. (Oh, by the way \97 because the color is an enhancement, Everett's idea of making sure it can be turned off is a good one. Ideally, not only any themer but also anyone who manages a site should be able to flip that switch.)</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2026340"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2026340" class="active">#45</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 10, 2009 at 1:08pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>I don't know how to turn off the colors.  Right now it's in green.  Having a tricolor set is fairly standard.  Like the idea of having it be more customizable, but think I'm going to have to leave this to someone else.</p>
+<p>I did test to see that this will work in alternate languages.  It does.</p>
+<p>I had to blow away the old install, but there's an example of this here now <a href="http://drupal7.dev.openconcept.ca/" title="http://drupal7.dev.openconcept.ca/" rel="nofollow">http://drupal7.dev.openconcept.ca/</a></p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2030764"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2030764" class="active">#46</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 11, 2009 at 1:00pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@mgifford</p>
+<p>Can you please let me know what exactly wasn't working properly in the patch in comment #40?  I hink we need to get this commited with just the label, and then we can work on the coloring issue if people are interested.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2031052"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2031052" class="active">#47</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 11, 2009 at 2:16pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@Everett</p>
+<p>About 2/3rds of the screen was green with patch #40.  It started right below the password strength checker and went down the rest of the page.  I also think the position of the text was wrong, but that might have been a result of the big green background colour.</p>
+<p>Who were the people who didn't like the colour?  I am not sure which concerns we're addressing by not having more than one colour.  Could all be grey I suppose, but right now it's solid green.  Think for sighted people Red/Yellow/Green is good.  For color blind folks there's the text which is pretty clear as well.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2031294"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2031294" class="active">#48</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 11, 2009 at 3:08pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>For what it's worth, patch #43 is way cooler than this one.  </p>
+<p>However, if folks like it solid green rather than red, yellow, green there's this patch too.</p>
+<p>Strong is now at 85%</p>
+
+  
+<div id="pift-results-331893-2031294"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_strength_label_02.patch">password_strength_label_02.patch</a></td><td>3.29 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13491">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2031422"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2031422" class="active">#49</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 11, 2009 at 3:39pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>+1 The patch in #48 applies well and provides a textual alternative to the green bar for password strength.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2031556"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2031556" class="active">#50</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 11, 2009 at 4:10pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@ mgifford: The only resistance to color AFAIK was from Bojhan. For usability for sighted people, I think the traffic signal metaphor is the best. Green means "go," so don't show it to me until you really mean that. As webchick notes in #3, the usability test participants were thrown off by an overwhelming block of color. This patch provides appropriate enhancement, not an overwhelming block. Everything else I have to say, I've said before. Can we mark this RTBC and move forward with the red-yellow-green approach?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2032290"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2032290" class="active">#51</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 11, 2009 at 7:14pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Can anyone apply the last patch, to me it doesn't seem to work well. I am not opposing red-yellow-green approach. I just don't feel we should promote jumpy behavior? It takes a second for someone to fill out their password, I don't want a rainbow effect when I fill out my password.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2032608"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2032608" class="active">#52</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 11, 2009 at 9:04pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Re: #51, perhaps we should wait till the user stops typing for half a second (or so) to do the magic?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2034530"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2034530" class="active">#53</a></h3>
+    <div class="submitted">Posted by <a href="/user/740" title="View user profile.">heather</a> on <em>September 12, 2009 at 5:16pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>If someone wants to user-test this should I test both #43 and #48?  </p>
+<p>FYI: This patch added to list of *hot* issues which need user testing.<br />
+<a href="http://groups.drupal.org/node/26409" title="http://groups.drupal.org/node/26409" rel="nofollow">http://groups.drupal.org/node/26409</a></p>
+<p>I made videos of two of the options. Hard to tell what consensus is built on this issue at this stage (turning into bike shed?). Thought making videos could help others participate in the discussion w/o needing to apply patches. </p>
+<p>#43 password_colouring_04.patch<br />
+
+Video: <a href="http://vimeo.com/6546823" title="http://vimeo.com/6546823" rel="nofollow">http://vimeo.com/6546823</a></p>
+<p>#48 password_strength_label_02.patch<br />
+Vimeo: <a href="http://vimeo.com/6546877" title="http://vimeo.com/6546877" rel="nofollow">http://vimeo.com/6546877</a></p>
+<p>I think the 3 colours changing is confusing. However, it doesn't make sense that it is 'green' to go a the start. Would it be possible to go from pale to brighter through the progress bar?</p>
+<p>I made a palette to show, just a rough sketch, I didn't work out the values.<br />
+<a href="http://www.colourlovers.com/palette/954704/Go_green_go" title="http://www.colourlovers.com/palette/954704/Go_green_go" rel="nofollow">http://www.colourlovers.com/palette/954704/Go_green_go</a></p>
+<p><img src="http://drupal.org/files/issues/Go_green_go.png" alt="go greens go" /></p>
+
+  
+
+<div id="pift-results-331893-2034530"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class=" odd"><td><a href="http://drupal.org/files/issues/Go_green_go.png">Go_green_go.png</a></td><td>538 bytes</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2035412"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2035412" class="active">#54</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 13, 2009 at 12:56am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Thanks for the videos, Heather. That's a great idea! This will help our discussion quite a bit.</p>
+<p>#43 reflects the consensus as I understand it. From my experience, it seems to be the way true password checkers are being set up.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2040222"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2040222" class="active">#55</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 14, 2009 at 5:26pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Ok, I've got a patch for your Go green go palette.  I still like #43 the best and don't find it confusing.</p>
+<p>One issue of having 4 colors of green is that there are only 3 text labels for those levels of security.  </p>
+<p>If we want four colors we need better labels than weak, fair &amp; strong.</p>
+<p>Right now there are four conditions I've defined here that should go with 4 labels:  Under 30%, under 60%, under 85% &amp; everything else.</p>
+
+<p>I'd like some feedback on that.</p>
+
+  
+<div id="pift-results-331893-2040222"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_strength_label_03.patch">password_strength_label_03.patch</a></td><td>3.75 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13599">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2041668"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2041668" class="active">#56</a></h3>
+    <div class="submitted">Posted by <a href="/user/740" title="View user profile.">heather</a> on <em>September 14, 2009 at 10:57pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>heh, vimeo said this file was too small</p>
+<p><a href="http://www.flickr.com/photos/feather/3920537107/" title="http://www.flickr.com/photos/feather/3920537107/" rel="nofollow">http://www.flickr.com/photos/feather/3920537107/</a></p>
+<p>@mgifford  you're right. i wasn't paying close enough attention to the issue when i made a 4 colour palette. </p>
+<p>thank you for making this patch. </p>
+<p>now we can see the grey/pale option. i agree. the pale green is even too green/positive and misleading. red to yellow to green seems much beter. </p>
+<p>another kink: at installation shouldn't the list of recommendations be available? they do not appear at installation. the password check you see in this video is for installation.</p>
+    </div>
+
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2041820"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2041820" class="active">#57</a></h3>
+
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 14, 2009 at 11:49pm</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Mike, I would make one more suggestion: In the video, the color band gets wider, taking up more of the box, as more characters are entered. I would get rid of that aspect: Just make the whole box red while "weak" is displayed, yellow while "fair" is displayed, and green when "strong" is displayed. Otherwise, I think we're ready to move on.</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2041928"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2041928" class="active">#58</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 15, 2009 at 12:47am</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <p>@heather can you give me a 3 color gray palette to work from? Think that would be easier than 4 unless we want to deal with the weak, fair, strong issue I posted last time.  Keeping in mind that it has to be light enough to see the text under it and also hopefully meet a minimum color contrast so that it is visible.  Might be good to match the color of the text for weak, fair, strong against against the backgrounds proposed here:<br /><a href="http://www.dasplankton.de/ContrastA/" title="http://www.dasplankton.de/ContrastA/" rel="nofollow">http://www.dasplankton.de/ContrastA/</a></p>
+<p>@cliff It's easy to apply that.  Just want to make sure I'm creating patches that help get us closer to getting this RTBC.  Can we get a usability comment on whether or not we should get rid of the progressive element (the percentage bar) for this?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-2042160"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2042160" class="active">#59</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 15, 2009 at 3:17am</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>@mike, it's hard to be sure what is meant by the changing size of the bar. The metaphor is to traffic lights. Traffic lights typically change color, not size, so the changing size of the bar muddles the metaphor. and weakens the message.</p>
+<p>On top of that, what does the changing size mean? Here are a couple of plausible misinterpretations:</p>
+<ul><li>Because a two-character password produces patch of red twice as big as the patch produced by a one-character password, a two-character password is twice as bad as a one-character password.</li>
+<li>At about five characters, the color is yellow. Is a 5-em "caution" more emphatic than a 1-em "stop"?</li>
+</ul><p>So the implication of the change in size is the opposite of the implication of the change in color \97 at least it is until we get to green.</p>
+<p>Here's another way of thinking about it:</p>
+
+<ul><li>Red means "Don't proceed."</li>
+<li>When only one character has been entered, we especially don't want the person to proceed.</li>
+<li>Currently, the signal that person gets is the smallest in our series, so it's possible that they'll miss it.</li>
+<li>If we keep the signal the same size and change only its color, we don't have to worry about whether they will miss it when its message is most urgent.</li>
+</ul><p>I see only one drawback to making all signals the same size: The user would not get the idea that a password with a strength factor of 85 is not quite as good as a password with a strength factor of 100. If that troubles you, I suggest we just keep the bar yellow at 85. For it to turn green, the strength factor would have to reach 100 (or whatever other value you consider prudent).</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2042300"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2042300" class="active">#60</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 15, 2009 at 4:36am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Ok, here's another one for review. Based on @Cliff's suggestion of the bar being 100% full.  I still like #43.</p>
+<p>Slight changes include actually including 4 states.  As soon as someone clicks in the box they shouldn't be getting an error message.  </p>
+<p>Not actually sure that a big red box is what most folks want to see when they type in their password.</p>
+<p>I didn't bold the text.  Not actually sure how to do it.    The 0th state (before someone types in a password) should probably have the text "none" or something like that but currently it isn't showing up.</p>
+<p>The red's too dark and I did try to tone it down a bit to make it easier to read.</p>
+
+  
+<div id="pift-results-331893-2042300"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_05.patch">password_colouring_05.patch</a></td><td>3.76 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13623">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2042762"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2042762" class="active">#61</a></h3>
+    <div class="submitted">Posted by <a href="/user/740" title="View user profile.">heather</a> on <em>September 15, 2009 at 2:28pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>A Story About a Bike-shed
+</p>
+<ul><li>#1 - webchick suggests that password checker "green from start" is confusing. (all green start to finish)</li>
+<li>#4 says go from grey to green</li>
+<li>#7 does it exactly like google's, with the metre to the site</li>
+<li>#8 points out needs testing with RTL</li>
+<li>#9, #10 it gets tested it's OK</li>
+<li>#11 shows microsoft's convention (what was wrong with the google convention??)</li>
+
+<li>#12 dries said "close, but work on colors"</li>
+<li>#13-19 - discussion of colour, now washes out colours. still google. </li>
+<li>#23 - suddenly it moves to "under" the password checker? no explanation for this change</li>
+<li>#25 webchick overwhelmed by colours. but she is talking about a big, like in #26 (to do with tabbing &amp; colour change when password is deleted/changed, it doesn't go back to red)</li>
+<li>#33- 36 fixes bugs</li>
+<li>#37-39 bojhan doesn't like "all the colours". suggests going back to drop the colours, and just go with text. </li>
+<li>#40, ok, remove colours, just try text. </li>
+<li>#42-43 no, i like the red, but we'll try green again. trying just a change of green. (for readers, this means we are back to the situation at #1, which is why the thread started)</li>
+
+<li>#48 try solid green. (no progress bar)</li>
+<li>#51 we've gone back, red-yellow-green is good... but... feels "jumpy"</li>
+<li>#53-58 ok, this is my fault, i suggest the light green to green option. (discussed in #4)</li>
+<li>#60 based on #59 - Bar 100% full
+  </li>
+</ul><h3>Let's re-cap the goals: To encourage the user to create a strong password. </h3>
+<p>First, look at existing conventions in use in the industry. Over time, more people will become familiar with this functionality as thoughtful developers include password checking. It's good to work within the existing UI conventions and establish a common language for users. </p>
+<ul><li>  See someone who attempted as many experiments (full bar, temperature bar, filling bar. but always with colour changes):<br /><a href="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" title="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" rel="nofollow">http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/</a> - you can resize the bar and compare as many. </li>
+
+<li> Some photos of patterns here: <a href="http://ui-patterns.com/userset/39/image/553#focus" title="http://ui-patterns.com/userset/39/image/553#focus" rel="nofollow">http://ui-patterns.com/userset/39/image/553#focus</a></li>
+<li>Also check a video I made of Google's password checker:<br /><a href="http://www.flickr.com/photos/feather/3921759419/" title="http://www.flickr.com/photos/feather/3921759419/" rel="nofollow">http://www.flickr.com/photos/feather/3921759419/</a></li>
+</ul><p>You can see those shown are "long"; the text is above the bar, not written on it; the colour bar is a thin strip.</p>
+<p>Let's reconfirm our spec: </p>
+<ul><li>1) We need a progress bar</li>
+<li>2) Green from start is confusing. </li>
+<li>3) The colour changes should not be so jarring. </li>
+
+<li>4) Text should be legible and transmit same information as colour/visual changes.</li>
+<li>5) It needs to work in translation so that words can fit into the space in other languages</li>
+</ul><p>This indicates text above the bar, not on it, and a thin strip of colour so as not to be over powering. </p>
+<p>In fact we were closer in the beginning of this patch to existing conventions</p>
+<p><a href="http://drupal.org/files/issues/password-strength-meter.png" title="http://drupal.org/files/issues/password-strength-meter.png" rel="nofollow">http://drupal.org/files/issues/password-strength-meter.png</a></p>
+<p>Somehow we tried to make the progress bar "small", and fit the text together. This appears to have introduced some problems. We may also run into trouble if translations are not as short and don't fit into the bar. </p>
+<p>I recommend we take a step back from making and applying patches, try out this experimentation page:</p>
+<p><a href="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" title="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" rel="nofollow">http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/</a></p>
+<p>And come to a consensus to save valuable developer's time. </p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2043438"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2043438" class="active">#62</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 15, 2009 at 12:35pm</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <p>@heather great post. :)</p>
+<p>What do you all think about going the route of the first example at <a href="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" title="http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/" rel="nofollow">http://subeesh.wordpress.com/2008/02/19/flex-password-strength-meter/</a> ...you get all the colors but it's not as jarring since it's a gradual fade.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2043470"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2043470" class="active">#63</a></h3>
+    <div class="submitted">Posted by <a href="/user/41017" title="View user profile.">alexanderpas</a> on <em>September 15, 2009 at 12:48pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p><a href="http://drupal.org/files/issues/password-strength-meter.png" title="http://drupal.org/files/issues/password-strength-meter.png" rel="nofollow">http://drupal.org/files/issues/password-strength-meter.png</a> - first response: YUK! ugly! too wide!</p>
+<p>I'd say, use <a href="http://drupal.org/files/issues/Picture%209_12.png" title="http://drupal.org/files/issues/Picture%209_12.png" rel="nofollow">http://drupal.org/files/issues/Picture%209_12.png</a> style, but from grey to green!</p>
+    </div>
+
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2044250"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2044250" class="active">#64</a></h3>
+
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 15, 2009 at 3:45pm</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@heather - love the history you laid out for this bike shed.</p>
+
+<p>Think the most critical part is that we're adding the password strength label as per #40.  </p>
+<p>Also, thanks for pointing out that the password changer suddenly went from a Google style password checker to something more unique to Drupal.</p>
+<p>I'd like to take it back to the Google style so I started with #17.</p>
+<p>I added a reference for Good so that there are now four categories. Google actually has a 5th for too short - <a href="http://ui-patterns.com/userset/39/image/150#focus" title="http://ui-patterns.com/userset/39/image/150#focus" rel="nofollow">http://ui-patterns.com/userset/39/image/150#focus</a></p>
+<p>I wasn't able to do that with the present scoring.  It would have taken a lot more adjustments to organize that.</p>
+<p>@alexanderpas - the biggest problem I have with the style you prefer is readability.  It's something I was struggling with in putting the dark warning behind the text.  There's not enough contrast for many people.</p>
+<p>@mcrittenden - putting in background images rather than colors would be the easy fix.  Would that work for you?  Does anyone have any examples of graphics to use for this?</p>
+
+  
+
+<div id="pift-results-331893-2044250"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_colouring_06.patch">password_colouring_06.patch</a></td><td>4.83 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13638">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2044318"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2044318" class="active">#65</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 15, 2009 at 3:57pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Oh yea, trying to follow @heather's lead here are some videos:</p>
+<p>This is for patch in comment #60:<br /><a href="http://screenr.com/fh7" title="http://screenr.com/fh7" rel="nofollow">http://screenr.com/fh7</a></p>
+<p>And finally for patch in comment #64 above:<br /><a href="http://screenr.com/Dg7" title="http://screenr.com/Dg7" rel="nofollow">http://screenr.com/Dg7</a></p>
+<p>Would be great to have folks contributing more patches or addressing some of the issues directly.  One person's ugly is another person's beautiful some of the time, so suggesting a new stating personal preferences isn't going to get this issue RTBC any time soon.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2044724"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2044724" class="active">#66</a></h3>
+    <div class="submitted">Posted by <a href="/user/406552" title="View user profile.">Everett Zufelt</a> on <em>September 15, 2009 at 5:13pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I definitely understand the importance of using appropriate colors for the password indicator bar.</p>
+<p>However, as <span class="project-issue-status-7 project-issue-status-info"><a href="/node/521904" title="Status: closed (fixed)">#521904: Add ARIA live region to password strength and match containers</a></span> is blocked by not having a text label that describes the password strength, perhaps we could resolve the current issue with two commits.</p>
+<p>1. A committed patch to add a text label.</p>
+
+<p>2. A committed patch to modify the coloring of the password indicator bar.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2045564"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2045564" class="active">#67</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 15, 2009 at 8:35pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>@Mike, both are good. Even though the checker in <a href="http://screenr.com/fh7" rel="nofollow">the video based on #60</a> was what I asked for, I see the merits of and actually prefer the checker in <a href="http://screenr.com/Dg7" rel="nofollow">the video based on #64</a>. I don't think we need a "Too Short" state. (In fact, I'm not sure "Good" is necessary, but I wouldn't call for a recode to get rid of it. People will understand.)</p>
+<p>@Everett, both versions have text labels that correspond to specific colors, so I think we are OK there.</p>
+<p>@Heather, thanks for the summation. In the frenzy of fixing things, it can be hard to stay focused on the goal. And moving the color bar from behind the text and to the side actually does make it look like a progress meter, not a traffic signal. I can't explain why, but it does. In that light, allowing it to grow is just fine.</p>
+<p>I think that anything further is gilding (or perhaps bronzing) the lily. Let's call it done. Fine job, all around!</p>
+    </div>
+
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2050720"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2050720" class="active">#68</a></h3>
+
+    <div class="submitted">Posted by <a href="/user/395100" title="View user profile.">kat3_drx</a> on <em>September 17, 2009 at 12:25am</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@Heather: awesome ^^</p>
+
+<p>Just getting back now, will take a look at this soon.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2051096"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2051096" class="active">#69</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 17, 2009 at 3:43am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Ok, this might be a bit simpler.  It's exactly the same as in #64 (my current favourite is password_colouring_06.patch) except I've removed the colour changes.  </p>
+<p>This patch has all the positioning &amp; style of the much earlier patch in comment #17. It's got the Weak, Fair, Good &amp; Strong distinctions used in Google.</p>
+<p>The goal here is to get the text into core so that we can start adding ARIA support based on the text we've agreed upon as specified in comment #66.</p>
+<p>For @Everett's patch to add support for screen readers we don't need to have firm definitions of what happens under the hood (how we calculate that text) or what colors we use to indicate how good a user's done of defining a password.  That can all change if need be.  </p>
+<p>However, not getting this text into core is holding up other development and real accessibility!  </p>
+
+<p>When this gets in we can then worry about bringing this stuff back in (with whatever modifications are required for maximum usability:</p>
+<p></p><div class="codeblock"><code>53         // Adjust the length of the strength indicator.<br />54         $('#indicator').css('width', result.strength + '%');<br />55         // $("#indicator").css('background-color', result.indicatorColor);<br />56 <br />57         // Update the strength indication text<br />58         $("#password-strength-text").html(result.indicatorText);<br />59         // $("#password-strength-text").css('color', result.indicatorColor);<br /><br /><br />164    if (strength &lt; 60) {<br />165     indicatorText = translate.weak;<br />166     // indicatorColor = '#bb5555';<br />167   } else if (strength &lt; 70) {<br />168     indicatorText = translate.fair;<br />169     // indicatorColor = '#bbbb55';<br />170   } else if (strength &lt; 80) {<br />171     indicatorText = translate.good;<br />172     // indicatorColor = '#4863a0';<br />173   } else if (strength &lt; 100) {<br />174     indicatorText = translate.strong;<br />175     // indicatorColor = '#47C965';<br />176   }<br /><br />176   // return { strength: strength, message: msg, indicatorText: indicatorText    , indicatorColor: indicatorColor };<br />177   return { strength: strength, message: msg, indicatorText: indicatorText }</code></div>
+
+  
+<div id="pift-results-331893-2051096"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_strength_label_04.patch">password_strength_label_04.patch</a></td><td>4.94 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13700">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2051472"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2051472" class="active">#70</a></h3>
+    <div class="submitted">Posted by <a href="/user/11944" title="View user profile.">mattyoung</a> on <em>September 17, 2009 at 7:21am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>subscribe</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-2052658"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2052658" class="active">#71</a></h3>
+    <div class="submitted">Posted by <a href="/user/395100" title="View user profile.">kat3_drx</a> on <em>September 17, 2009 at 2:41pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>The patch in #69 worked nicely...text cues and visuals both look good. </p>
+<p>Incidentally, how easy is it to change the colors/text etc?  I'm not sold that it's a necessity at least at first, just curious.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2053630"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2053630" class="active">#72</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 17, 2009 at 5:54pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Glad you liked it.  What do we need to move this to RTBC?</p>
+<p>Text is in both the PHP &amp; Javascript.  There's no easy way to over-ride either that I know of.  Adding new elements would be difficult too.</p>
+<p>The colors are all in the user.js file so it would be simpler than modifying the text.  </p>
+<p>I can see a solution (for the coloring) that might be more flexible. We could just have the CSS reference background graphics in the theme that could be over-ridden.  Would take some experimentation though.</p>
+
+<p>I'm not sure that there's energy here though to push through a patch that is as flexible as this for D7.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2053684"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2053684" class="active">#73</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 17, 2009 at 6:19pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; needs work</td> </tr>
+</tbody>
+</table>
+</div></div><p>I don't think we need to worry with flexibility here. Let's get it in first. A couple code review changes that need to happen (note that this is the first patch I've reviewed from this issue so I apologize if some of this was discussed earlier):</p>
+<p>Two comments need periods at the end:</p>
+
+<p></p><div class="codeblock"><code>// Update the strength indication text</code></div>
+<p>and...</p>
+<p></p><div class="codeblock"><code>// Based on the strength, work out what text/color should be shown by the password strength meter</code></div>
+<p>Why is this line commented out instead of just removed?:</p>
+<p></p><div class="codeblock"><code>// if (indicatorText == translate.sameAsUsername2 || indicatorText == translate.tooShort2) {</code></div>
+<p>What's the deal here (i.e., why is there a need for two different tooShort's)?:</p>
+<p></p><div class="codeblock"><code>         'tooShort' =&gt; t('Make it at least 6 characters'),<br />+        'tooShort2' =&gt; t('Too short'),</code></div>
+
+<p>Once those changes are made, I'd be ok RTBC'ing.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2057482"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2057482" class="active">#74</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 18, 2009 at 4:07pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs work</td><td>&raquo; needs review</td> </tr>
+</tbody>
+</table>
+</div></div><p>Good points.  I've got them all in this latest patch.</p>
+<p>I dropped the reference to color here too as in this patch there are no color changes.</p>
+
+<p>The tooShort2 was when I was trying to exactly emulate Google.  I don't think it's needed though.  Or if it is would require a lot more work to get the logic right.  Thanks for pointing out the old code (which I've now eliminated).</p>
+
+  
+<div id="pift-results-331893-2057482"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/password_strength_label_05.patch">password_strength_label_05.patch</a></td><td>4.42 KB</td><td>Idle</td><td>Failed: Failed to apply patch.</td><td><a href="http://qa.drupal.org/pifr/test/13758">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2058028"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2058028" class="active">#75</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 18, 2009 at 5:57pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; reviewed &amp; tested by the community</td> </tr>
+</tbody>
+</table>
+</div></div><p>Thanks!</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2058520"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2058520" class="active">#76</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 18, 2009 at 8:11pm</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>reviewed &amp; tested by the community</td><td>&raquo; needs work</td> </tr>
+</tbody>
+</table>
+</div></div><p><img src="http://drupal.org/files/issues/password.png" alt="password.png" /></p>
+<p>Totally done with this issue, copy-c / copy-v of google's interface - will probably cause us more design community harm then we want - but meh, Drupal has no brand with these kind of issues, only consensus driven discussion.</p>
+
+  
+<div id="pift-results-331893-2058520"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class=" odd"><td><a href="http://drupal.org/files/issues/password.png">password.png</a></td><td>11.09 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2058644"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2058644" class="active">#77</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 18, 2009 at 8:44pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>@Bojhan</p>
+<p>Are you willing to provide a patch or even a sketch for what you want?</p>
+<p>I've rolled lots of patches for this issue as I think that what we've got now is very weak for everyone's accessibility.  What's there now is much better than what we've had previously.  It's also stronger than what was proposed with the changes brought in with comment #23.</p>
+<p>Please tell me what you're going to do to move this issue forward.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2058678"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2058678" class="active">#78</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 18, 2009 at 8:53pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs work</td><td>&raquo; needs review</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>I'll stick it back at needs review until Bohjan gives us something. No point in keeping it at CNW when nobody knows what needs to be worked on.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2058824"></a>
+
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2058824" class="active">#79</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 18, 2009 at 9:45pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; reviewed &amp; tested by the community</td> </tr>
+</tbody>
+</table>
+</div></div><p>Ohh, didn't mean to change status. </p>
+
+<p>There is no point discussing the impact it will have on the Drupal brand in terms of design, since people don't seem to care about that (that was my whole point). It won't be addressed by an image or a sketch, its a conceptual direction we either agree on or just ignore. </p>
+<p>But if you need a accessibility/usability point, if we do a copy-c, copy-v at least do it correct and implement the four colors.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+
+<a id="comment-2065466"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2065466" class="active">#80</a></h3>
+    <div class="submitted">Posted by <a href="/user/1" title="View user profile.">Dries</a> on <em>September 21, 2009 at 8:53am</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>reviewed &amp; tested by the community</td><td>&raquo; fixed</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>I think this is a step forward. Committed to CVS HEAD. Feel free to follow-up with the extra color coding -- I think that would be nice.  Just re-open the issue.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2066370"></a>
+
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2066370" class="active">#81</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 21, 2009 at 2:20pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>That's great news.  I've added the colour back in here with this patch.</p>
+
+  
+<div id="pift-results-331893-2066370"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+
+ <tr class="pift-fail odd"><td><a href="http://drupal.org/files/issues/just_colouring_01.patch">just_colouring_01.patch</a></td><td>1.69 KB</td><td>Idle</td><td>FAILED: [[SimpleTest]]: [MySQL] Unable to apply patch just_colouring_01.patch.</td><td><a href="http://qa.drupal.org/pifr/test/66723">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2066382"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2066382" class="active">#82</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 21, 2009 at 2:24pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>fixed</td><td>&raquo; needs review</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>Oh ya. I had to set this as needs review for the colour.</p>
+<p>Also, wanted to note that I changed a quote to single quotes from double.  Not sure what's the best for javascript and if there is any style or performance reasons for choosing one vs the other.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-2067242"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2067242" class="active">#83</a></h3>
+    <div class="submitted">Posted by <a href="/user/420631" title="View user profile.">mcrittenden</a> on <em>September 21, 2009 at 5:40pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>After testing, I'm ok with leaving it as-is. As Bohjan said (somewhere in this thread) you see a little bit of green and want to make more of it. I don't necessary see green and think "good" here. I see green and think "needs to be more".</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2069202"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2069202" class="active">#84</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 22, 2009 at 5:56am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Bojhan, I really don't understand the rationale for four colors. Just because Google does it doesn't mean it makes sense. As I said before, the analogy to traffic signals is understood everywhere there is enough traffic to have signals \97 and many places where there isn't, because railroads use the same convention.</p>
+<p>If having four colors will get this done, then, fine, let's have four colors. But I don't understand why you've decided that I and others involved in this discussion have no concern for "the Drupal brand."</p>
+<p>If the Drupal brand was so important to you, why did you wait until just four days ago to bring it up \97 comment #76 \97 when this issue has been around for over 10 months? I really would have been happy to consider that point, and I'm sure others would have been, too.</p>
+<p>It's not that we don't care. It's just that we hadn't thought about it from that perspective. Had the suggestion come up earlier, perhaps one of us would have thought of a way to make the Druplicon look weak, fair, pretty good, and then as strong as Superman, and Mike could have written code to support that model. And maybe the result would have worked for all of us \97 and maybe not, but at least we could have had the discussion (and Mike would have had more of an opportunity to respond to your request).</p>
+<p>Please, in the future, if something really does matter to you, get it out into the discussion early. Don't ambush the rest of us with a new thought at the end.</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2069406"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2069406" class="active">#85</a></h3>
+    <div class="submitted">Posted by <a href="/user/41502" title="View user profile.">yoroy</a> on <em>September 22, 2009 at 7:20am</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Title:</td><td>Add colouring (and description) to password checker</td><td>&raquo; Add descriptions to password checker</td> </tr>
+ <tr class="even"><td>Status:</td><td>needs review</td><td>&raquo; fixed</td> </tr>
+
+</tbody>
+</table>
+</div></div><p>Cliff: comment #2 by bojhan makes similar points. It's not an ambush. Bojhan speaks from experience in seeing people *stumble only a little bit* over the password checker during usability tests. Most of this was fixed in another issue, explicitly leaving the colors out of the discussion because they don't really matter that much in the total of this specific interaction. Then this issue got created and look here, we're almost 100 comments in, talking about which color to paint the bikeshed. Sure, with accessability improvements committed along the way, but still going on about picking colors.</p>
+<p>What we're trying to argue here is that we should try and make our own choices, *not* copy google or others because the context in which this interaction happens is so different. Here it's part of a much longer installation process, most other examples given here are part of a much shorter and simpler signup. I guess Bojhan's last comment was cynical in the sense of "if we don't dare to make our own informed choices, then be sure to go all the way in copying".</p>
+<p>It's fixing things that are not broken. See #83, which is feedback from actual usage for example. It's just frustrating to see so much energy being put into what's mostly a non-isssue based on assumptions rather then actual usability testing.</p>
+<p>And I guess it's equally hard to tell who's who and who knows what they are talking about from just reading comments, but yeah, that's the issue queue for ya.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2069424"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2069424" class="active">#86</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 22, 2009 at 7:30am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Title:</td><td>Add descriptions to password checker</td><td>&raquo; Add colouring (and description) to password checker</td> </tr>
+ <tr class="even"><td>Status:</td><td>fixed</td><td>&raquo; needs review</td> </tr>
+
+</tbody>
+</table>
+</div></div><p>[Edit : yoroy said it all]</p>
+<p>@Cliff Sorry I just didn't have the strength anymore, to get in earlier - I missed that we reached consensus  so I didn't put in my voice earlier.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-2069452"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2069452" class="active">#87</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>September 22, 2009 at 7:30am</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; fixed</td> </tr>
+</tbody>
+</table>
+</div></div><p>oops</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2072898"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2072898" class="active">#88</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>September 23, 2009 at 5:59am</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <p>@yoroy and @Bojhan: Perhaps one day we can swap stories and share a few laughs over an appropriate beverage. I hope so. Still, I stand by my earlier comments. In #2, Bojhan does not mention anything about Drupal branding. Not even a hint. And to the extent that he's expressing concern about the usability test results, I think webchick in #3  quite clearly refuted his notion that the use of color was the actual source of the problem.</p>
+<p>I, for one, have never seen Google's password checker. Everything I contributed came from the experience and professional judgment I've developed in years of Web design, Web redesign (!), and usability testing. So, although the "red-yellow-green" color scheme might not have been creative or even original, it would have been effective, and the suggestion that those who participated in this issue simply aped Google was completely out of line.</p>
+<p>The well-designed small patch of red in the recent patches is a far cry from the big, ugly, obtrusive, and, coincidentally, red error message that triggered the problems in the usability test. I agree wholeheartedly with the point I hear from webchick in #3: It's important to incorporate testing by potential users into the design process, but it's even more important to be sure we identify and fix the actual source of each significant problem that process identifies.</p>
+<p>In this case, the right answer was to replace something that was big, ugly, and obtrusive with something elegant \97 not to get rid of the color.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2073776"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2073776" class="active">#89</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 23, 2009 at 12:05pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>@Heather suggested a palette in #53. Might be others to explore too.  There are four places to add color if we want it to.  lighter to darker green is one option.  Red, Orange, Yellow, Green would be another.  </p>
+<p>There are other common examples other than Google like say <a href="http://www.geekandproud.net/terror/" title="http://www.geekandproud.net/terror/" rel="nofollow">http://www.geekandproud.net/terror/</a> (a parody on the homeland security warning system)</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2123486"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2123486" class="active">#90</a></h3>
+    <div class="submitted">Posted by <a href="/user/180064" title="View user profile.">System Message</a> on <em>October 7, 2009 at 12:10pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>fixed</td><td>&raquo; closed (fixed)</td> </tr>
+</tbody>
+
+</table>
+</div></div><p>Automatically closed -- issue fixed for 2 weeks with no activity.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2255884"></a>
+
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2255884" class="active">#91</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>November 12, 2009 at 4:36am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>closed (fixed)</td><td>&raquo; needs review</td> </tr>
+</tbody>
+</table>
+</div></div><p>Not sure that this is really closed. Right now the bar's all green still and this is the last phase to evaluate it.</p>
+<p>Mike</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-2256476"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-2256476" class="active">#92</a></h3>
+    <div class="submitted">Posted by <a href="/user/295067" title="View user profile.">Cliff</a> on <em>November 12, 2009 at 7:45am</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <p>Mike, the only problem with the scale used by <a href="http://www.geekandproud.net/terror/" title="http://www.geekandproud.net/terror/" rel="nofollow">http://www.geekandproud.net/terror/</a> is color contrast. No two adjacent pairs have sufficient contrast to pass at level AAA; only one of the pairs passed at level AA for large text (which I assume would be similar to any bar used).</p>
+<p>Keeping in mind that people who use the Web spend far more time on other sites than they do on yours, let's go with Google's palette. That will keep things simple and familiar.</p>
+<p>Unless someone wants to come up with five different versions of the Druplicon, ranging from anemic to robustly healthy, to use in place of a progress bar, and can do so in less than three weeks, I don't see a way of making everyone happy.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2257492"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2257492" class="active">#93</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>November 12, 2009 at 2:29pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>I don't know of a way to pass variables from a theme's .info file into jQuery.  There very well might be a way to do this in which case it is something that could be over-ridden so that you could have a choice of color schemes to work from.</p>
+<p>Maybe we have to wait till we can get something more customizable.</p>
+<p>Mike</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2378036"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2378036" class="active">#94</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>December 15, 2009 at 8:04pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>It doesn't look like we're going to be able to get consensus on color options on this for D7.  For D8 though we're going to have to figure out how we deal with color.  I've outlined in this issue some other places where it is a problem:</p>
+<p><span class="project-issue-status-5 project-issue-status-info"><a href="/node/660576" title="Status: closed (won't fix)">#660576: Ensuring Proper Color Contrast for Garland</a></span></p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-2786966"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-2786966" class="active">#95</a></h3>
+    <div class="submitted">Posted by <a href="/user/108010" title="View user profile.">animelion</a> on <em>March 30, 2010 at 5:43pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>subscribe</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-3147850"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-3147850" class="active">#96</a></h3>
+    <div class="submitted">Posted by <a href="/user/136955" title="View user profile.">amc</a> on <em>June 30, 2010 at 2:42am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p><a href="#comment-2066370" rel="nofollow">#81</a>: <a href="#pift-results-331893-2066370-2066370" rel="nofollow">just_colouring_01.patch</a> queued for re-testing.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-3147884"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-3147884" class="active">#97</a></h3>
+    <div class="submitted">Posted by <a href="/user/24967" title="View user profile.">webchick</a> on <em>June 30, 2010 at 2:57am</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Version:</td><td>7.x-dev</td><td>&raquo; 8.x-dev</td> </tr>
+</tbody>
+
+</table>
+</div></div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-3503292"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+
+        <h3 class="comment-title"><a href="/node/331893#comment-3503292" class="active">#98</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>September 28, 2010 at 3:07pm</em>        </div>
+  </div>
+  <div class="content">
+    <div class="clear-block">
+
+            <p>Can this be brought into D7 using the <a href="http://drupal.org/project/accessible" rel="nofollow">Accessible Helper Module</a>?</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+
+</div></div>
+<a id="comment-4214076"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-4214076" class="active">#99</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>March 15, 2011 at 9:11pm</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <p>There must be a way to override the functions in modules/user/user.js to add color without hacking core...</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-4607980"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-4607980" class="active">#100</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>June 15, 2011 at 11:38pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <p>Pulling from <span class="project-issue-status-5 project-issue-status-info"><a href="/node/383032" title="Status: closed (won't fix)">#383032: Option to load js library files from Google repository</a></span> I thought I'd answer my own question here:<br /></p><div class="codeblock"><code>function ADMIN_THEME_js_alter(&amp;$javascript) {<br />  // Swap out jQuery to use .<br />  $javascript['modules/user/user.js']['data'] = path_to_theme() . '/js/custom_user.js';<br />}</code></div><br />
+
+Which could be just usual user.js with this patch - <a href="http://drupal.org/files/issues/just_colouring_01.patch" title="http://drupal.org/files/issues/just_colouring_01.patch" rel="nofollow">http://drupal.org/files/issues/just_colouring_01.patch</a>
+<p>On that note.  This seems like it should work:<br /></p><div class="codeblock"><code>        // Adjust the length and color of the strength indicator.<br />        $(innerWrapper).find('.indicator').css({'background-color' : result.indicatorColor, 'width' : result.strength + '%'});<br /><br />        // Update the strength and color of the indication text.<br />        $(innerWrapper).find('.password-strength-text').html(result.indicatorText);<br />        $(innerWrapper).find('.password-strength-text').css('color', result.indicatorColor);</code></div>
+<p>With this:<br /></p><div class="codeblock"><code>  // Based on the strength, work out what text should be shown by the password strength meter.<br />  if (strength &lt; 60) {<br />    indicatorText = translate.weak;<br />    indicatorColor = '#bb5555';<br />  } else if (strength &lt; 70) {<br />    indicatorText = translate.fair;<br />    indicatorColor = '#bbbb55';<br />  } else if (strength &lt; 80) {<br />    indicatorText = translate.good;<br />    indicatorColor = '#4863a0';<br />  } else if (strength &lt;= 100) {<br />    indicatorText = translate.strong;<br />    indicatorColor = '#47C965';<br />  }</code></div>
+
+<p>But it doesn't seem to, but not sure why.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-5655598"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5655598" class="active">#101</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>February 26, 2012 at 5:31pm</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Updating patch in #81.</p>
+
+  
+<div id="pift-results-331893-5655598"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+
+ <tr class="pift-pass odd"><td><a href="http://drupal.org/files/just_colouring_02.patch">just_colouring_02.patch</a></td><td>1.45 KB</td><td>Idle</td><td>PASSED: [[SimpleTest]]: [MySQL] 34,617 pass(es).</td><td><a href="http://qa.drupal.org/pifr/test/230548">View details</a></td> </tr>
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-5656236"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5656236" class="active">#102</a></h3>
+    <div class="submitted">Posted by <a href="/user/598310" title="View user profile.">nod_</a> on <em>February 26, 2012 at 10:08pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Issue tags:</td><td></td><td>+<a href="/project/issues/search/drupal?issue_tags=JavaScript">JavaScript</a></td> </tr>
+</tbody>
+</table>
+
+</div></div><p>Reading <code>user.js</code> makes me cry inside.</p>
+<p>There were two leaking vars here, and put the <code>c</code> in the last <code>indicatorColor</code> in lowercase, there is an issue for lowercasing every color. Also shouldn't the colors be in <code>Drupal.settings</code> or something? no way to overwrite them right now.</p>
+<p>I'd like to put this as NW and refactor the JS so that it's all shinny and clean but at 102 comments that wouldn't be very nice. I'll open a follow up issue for the clean-up.</p>
+
+  
+<div id="pift-results-331893-5656236"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class="pift-pass odd"><td><a href="http://drupal.org/files/core-js-user-color-331893-102.patch">core-js-user-color-331893-102.patch</a></td><td>1.86 KB</td><td>Idle</td><td>PASSED: [[SimpleTest]]: [MySQL] 34,615 pass(es).</td><td><a href="http://qa.drupal.org/pifr/test/230578">View details</a></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-5656666"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5656666" class="active">#103</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>February 27, 2012 at 1:29am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <p>Excellent!  Thanks for the new patch.  Please let us know where the new issue is to clean up user.js when you start it.</p>
+<p>If we can bring in the colors here I'm happy to set up a new issue to define them in Drupal.settings </p>
+<p>That too would be a bigger issue than simply trying to enhance the text around the password text.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+
+</ul>  </div>
+</div></div>
+<a id="comment-5772570"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5772570" class="active">#104</a></h3>
+    <div class="submitted">Posted by <a href="/user/87969" title="View user profile.">Bojhan</a> on <em>March 23, 2012 at 6:34pm</em>        </div>
+
+  </div>
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Issue tags:</td><td>-<a href="/project/issues/search/drupal?issue_tags=Needs%20usability%20review">Needs usability review</a></td><td></td> </tr>
+</tbody>
+</table>
+
+</div></div><p>Nothing new to review</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-5775992"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5775992" class="active">#105</a></h3>
+    <div class="submitted">Posted by <a href="/user/27930" title="View user profile.">mgifford</a> on <em>March 24, 2012 at 4:38am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>needs review</td><td>&raquo; reviewed &amp; tested by the community</td> </tr>
+</tbody>
+</table>
+</div></div><p>I've attached a screenshot after applying this to a fresh D8 install.  Looks great.  I'd say it's ready to RTBC.  Especially since it's already gone through quite a lot of review.</p>
+
+<p>@nod_ let us know where your new issue is.</p>
+
+  
+<div id="pift-results-331893-5775992"><table class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th><th>Status</th><th>Test result</th><th>Operations</th> </tr></thead>
+<tbody>
+ <tr class=" odd"><td><a href="http://drupal.org/files/colour_n_passwords.png">colour_n_passwords.png</a></td><td>468.97 KB</td><td><em>Ignored:  Check issue status.</td><td><em>None</em></td><td><em>None</em></td> </tr>
+
+</tbody>
+</table>
+</div>    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+<a id="comment-5814676"></a>
+<div class="comment comment-published clear-block comment-even"><div class="comment-inner">
+
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5814676" class="active">#106</a></h3>
+    <div class="submitted">Posted by <a href="/user/35733" title="View user profile.">catch</a> on <em>April 2, 2012 at 3:03am</em>        </div>
+  </div>
+  <div class="content">
+
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Category:</td><td>feature request</td><td>&raquo; task</td> </tr>
+ <tr class="even"><td>Status:</td><td>reviewed &amp; tested by the community</td><td>&raquo; fixed</td> </tr>
+
+</tbody>
+</table>
+</div></div><p>Looks good. Committed/pushed to 8.x.</p>
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+
+<a id="comment-5874914"></a>
+<div class="comment comment-published clear-block comment-odd"><div class="comment-inner">
+  <div class="comment-heading">
+        <h3 class="comment-title"><a href="/node/331893#comment-5874914" class="active">#107</a></h3>
+    <div class="submitted">Posted by <a href="/user/180064" title="View user profile.">System Message</a> on <em>April 16, 2012 at 3:11am</em>        </div>
+  </div>
+
+  <div class="content">
+    <div class="clear-block">
+            <div class="project-issue"><div class="summary"><table>
+<tbody>
+ <tr class="odd"><td>Status:</td><td>fixed</td><td>&raquo; closed (fixed)</td> </tr>
+</tbody>
+</table>
+</div></div><p>Automatically closed -- issue fixed for 2 weeks with no activity.</p>
+
+    </div>
+        <ul class="links"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node%2F331893%23comment-form">Login</a> or <a href="/user/register?destination=node%2F331893%23comment-form">register</a> to post comments</span></li>
+</ul>  </div>
+</div></div>
+  </div>
+</div>
+                  </div> <!-- /#content -->
+
+      </div> <!-- /#column-left -->
+
+      
+          </div> <!-- /#page-inner -->
+  </div> <!-- /#page -->
+
+  <div id="footer">
+    <div id="footer-inner" class="container-12 clear-block">
+              <div id="footer-region" class="grid-12">
+
+          <div id="footer-region-inner" class="clear-block">
+            <div class="grid-footer alpha"><ul><li class="0 first"><a href="http://drupal.org/news">Drupal News</a></li>
+<li class="1"><a href="http://drupal.org/planet" title="News from Drupal community members">Planet Drupal</a></li>
+<li class="2"><a href="https://association.drupal.org/news" title="News from association.drupal.org">Association News</a></li>
+<li class="3"><a href="http://drupal.org/social-media" title="Drupal on social media">Social Media Directory</a></li>
+<li class="4"><a href="http://drupal.org/security" title="Advisories from the security team">Security Announcements</a></li>
+<li class="5 last"><a href="http://groups.drupal.org/jobs" title="Jobs posted on groups.drupal.org">Jobs</a></li>
+</ul></div><div class="grid-footer"><ul><li class="0 first"><a href="http://drupal.org/community">Community</a></li>
+
+<li class="1"><a href="http://drupal.org/getting-involved" title="Learn how to contribute to the Drupal project">Getting Involved</a></li>
+<li class="2"><span><a href="http://drupal.org/drupal-services" title="People and organizations offering Drupal services">Services</a>, <a href="http://drupal.org/training" title="People and organizations offering Drupal training">Training</a> <a href="http://drupal.org/hosting" title="Organizations offering Drupal hosting">Hosting</a></span></li>
+<li class="3"><a href="http://groups.drupal.org/groups" title="groups.drupal.org">Groups &amp; Meetups</a></li>
+<li class="4 last"><a href="http://drupal.org/drupalcon" title="Upcoming and past DrupalCons">DrupalCon</a></li>
+</ul></div><div class="grid-footer"><ul><li class="0 first"><a href="http://drupal.org/start">Get Started</a></li>
+
+<li class="1"><a href="http://drupal.org/documentation" title="Guidebooks and documentation for working with Drupal">Documentation Home</a></li>
+<li class="2"><a href="http://drupal.org/documentation/install" title="Guide for installing Drupal">Installation Guide</a></li>
+<li class="3"><a href="http://drupal.org/documentation/build" title="Guide for building and extending Drupal sites">Site Building Guide</a></li>
+<li class="4"><a href="http://drupal.org/support" title="Drupal support options">Support</a></li>
+<li class="5 last"><a href="http://api.drupal.org/" title="Drupal API Reference">api.drupal.org</a></li>
+</ul></div><div class="grid-footer"><ul><li class="0 first"><a href="http://drupal.org/download">Download &amp; Extend</a></li>
+<li class="1"><a href="http://drupal.org/project/drupal" title="Download the latest version of the Drupal software">Drupal Core</a></li>
+<li class="2"><a href="http://drupal.org/project/modules" title="Download add-on features and functionality">Modules</a></li>
+
+<li class="3"><a href="http://drupal.org/project/themes" title="Download pre-designed styles for Drupal">Themes</a></li>
+<li class="4 last"><a href="http://drupal.org/project/distributions" title="Download a pre-packaged Drupal site">Distributions</a></li>
+</ul></div><div class="grid-footer omega"><ul><li class="0 first"><a href="http://drupal.org/about">About</a></li>
+<li class="1"><a href="http://drupal.org/druplicon" title="Drupal\92s mascot">Druplicon</a></li>
+<li class="2"><a href="https://association.drupal.org/about" title="About the Drupal Association">The Drupal Association</a></li>
+<li class="3"><a href="https://association.drupal.org/advertising" title="How to advertise on Drupal.org">Advertise</a></li>
+<li class="4"><a href="http://drupal.org/node/179723" title="About Drupal.org">About Drupal.org</a></li>
+<li class="5 last"><a href="http://drupal.org/about/accessibility">Web accessibility</a></li>
+</ul></div>          </div> <!-- /#footer-region-inner -->
+
+        </div> <!-- /#footer-region -->
+                    <div id="footer-message" class="grid-12">
+          <div id="footer-message-inner" class="clear-block">
+            <p>Drupal is a <a href="http://drupal.com/trademark">registered trademark</a> of <a href="http://buytaert.net">Dries Buytaert</a>.</p>
+          </div> <!-- /#footer-message-inner -->
+
+        </div> <!-- /#footer-message -->
+          </div> <!-- /#footer-inner -->
+  </div> <!-- /#footer -->
+  <div style="position: absolute; top: -250px; left: -250px;"><a href="http://drupal.org/sites/all/modules/httpbl/donotremove.php">nobody click here</a></div><script type="text/javascript">
+</script>
+</body>
+</html>
