@@ -1333,7 +1333,7 @@ jQuery.fn.sortElements = (function(){
 					}else if(name === "consensus"){//closed threads
 						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
 					}else if(name == "recency"){//recency
-						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
+						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
 					}					
 				});
 				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
