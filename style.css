@@ -792,7 +792,7 @@ a.hide {
 	margin: 18px 0 0 25px;
 }
 
-#procid-invite-block {
+.procid-invite-block {
 	/*width:90%;
 	 margin: 20px 20px 20px 20px;*/
 	display: table-row;
@@ -811,7 +811,7 @@ a.hide {
 	margin: 3px;
 }
 
-#procid-author-name {
+.procid-author-name-unselected {
 	margin: 14px 0 0 25px;
 	float: left;
 	color: #1885c8;
@@ -821,7 +821,7 @@ a.hide {
 	text-align: left;
 }
 
-#procid-author-description {
+.procid-author-description-unselected {
 	margin: 5px 0 5px 6px;
 	width: 60%;
 	text-align: left;
@@ -830,7 +830,26 @@ a.hide {
 	font-size: 12px;
 }
 
-#procid-invite-invitationlink {
+.procid-author-name-selected {
+	margin: 14px 0 0 25px;
+	float: left;
+	color: #1885c8;
+	font-size: 14px;
+	font-weight: bold;
+	width: 15%;
+	text-align: left;
+}
+
+.procid-author-description-selected {
+	margin: 5px 0 5px 6px;
+	width: 60%;
+	text-align: left;
+	font-style: italic;
+	float: left;
+	font-size: 12px;
+}
+
+.procid-invite-invitationlink {
 	float: left;
 	margin: 14px 20px 0px 10%;
 	width: 22px;
@@ -838,7 +857,7 @@ a.hide {
 	text-align: right;
 }
 
-#procid-invite-invitationlink:visited {
+.procid-invite-invitationlink:visited {
 	float: left;
 	margin: 14px 20px 0px 10%;
 	width: 22px;
@@ -846,7 +865,7 @@ a.hide {
 	text-align: right;
 }
 
-#procid-invite-invitationlink:hover {
+.procid-invite-invitationlink:hover {
 	float: left;
 	margin: 14px 20px 0px 10%;
 	width: 22px;

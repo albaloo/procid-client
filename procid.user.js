@@ -34,10 +34,10 @@ function main() {
 
 head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js", function() {
 	console.log("begin");
-	var ABSOLUTEPATH = 'http://raw.github.com/albaloo/procid/master/client';
+	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
 	var serverURL='http://0.0.0.0:3000/';
-	//var serverURL='http://protected-dawn-3784.herokuapp.com/';	
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteria = [];
@@ -53,6 +53,53 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	if (!window.d3) { 
 		loadScript("//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"); 
 		}
+
+jQuery.fn.sortElements = (function(){
+ 
+    var sort = [].sort;
+ 
+    return function(comparator, getSortable) {
+ 
+        getSortable = getSortable || function(){return this;};
+ 
+        var placements = this.map(function(){
+ 
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+ 
+                // Since the element itself will change position, we have
+                // to have some way of storing its original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+ 
+            return function() {
+ 
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+ 
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+ 
+            };
+ 
+        });
+ 
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+ 
+    };
+ 
+})();
+
 
 	var addCSSToHeader = function() {
 		var header = document.getElementsByTagName('head')[0];
@@ -1204,6 +1251,44 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		return suggestedMembers;
 	}
 
+	var sortInvitedMembers = function(name, strA, strB){
+		var aStrings = strA.split(",");
+		var bStrings = strB.split(",");
+		//experience
+		if(name === "experience"){
+			var numA = parseInt(aStrings[0].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			var numB = parseInt(bStrings[0].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			return  numA > numB ? -1 : 1;				    
+		}else if(name === "patches"){//usability patches
+			var numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			var numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			return  numA > numB ? -1 : 1;				    
+		}else if(name === "consensus"){//closed threads
+			var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			return  numA > numB ? -1 : 1;				    
+		}else{//recency
+			var numA = parseInt(aStrings[3].match(/\d+/)[0], 10);
+			var aSubStrings = aStrings[3].split(" ");
+			var date = aSubStrings[aSubStrings.length-2];
+			if(date.indexOf("month") != -1)
+				numA = numA * 30;
+			else if(date.indexOf("year") != -1)
+				numA = numA * 365;
+			var numB = parseInt(bStrings[3].match(/\d+/)[0], 10);
+			var bSubStrings = bStrings[3].split(" ");
+			var dateB = bSubStrings[bSubStrings.length-2];
+
+			if(dateB.indexOf("month") != -1)
+				numB = numB * 30;
+			else if(dateB.indexOf("year") != -1)
+				numB = numB * 365;
+
+			return  numA > numB ? 1 : -1;
+		}				    
+	
+	}
+
 	var createInviteLense = function(name, parent, tooltipText, imagePath){
 
 		$('<a />').attr({
@@ -1229,15 +1314,37 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		});
 		else
 			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
-			if ($("#procid-author-name").hasClass('unselected')) {
-				$("#procid-author-name").attr('class', 'selected');
-				//$("div[id='procid-comment-" + name + "'] img").attr('class', 'image-selected');
-				//$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png')
+			if ($("img[id='procid-invite-"+name+"-image']").attr('src') === imagePath + '-1.png') {
+				$("div[id=procid-invite-page-wrapper] .procid-invite-block").sortElements(function(a, b){
+					var strA=$(a).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
+    					var strB=$(b).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
+					return sortInvitedMembers(name, strA, strB);
+				});
+				
+		
+				$(".procid-author-name-unselected").slice(0,10).attr('class', 'procid-author-name-selected');
+				$(".procid-author-description-unselected").slice(0,10).map(function(){
+					var strings = $(this).text().split(",");
+
+					if(name === "experience"){
+						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
+					}else if(name === "patches"){//usability patches
+						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
+					}else if(name === "consensus"){//closed threads
+						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
+					}else if(name == "recency"){//recency
+						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
+					}					
+				});
+				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
+				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png');
 			} else {
-				$("#procid-author-name").attr('class', 'unselected');
-				//$("div[id='procid-comment-" + name + "'] img").attr('class', 'image-unselected');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png')
+				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
+				$(".procid-author-description-selected").map(function(){
+					$(this).html($(this).text());
+				});
+				$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
+				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
 			}
 			return true;
 
@@ -1277,22 +1384,22 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		for (var i = 0; i < suggestedPeaple.length; i++) {
 
 			var divInviteBlock = document.createElement('div');
-			divInviteBlock.setAttribute('id', 'procid-invite-block');
+			divInviteBlock.setAttribute('class', 'procid-invite-block');
 
 			var divAuthorName = document.createElement('div');
-			divAuthorName.setAttribute('id', 'procid-author-name');
-			divAuthorName.setAttribute('class', 'unselected');
+			divAuthorName.setAttribute('class', 'procid-author-name-unselected');
+//			divAuthorName.setAttribute('class', 'unselected');
 			divAuthorName.textContent = suggestedPeaple[i].author;
 			
 			divInviteBlock.appendChild(divAuthorName);
 
 			var divAuthorDescription = document.createElement('div');
-			divAuthorDescription.setAttribute('id', 'procid-author-description');
+			divAuthorDescription.setAttribute('class', 'procid-author-description-unselected');
 			divAuthorDescription.textContent = suggestedPeaple[i].description;
 			divInviteBlock.appendChild(divAuthorDescription);
 
 			var divInviteLink = document.createElement('a');
-			divInviteLink.setAttribute('id', 'procid-invite-invitationlink');
+			divInviteLink.setAttribute('class', 'procid-invite-invitationlink');
 			divInviteLink.setAttribute('href', '#');
 			divInviteLink.setAttribute('rel', 'tooltip')
 			divInviteLink.setAttribute('title', 'Invite this person');
@@ -1302,7 +1409,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			};
 
 			var divInviteLinkImage = document.createElement('img');
-			divInviteLinkImage.setAttribute('id', 'procid-invite-invitationlink-image');
+			divInviteLinkImage.setAttribute('class', 'procid-invite-invitationlink-image');
 			divInviteLinkImage.setAttribute('src', ABSOLUTEPATH + "/images/invite.png");
 			divInviteLink.appendChild(divInviteLinkImage);
 
