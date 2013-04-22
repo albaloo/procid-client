@@ -870,6 +870,43 @@ jQuery.fn.sortElements = (function(){
 		else
 			return result[0];
 	}
+
+	var createNewCommentBoxFrame = function(currentElement){
+		var divNewComment = document.createElement('div');
+		divNewComment.setAttribute('class', 'procid-new-comment');
+//		divNewComment.setAttribute('top', position);
+		currentElement.appendChild(divNewComment);
+	
+		var divNewCommentBox = document.createElement('div');
+		divNewCommentBox.setAttribute('class', 'procid-new-comment-box');
+		divNewComment.appendChild(divNewCommentBox);
+
+		var divNewCommentBoxSubmit = document.createElement('input');
+		divNewCommentBoxSubmit.setAttribute('class', 'submit');
+		divNewCommentBoxSubmit.setAttribute('type', 'submit');
+		divNewCommentBoxSubmit.setAttribute('value', 'Comment');
+		divNewCommentBoxSubmit.setAttribute('name', 'submit');
+		divNewCommentBox.appendChild(divNewCommentBoxSubmit);
+
+		var divNewCommentBoxCancel = document.createElement('input');
+		divNewCommentBoxCancel.setAttribute('class', 'cancel');
+		divNewCommentBoxCancel.setAttribute('type', 'submit');
+		divNewCommentBoxCancel.setAttribute('value', 'Cancel');
+		divNewCommentBoxCancel.setAttribute('name', 'cancel');
+		divNewCommentBox.appendChild(divNewCommentBoxCancel);
+
+		var divArrow = document.createElement('div');
+		divArrow.setAttribute('class', 'arrow');
+		divNewComment.appendChild(divArrow);
+
+		var divShadow = document.createElement('div');
+		divShadow.setAttribute('class', 'shadow');
+		divNewComment.appendChild(divShadow);
+
+		return divNewComment;
+	}	
+
+
 	var createIdeaComments = function(divIdeaBlock, commentInfo) {
 		//comments on an idea
 		var divComments = document.createElement('div');
@@ -919,24 +956,71 @@ jQuery.fn.sortElements = (function(){
 			}
 		});
 
-		/*var addComment = document.createElement('a');
-		addComment.setAttribute('id', 'procid-addcomment-link');
-		addComment.setAttribute('href', "#");
-		addComment.setAttribute('rel', "tooltip");
-		addComment.setAttribute('class', "hide");
-		addComment.setAttribute('title', "Add a new comment");
-		addComment.onclick = function(e) {
-			//TODO: add a new comment;
+		var addProsComment = document.createElement('a');
+		addProsComment.setAttribute('href', "#");
+		addProsComment.setAttribute('rel', "tooltip");
+		addProsComment.setAttribute('class', "procid-addcomment-link");
+		addProsComment.setAttribute('title', "Add a new comment");
+		addProsComment.innerHTML = "+";
+		addProsComment.onclick = function(e) {
+			createNewCommentBox(divProsColumn, "positive", commentInfo);
 		};
-		divComments.appendChild(addComment);
+		divProsColumn.appendChild(addProsComment);
 
-		var addCommentImg = document.createElement('img');
-		addCommentImg.setAttribute('id', 'procid-addcomment-image');
-		addCommentImg.setAttribute('src', ABSOLUTEPATH + '/images/blue-plus.png');
-		addComment.appendChild(addCommentImg);
+		var addNuetralComment = document.createElement('a');
+		addNuetralComment.setAttribute('href', "#");
+		addNuetralComment.setAttribute('rel', "tooltip");
+		addNuetralComment.setAttribute('class', "procid-addcomment-link");
+		addNuetralComment.setAttribute('title', "Add a new comment");
+		addNuetralComment.innerHTML = "+";
+		addNuetralComment.onclick = function(e) {
+			createNewCommentBox(divNuetralColumn, "neutral", commentInfo);
+		};
+		divNuetralColumn.appendChild(addNuetralComment);
 
-		addComment.innerHTML += "Comment";*/
+		var addConsComment = document.createElement('a');
+		addConsComment.setAttribute('href', "#");
+		addConsComment.setAttribute('rel', "tooltip");
+		addConsComment.setAttribute('class', "procid-addcomment-link");
+		addConsComment.setAttribute('title', "Add a new comment");
+		addConsComment.innerHTML = "+";
+		addConsComment.onclick = function(e) {
+			createNewCommentBox(divConsColumn, "negative", commentInfo);
+		};
+		divConsColumn.appendChild(addConsComment);
+		
 	}
+
+	var createNewCommentBox = function(currentElement, tone, commentInfo){
+		var divNewComment = createNewCommentBoxFrame(currentElement);
+
+		var divNewCommentBoxInput = document.createElement('textarea');
+		divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
+		var toneString = "I like this idea because ...";
+		if(tone === "negative" )
+			toneString = "I disagree with this idea because ..."
+		else if(tone === "neutral")
+			toneString = "I think this idea ..."
+		divNewCommentBoxInput.setAttribute('placeholder', toneString);
+
+		$(divNewComment).children(".procid-new-comment-box").first().prepend(divNewCommentBoxInput);
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
+				$.post(serverURL+"addNewComment", {
+				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function() {
+					console.log("success");
+				});
+				//TODO: add the comment to the right column/row
+				//close the comment Input box
+				currentElement.removeChild(divNewComment);
+			});
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
+				currentElement.removeChild(divNewComment);
+			});
+
+		return divNewComment;
+	}	
 
 	var createCriterion = function(title_, id_, description_) {
 		var criterion = {
@@ -988,63 +1072,45 @@ jQuery.fn.sortElements = (function(){
 			//TODO: remove criterion
 			return commentInfo;
 	}
+
 	
-	var createNewCommentBox = function(currentElement, originalPosition, originalValue, criterion_track, circle){
-		var divNewComment = document.createElement('div');
-		divNewComment.setAttribute('class', 'procid-new-comment');
-//		divNewComment.setAttribute('top', position);
-		currentElement.appendChild(divNewComment);
-	
-		var divNewCommentBox = document.createElement('div');
-		divNewCommentBox.setAttribute('class', 'procid-new-comment-box');
-		divNewComment.appendChild(divNewCommentBox);
+	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle){
+		var divNewComment = createNewCommentBoxFrame(currentElement);
 
 		var divNewCommentBoxInput = document.createElement('textarea');
 		divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
-		divNewCommentBoxInput.setAttribute('placeholder', 'Explain the new criteria evaluation or press cancel...');
-		divNewCommentBox.appendChild(divNewCommentBoxInput);
+		var satisfaction = " satisfies";
+		if(criterion_track.value >= 2 && criterion_track.value <= 4 )
+			satisfaction = " somewhat satisfies"
+		else if(criterion_track.value < 2)
+			satisfaction = " doesn't satisfy"
+			
+		divNewCommentBoxInput.setAttribute('placeholder', 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria ...');
 
-		var divNewCommentBoxSubmit = document.createElement('input');
-		divNewCommentBoxSubmit.setAttribute('class', 'submit');
-		divNewCommentBoxSubmit.setAttribute('type', 'submit');
-		divNewCommentBoxSubmit.setAttribute('value', 'Comment');
-		divNewCommentBoxSubmit.setAttribute('name', 'submit');
-		divNewCommentBoxSubmit.onclick = function(e) {
+		$(divNewComment).children(".procid-new-comment-box").first().prepend(divNewCommentBoxInput);
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				$.post(serverURL+"updateCriteriaStatus", {
 				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
 					console.log("success");
 				});
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
-			};
-		divNewCommentBox.appendChild(divNewCommentBoxSubmit);
-
-		var divNewCommentBoxCancel = document.createElement('input');
-		divNewCommentBoxCancel.setAttribute('class', 'cancel');
-		divNewCommentBoxCancel.setAttribute('type', 'submit');
-		divNewCommentBoxCancel.setAttribute('value', 'Cancel');
-		divNewCommentBoxCancel.setAttribute('name', 'cancel');
-		divNewCommentBoxCancel.onclick = function(e) {
+			});
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
 				//go back to the original Location
 				updateCriteriaCircleLocation(criterion_track, originalValue, originalPosition, circle);
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
-			};
-		divNewCommentBox.appendChild(divNewCommentBoxCancel);
-
-		var divArrow = document.createElement('div');
-		divArrow.setAttribute('class', 'arrow');
-		divNewComment.appendChild(divArrow);
-
-		var divShadow = document.createElement('div');
-		divShadow.setAttribute('class', 'shadow');
-		divNewComment.appendChild(divShadow);
+			});
 
 		return divNewComment;
 	}	
 
 	var removeCommentBox = function(parent, currentCommentBox){
-		parent.removeChild(currentCommentBox);
+		if($(parent).hasClass(".procid-new-comment"))
+			parent.removeChild(currentCommentBox);
 	}
 
 	var updateCriteriaCircleLocation = function(d, value, cx, circle){
@@ -1159,7 +1225,7 @@ jQuery.fn.sortElements = (function(){
 			}).on("dragend", function(d) {
 				//delete this.__origin__;
 				if(this.__originx != x(d.value)){
-					this.commentBox = createNewCommentBox(this.parentNode.parentNode, this.__originx, this.__originValue, d, this);
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d, this);
 					/*$.post(serverURL+"updateCriteriaStatus", {
 				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : d.title, 
 						"value" : d.value, "id" : d.id}, function() {
@@ -1209,7 +1275,7 @@ jQuery.fn.sortElements = (function(){
 		createLabel('Idea', "");
 		createLabel('Status', "");
 		createLabel('Criteria ', "(edit)");
-		createLabel('Comments ', "(add)");
+		createLabel('Comments ', "");
 
 		//<hr/>
 		var hr2 = document.createElement('hr');
@@ -1263,7 +1329,7 @@ jQuery.fn.sortElements = (function(){
 			var numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			var numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
-		}else if(name === "consensus"){//closed threads
+		}else if(name === "closed"){//closed threads
 			var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
@@ -1290,7 +1356,6 @@ jQuery.fn.sortElements = (function(){
 	}
 
 	var createInviteLense = function(name, parent, tooltipText, imagePath){
-
 		$('<a />').attr({
 			id : 'procid-invite-' + name + '-link',
 			href : '#',
@@ -1330,7 +1395,7 @@ jQuery.fn.sortElements = (function(){
 						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
 					}else if(name === "patches"){//usability patches
 						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
-					}else if(name === "consensus"){//closed threads
+					}else if(name === "closed"){//closed threads
 						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
 					}else if(name == "recency"){//recency
 						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
@@ -1358,7 +1423,6 @@ jQuery.fn.sortElements = (function(){
 	}
 	var createInvitePageBody = function() {
 		//Procid Invite Page Body
-
 		var divInviteTitle = document.createElement('h2');
 		divInviteTitle.setAttribute('id', 'procid-invite-title');
 		divInviteTitle.innerHTML = "Invite Users to Your Discussion";
@@ -1372,6 +1436,7 @@ jQuery.fn.sortElements = (function(){
 		createInviteLense("experience", "procid-invite-filter", "View experienced participants", ABSOLUTEPATH + "/images/experience");
 		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches", ABSOLUTEPATH + "/images/patches");
 		createInviteLense("recency", "procid-invite-filter", "View recent participants", ABSOLUTEPATH + "/images/recency");
+		createInviteLense("closed", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/recency");
 		createInviteLense("connections", "procid-invite-filter", "View participants with most connections", ABSOLUTEPATH + "/images/connections");
 		createInviteLense("search", "procid-invite-filter", "Search Participants", ABSOLUTEPATH + "/images/search-invite");
 		
@@ -1388,7 +1453,6 @@ jQuery.fn.sortElements = (function(){
 
 			var divAuthorName = document.createElement('div');
 			divAuthorName.setAttribute('class', 'procid-author-name-unselected');
-//			divAuthorName.setAttribute('class', 'unselected');
 			divAuthorName.textContent = suggestedPeaple[i].author;
 			
 			divInviteBlock.appendChild(divAuthorName);
@@ -1444,14 +1508,12 @@ jQuery.fn.sortElements = (function(){
 	//IdeaPageWrapper
 	var ideaPageWrapper = document.createElement('div');
 	ideaPageWrapper.setAttribute('id', 'procid-idea-page-wrapper');
-	//$("#procid-idea-page-wrapper").toggle(false);
 
 	$("#procid-page-wrapper").after(ideaPageWrapper);
 
 	//InvitePageWrapper
 	var invitePageWrapper = document.createElement('div');
 	invitePageWrapper.setAttribute('id', 'procid-invite-page-wrapper');
-	//$("#procid-invite-page-wrapper").toggle(false);
 
 	$("#procid-page-wrapper").after(invitePageWrapper);
 
