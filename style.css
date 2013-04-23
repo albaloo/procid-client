@@ -250,7 +250,7 @@ img.image-unselected {
 	display: none;
 }
 
-h3.ideaPage-header-label {
+.ideaPage-header-label {
 	display: inline-block;
 	color: #1F1F20;
 	font-size: 15px;
@@ -272,7 +272,7 @@ h3.ideaPage-header-label {
 	padding-left: 20px;
 }
 
-#procid-idea-block {
+.procid-idea-block {
 	background: #F0F0F0;
 	height: 200px;
 	width: 1000px;
@@ -282,8 +282,11 @@ h3.ideaPage-header-label {
      border-radius: 3px;
 }
 
-.procid-idea-block-inner-cell {
-	/*display: table-cell;*/
+.procid-idea-block-expanded{
+	/*TODO: expanded version*/
+}
+
+.procid-idea-block-status {
 	display: inline-block;
 	margin: 8px 0 3px 6px;
 	text-align: center;
@@ -292,8 +295,25 @@ h3.ideaPage-header-label {
 	width: 250px;
 }
 
-.procid-idea-block-outer-cell {
-	/*display: table-cell;*/
+.procid-idea-block-status-expanded {
+	/*TODO: expanded version of status*/
+}
+
+
+.procid-idea-block-criteria {
+	display: inline-block;
+	margin: 8px 0 3px 6px;
+	text-align: center;
+	height: 160px;
+	vertical-align: top;
+	width: 250px;
+}
+
+.procid-idea-block-criteria-expanded {
+	/*TODO: expanded version of criteria*/
+}
+
+.procid-idea-block-image {
 	display: inline-block;
 	margin: 15px 0 3px 6px;
 	text-align: left;
@@ -302,17 +322,27 @@ h3.ideaPage-header-label {
 	width: 230px;
 }
 
+.procid-idea-block-image-expanded {
+	/*TODO: expanded version of image*/
+}
+
+.procid-idea-block-comments {
+	display: inline-block;
+	margin: 15px 0 3px 6px;
+	text-align: left;
+	height: 160px;
+	vertical-align: top;
+	width: 230px;
+}
+
+.procid-idea-block-comments-expanded {
+	/*TODO: expanded version of comments*/
+}
 
 .procid-criteria-block-cell {
 	display: block;
 	position: relative;
 }
-/*#procid-idea{
- display: table-cell;
- margin: 8px 10px 3px 16px;
- width: 27%;
- text-align: center;
- }*/
 
 a.ideaPage-link {
 	color: #29ABE2;/*#666;*/
@@ -346,15 +376,6 @@ a.ideaPage-link {
     -moz-border-radius: 3px;
      border-radius: 3px;
 }
-
-/*#procid-idea-div-image:hover {
-	white-space: normal;
-	width: auto;
-	position: absolute;
-	overflow: scroll;
-	overflow: hidden;
-	background-color: #FFF;
-}*/
 
 .wrapper-dropdown {
     /* Size and position */
@@ -470,18 +491,11 @@ a.ideaPage-link {
     pointer-events: auto;
 }
 
-
-/*#procid-idea-comment{
- display: table-cell;
- margin: 8px 0 3px 6px;
- width: 7%;
- text-align: center;
- }*/
-
 #procid-idea-comment-icon{
 width: 20px; 
 height: 20px;
 }
+
 #procid-idea-comment-img
 {
 float: left; 
@@ -489,16 +503,19 @@ margin: 0px 10px 0px 0;
 width: 18px; 
 height: 16px;
 }
+
 #procid-idea-comment-header{
   display: inline-block;
   vertical-align: top;
   max-width: 25%;
 }
+
 #procid-idea-comment-columns {
   display: inline-block;
   margin: 12px 0 0 15px;
   max-width: 75%;
 }
+
 #procid-idea-comment-column {
   height: 14px;
   padding: 3px 0 1px 0;
@@ -514,41 +531,31 @@ height:5px;
 	max-height: 150px;
 }
 
-/*#procid-comment-image {
-	width: 30px;
-	height: 30px;
-	vertical-align: middle;
-	margin: 2px 10px 2px 10px;
+
+.procid-prev-comment-text {
+	/*TODO: show for expanded version*/
+	background-color: white;
+	border: none;
+	border-color: Transparent; 
+	resize: none;
+	width: 80%;
+	height:118px;
+	padding:3px 3px 3px;
+	margin: 4px 4px 1px 4px; 
+	/* easy rounded corners for modern browsers */
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 1px;
 }
 
-a.show {
-	color: #0D7DC1;
-	font-size: 0.923em;
-	font-weight: bold;
-	line-height: 1.5em;
-	margin-bottom: 0.75em;
-	margin-left: 0.75em;
-	display: inline;
-}
-
-a.hide {
-	color: #0D7DC1;
-	font-size: 0.923em;
-	font-weight: normal;
-	line-height: 1.5em;
-	margin-bottom: 0.75em;
-	text-align: center;
-	vertical-align: middle;
-	margin-left: 0.75em;
+.procid-criterion-prev-comment {
+	/*TODO: show for expanded version*/
+	/*position:absolute;
+	width: 200px;
+	height: 170px;
+	margin: 0 auto;*/
 	display: none;
 }
-
-#procid-addcomment-image {
-	width: 12px;
-	height: 12px;
-	vertical-align: middle;
-	margin: 0px 5px 0px 0px;
-}*/
 
 .procid-new-comment-textarea {
 	background-color: white;
@@ -665,6 +672,17 @@ a.hide {
 	background: -moz-linear-gradient(top,  #575757,  #888);
 }
 
+.procid-edit-criteria-link{
+	display: inline-block;
+	color: #1F1F20;
+	font-size: 12px;
+	font-weight: regular;
+	margin: 8px 0 3px 6px;
+	width: 230px;
+	/*background:#f8f8f8;*/
+	text-align: left;
+}
+
 #procid-editCriteriaBox {
 	background-color: #000;
 	opacity: .7;
@@ -768,13 +786,6 @@ a.hide {
 	box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
 }
 
-
-/*#procid-idea-criteria{
- display: table-cell;
- margin: 8px 0 3px 6px;
- width: 30%;
- text-align: center;
- }*/
 
 /*Invitation Page Styling*/
 #procid-invite-page-wrapper {
