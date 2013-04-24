@@ -1053,12 +1053,14 @@ jQuery.fn.sortElements = (function(){
 		createCommentBoxButtons($(divNewComment).children(".procid-new-comment-box").first());
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
+				//TODO: the user name should be firguerd out right.
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+				"issueLink" : issue.link, "userName" : "nigel", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
 					console.log("success");
 				});
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
+				updateCriteriaCircleStyle();
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
@@ -1082,6 +1084,12 @@ jQuery.fn.sortElements = (function(){
 		d3.select(circle).attr("cx", cx);
 		var identifier="#procid-cline-"+d.title.substr(1)+"-"+d.id;
 		d3.select(identifier).attr("x2", cx);
+	}
+
+	var updateCriteriaCircleStyle = function(circle){
+		d3.select(circle).attr("fill", "#29abe2")
+			.attr("stroke", "white")
+			.attr("stroke-width", '5');
 	}
 
 	var createCriterionSelectors = function(){
@@ -1133,49 +1141,83 @@ jQuery.fn.sortElements = (function(){
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:text")
 	      	.attr("class", "procid-criteria-title")
       		.attr("dx", function(d) {
-				var tempTitle = findCriteriaTitle(d.id);
+				var tempTitle = findCriteriaTitle(d.currentCriteriaStatus.id);
 				var length = tempTitle.length*4;
 				return (x(6)-x(0))/2+x(0)-length/2;
 			})
-		.attr("dy", "20")
+		.attr("dy", "17")
 		.text(function(d) {
-				return findCriteriaTitle(d.id);
+				return findCriteriaTitle(d.currentCriteriaStatus.id);
 			});
+
+		d3.selectAll(".selector").append("image")
+    		.attr("xlink:href", ABSOLUTEPATH + "/images/history-1.png")
+    		.attr("width", "20")
+    		.attr("x", x(6)-10)
+    		.attr('y', "0")
+    		.attr("height", "20")
+		.on("click",function(){
+			if(d3.select(".selector .procid-selector-circle-history").attr("display") == "none")
+				d3.selectAll(".selector .procid-selector-circle-history").attr("display", "inline");
+			else
+				d3.selectAll(".selector .procid-selector-circle-history").attr("display", "none");
+		});
 		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:line")
 	      	.attr("class", "procid-criteria-line")
 	      	.attr("id", function(d) {
-				var tempTitle = d.title.substr(1);
-				return "procid-cline-"+tempTitle+"-"+d.id;
+				var tempTitle = d.currentCriteriaStatus.title.substr(1);
+				return "procid-cline-"+tempTitle+"-"+d.currentCriteriaStatus.id;
 			})
       		.attr("x1", "36")
 		.attr("y1", "30")
 		.attr("x2", function(d) {
-				return x(d.value);
+				return x(d.currentCriteriaStatus.value);
 			})
 		.attr("y2", "30")
 		.attr("stroke", "#29abe2")
 		.attr("stroke-width", '3');
-
+				
+				
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:circle")
-			.attr("class", "selectorCircle")
-			.attr("fill", "white")
-			.attr("stroke", color)
-			.attr("stroke-width", '.25')
+			.attr("class", function(d){
+				d.currentCriteriaStatus.classAttr;
+			})
+			.style("display", function(d){
+				d.currentCriteriaStatus.display;
+			})
+			.attr("fill", function(d){
+				if(d.currentCriteriaStatus.comment!="")
+					return "#29abe2";
+				else
+					return "white";	
+			})
+			.attr("stroke", function(d){
+				if(d.currentCriteriaStatus.comment!="")
+					return "white";
+				else
+					return color;	
+			})
+			.attr("stroke-width", function(d){
+				if(d.currentCriteriaStatus.comment!="")
+					return "5";
+				else
+					return "0.25";	
+			})
 			.attr("style", "cursor: pointer")
 			.attr("filter", "url(#procid-circle-filter)")
 			.attr("cy", "30")
 			.attr("cx", function(d) {
-				return x(d.value);
+				return x(d.currentCriteriaStatus.value);
 			}).attr("r", "8")
 			.on("mouseover", function() {
 				d3.select(this).style("fill-opacity", .9);
 			}).on("mouseout", function() {
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
-				this.__origin__ = [x(d.value), 30];
-				this.__originx = x(d.value);
-				this.__originValue = d.value;
+				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
+				this.__originx = x(d.currentCriteriaStatus.value);
+				this.__originValue = d.currentCriteriaStatus.value;
 				if(this.commentBox != null)
 					removeCommentBox(this.parentNode.parentNode, this.commentBox);
 			}).on("drag", function(d) {
@@ -1186,14 +1228,55 @@ jQuery.fn.sortElements = (function(){
 				
 				var value = Math.floor((cx-firstNum)/diff);
 
-				updateCriteriaCircleLocation(d, value, cx, this);
+				updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, this);
 				
 			}).on("dragend", function(d) {
-				if(this.__originx != x(d.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d, this);
-			
+				if(this.__originx != x(d.currentCriteriaStatus.value)){
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this);
 				}
 			}));
+
+		var index = 0;
+		var currentSelectors = d3.selectAll(".selector").each(function() { 
+		//for (var i = 0; i < currentSelectors.length; i++){
+			if(allCriteriaStatuses[index].previousCriteriaStatuses.length > 0){
+				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
+				.attr("class", function(d){
+				console.log("classAtr: " + d.classAttr);
+					d.classAttr;
+				}).attr("style", "display: none"/*"display", function(d){
+				console.log("display: " + d.display);
+					d.display;
+				}*/).attr("fill", function(d){
+					if(d.comment!="")
+						return "#29abe2";
+					else
+						return "white";	
+				}).attr("stroke", function(d){
+					if(d.comment!="")
+						return "white";
+					else
+						return color;	
+				}).attr("stroke-width", function(d){
+					if(d.comment!="")
+					return "5";
+				else
+					return "0.25";	
+				}).attr("style", "cursor: pointer; display: none;")
+				.attr("filter", "url(#procid-circle-filter)")
+				.attr("cy", "30")
+				.attr("cx", function(d) {
+					return x(d.value);
+				}).attr("r", "8")
+				.on("mouseover", function() {
+					d3.select(this).style("fill-opacity", .9);
+				}).on("mouseout", function() {
+					d3.select(this).style("fill-opacity", 1);
+				});
+			}
+			index ++;
+		});
+
 	}
 
 	var expandIdeaCriteria = function(){
@@ -1285,14 +1368,35 @@ jQuery.fn.sortElements = (function(){
 	var createCriteriaStatusTracks = function() {
 		for (var i = 0; i < commentInfos.length; i++) {
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				var prevStatusArray = [];				
+				for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
+					var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
+					var criterion_track = {
+						value : currentCriteriaStatus.value,
+						comment : currentCriteriaStatus.comment,
+						id : currentCriteriaStatus.id,
+						title : commentInfos[i].title,
+						classAttr: "procid-selector-circle-history",
+						display: "none"
+					};
+					prevStatusArray.push(criterion_track);
+				}
+
 				var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
 				var criterion_track = {
 					value : lastCriteriaStatus.value,
 					comment : lastCriteriaStatus.comment,
 					id : lastCriteriaStatus.id,
-					title : commentInfos[i].title
+					title : commentInfos[i].title,
+					classAttr: "procid-selector-cricle-default",
+					display: "inline"
 				};
-				allCriteriaStatuses.push(criterion_track);
+				
+				currentCriteriaStatusRecord = {
+					currentCriteriaStatus: criterion_track,
+					previousCriteriaStatuses: prevStatusArray
+				};
+				allCriteriaStatuses.push(currentCriteriaStatusRecord);
 			}
 		}
 	}
@@ -1361,7 +1465,7 @@ jQuery.fn.sortElements = (function(){
 			var numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			var numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
-		}else if(name === "closed"){//closed threads
+		}else if(name === "consensus"){//closed threads
 			var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
@@ -1427,7 +1531,7 @@ jQuery.fn.sortElements = (function(){
 						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
 					}else if(name === "patches"){//usability patches
 						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
-					}else if(name === "closed"){//closed threads
+					}else if(name === "consensus"){//closed threads
 						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
 					}else if(name == "recency"){//recency
 						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
@@ -1457,7 +1561,7 @@ jQuery.fn.sortElements = (function(){
 		//Procid Invite Page Body
 		var divInviteTitle = document.createElement('h2');
 		divInviteTitle.setAttribute('id', 'procid-invite-title');
-		divInviteTitle.innerHTML = "Invite Users to Your Discussion";
+		divInviteTitle.innerHTML = "Suggested Users to Invite to the Discussion";
 		$("#procid-invite-page-wrapper").append(divInviteTitle);
 		
 		//invite page filter panel
@@ -1468,7 +1572,7 @@ jQuery.fn.sortElements = (function(){
 		createInviteLense("experience", "procid-invite-filter", "View experienced participants", ABSOLUTEPATH + "/images/experience");
 		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches", ABSOLUTEPATH + "/images/patches");
 		createInviteLense("recency", "procid-invite-filter", "View recent participants", ABSOLUTEPATH + "/images/recency");
-		createInviteLense("closed", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/recency");
+		createInviteLense("consensus", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/consensus");
 		createInviteLense("connections", "procid-invite-filter", "View participants with most connections", ABSOLUTEPATH + "/images/connections");
 		createInviteLense("search", "procid-invite-filter", "Search Participants", ABSOLUTEPATH + "/images/search-invite");
 		
