@@ -581,7 +581,6 @@ jQuery.fn.sortElements = (function(){
 					commentInfos[i].comments = comment.comments;
 					//commentInfos[i].criteria = comment.criteria;
 					$.each(comment.criteriaStatuses, function (){
-						console.log("criterion: " + this.value + ", " +this.comment + ", " + this.id);
 						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id);
 					});
 					commentInfos[i].status = comment.status;
