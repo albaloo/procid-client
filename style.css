@@ -491,12 +491,12 @@ a.ideaPage-link {
     pointer-events: auto;
 }
 
-#procid-idea-comment-icon{
+.procid-idea-comment-icon{
 width: 20px; 
 height: 20px;
 }
 
-#procid-idea-comment-img
+.procid-idea-comment-img
 {
 float: left; 
 margin: 0px 10px 0px 0;
@@ -504,44 +504,42 @@ width: 18px;
 height: 16px;
 }
 
-#procid-idea-comment-header{
+.procid-idea-comment-header{
   display: inline-block;
   vertical-align: top;
   max-width: 25%;
 }
 
-#procid-idea-comment-columns {
+.procid-idea-comment-columns {
   display: inline-block;
   margin: 12px 0 0 15px;
   max-width: 75%;
 }
 
-#procid-idea-comment-column {
+.procid-idea-comment-column {
   height: 14px;
   padding: 3px 0 1px 0;
 }
 
-#procid-idea-comment-divider{
+.procid-idea-comment-divider{
 width: 200px; 
 height:5px;
 }
 
-#procid-idea-comment-div-icon{
+.procid-idea-comment-div-icon{
 	margin: 12px 1px 12px 0;
 	max-height: 150px;
 }
-
 
 .procid-prev-comment-text {
 	/*TODO: show for expanded version*/
 	background-color: white;
 	border: none;
 	border-color: Transparent; 
-	resize: none;
 	width: 80%;
-	height:118px;
-	padding:3px 3px 3px;
-	margin: 4px 4px 1px 4px; 
+	height:80%;
+	padding:7px 3px 3px;
+	margin: 1px 4px 4px 4px; 
 	/* easy rounded corners for modern browsers */
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;

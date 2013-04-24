@@ -810,17 +810,17 @@ jQuery.fn.sortElements = (function(){
 
 		});
 	}
-	var addIcon = function(divParent, iconPath, divId, iconId) {		
+	var addIcon = function(divParent, iconPath, divClass, iconClass) {		
 		var divIcon = document.createElement('div');
-		divIcon.setAttribute('id', divId);
+		divIcon.setAttribute('class', divClass);
 		divParent.appendChild(divIcon);
 		
-		addImage(divIcon, iconPath, iconId);
+		addImage(divIcon, iconPath, iconClass);
 	}
 	
-	var addImage = function(divParent, iconPath, iconId) {
+	var addImage = function(divParent, iconPath, iconClass) {
 		var icon = document.createElement('img');
-		icon.setAttribute('id', iconId);
+		icon.setAttribute('class', iconClass);
 		icon.setAttribute('src', iconPath);
 		divParent.appendChild(icon);
 	}
@@ -880,7 +880,7 @@ jQuery.fn.sortElements = (function(){
 		divIdeaBlock.appendChild(divComments);
 
 		var divCommentHeader = document.createElement('div');
-		divCommentHeader.setAttribute('id', 'procid-idea-comment-header');
+		divCommentHeader.setAttribute('class', 'procid-idea-comment-header');
 		divComments.appendChild(divCommentHeader);
 		
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
@@ -888,11 +888,11 @@ jQuery.fn.sortElements = (function(){
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
 
 		var divCommentColumns = document.createElement('div');
-		divCommentColumns.setAttribute('id', 'procid-idea-comment-columns');
+		divCommentColumns.setAttribute('class', 'procid-idea-comment-columns');
 		divComments.appendChild(divCommentColumns);
 		
 		var divProsColumn = document.createElement('div');
-		divProsColumn.setAttribute('id', 'procid-idea-comment-column');
+		divProsColumn.setAttribute('class', 'procid-idea-comment-column');
 		divCommentColumns.appendChild(divProsColumn);
 		
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider");
@@ -904,7 +904,7 @@ jQuery.fn.sortElements = (function(){
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider");
 		
 		var divConsColumn = document.createElement('div');
-		divConsColumn.setAttribute('id', 'procid-idea-comment-column');
+		divConsColumn.setAttribute('class', 'procid-idea-comment-column');
 		divCommentColumns.appendChild(divConsColumn);
 		
 		var srcPath = ABSOLUTEPATH + "/images/comment.png";
@@ -1092,6 +1092,26 @@ jQuery.fn.sortElements = (function(){
 			.attr("stroke-width", '5');
 	}
 
+	var addCriteriaStatusCommentBox = function(comment, circle){
+		var parent = circle.parentNode.parentNode;
+
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment');
+
+		var divNewCommentBoxInput = document.createElement('div');
+		divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
+			
+		divNewCommentBoxInput.innerHTML =comment;
+
+		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+
+		return divNewComment;
+	}
+
+	var removeCriteriaStatusCommentBox = function (prevCommentBox, circle){
+		var parent = circle.parentNode.parentNode;
+		parent.removeChild(prevCommentBox);
+	}
+
 	var createCriterionSelectors = function(){
 		var color = "lightgray";
 
@@ -1157,10 +1177,19 @@ jQuery.fn.sortElements = (function(){
     		.attr('y', "0")
     		.attr("height", "20")
 		.on("click",function(){
-			if(d3.select(".selector .procid-selector-circle-history").attr("display") == "none")
-				d3.selectAll(".selector .procid-selector-circle-history").attr("display", "inline");
-			else
-				d3.selectAll(".selector .procid-selector-circle-history").attr("display", "none");
+			if(!d3.select(".selector .procid-selector-circle-history").empty()){
+				d3.selectAll(".selector .procid-selector-circle-history").attr("style", "cursor: pointer");
+				d3.selectAll(".selector .procid-selector-circle-history").attr("class", "procid-selector-circle-shown");
+				d3.select(this).attr("xlink:href", ABSOLUTEPATH + "/images/history-2.png");
+				d3.selectAll(".selector .procid-criteria-line").attr("style", "display:none;");
+		
+			}
+			else{
+				d3.selectAll(".selector .procid-selector-circle-shown").attr("style", "cursor: pointer; display:none;");
+				d3.selectAll(".selector .procid-selector-circle-shown").attr("class", "procid-selector-circle-history");
+				d3.select(this).attr("xlink:href", ABSOLUTEPATH + "/images/history-1.png");
+				d3.selectAll(".selector .procid-criteria-line").attr("style", "");
+			}
 		});
 		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:line")
@@ -1180,12 +1209,7 @@ jQuery.fn.sortElements = (function(){
 				
 				
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:circle")
-			.attr("class", function(d){
-				d.currentCriteriaStatus.classAttr;
-			})
-			.style("display", function(d){
-				d.currentCriteriaStatus.display;
-			})
+			.attr("class", "procid-selector-circle-default")
 			.attr("fill", function(d){
 				if(d.currentCriteriaStatus.comment!="")
 					return "#29abe2";
@@ -1210,9 +1234,11 @@ jQuery.fn.sortElements = (function(){
 			.attr("cx", function(d) {
 				return x(d.currentCriteriaStatus.value);
 			}).attr("r", "8")
-			.on("mouseover", function() {
+			.on("mouseover", function(d) {
 				d3.select(this).style("fill-opacity", .9);
+				this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this);
 			}).on("mouseout", function() {
+				removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
 				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
@@ -1241,13 +1267,8 @@ jQuery.fn.sortElements = (function(){
 		//for (var i = 0; i < currentSelectors.length; i++){
 			if(allCriteriaStatuses[index].previousCriteriaStatuses.length > 0){
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
-				.attr("class", function(d){
-				console.log("classAtr: " + d.classAttr);
-					d.classAttr;
-				}).attr("style", "display: none"/*"display", function(d){
-				console.log("display: " + d.display);
-					d.display;
-				}*/).attr("fill", function(d){
+				.attr("class", "procid-selector-circle-history")
+				.attr("fill", function(d){
 					if(d.comment!="")
 						return "#29abe2";
 					else
@@ -1268,9 +1289,11 @@ jQuery.fn.sortElements = (function(){
 				.attr("cx", function(d) {
 					return x(d.value);
 				}).attr("r", "8")
-				.on("mouseover", function() {
+				.on("mouseover", function(d) {
 					d3.select(this).style("fill-opacity", .9);
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, this);
 				}).on("mouseout", function() {
+					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 					d3.select(this).style("fill-opacity", 1);
 				});
 			}
