@@ -560,8 +560,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var array_contents = $("div[class='content'] div[class='clear-block']").map(function() {
 			var contents = $(this).children("p");
+			var ulContents = $(this).find("li");
+			var h3Contents = $(this).children("h3");
 			var returnValue = "";
+		
 			$.each(contents, function() {
+				returnValue += $(this).text();
+			});
+			$.each(ulContents, function() {
+				console.log("li: " + $(this).text());
+				returnValue += $(this).text();
+			});
+			$.each(h3Contents, function() {
 				returnValue += $(this).text();
 			});
 			return returnValue;
@@ -616,6 +626,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				commented_at: array_dateTimes[i],
 				summary: ""
 			};
+			if(comment.title === "#61")
+							console.log(comment.content);
 			commentInfos.push(comment);
 		}
 		return commentInfos;
@@ -689,7 +701,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$(lensImage).attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
 				commentInfo.tags.push(name);
 				var divTag = document.createElement('div');
-				divTag.setAttribute('id', 'procid-comment-' + this);
+				divTag.setAttribute('id', 'procid-comment-' + name);
 				if($("#procid-comment"+commentInfo.title.substr(1) + " div").empty())
 						$("#procid-comment"+commentInfo.title.substr(1) + " a, " + "#procid-comment"+commentInfo.title.substr(1) + " img").wrapAll(divTag);
 				else
@@ -1055,7 +1067,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$.each(commentInfo.comments, function() {
 			//var string = "#"+this;
 			//var comment = findComment(string);
-		console.log("tone: "+ this.tone);
 			if(this.tone == "positive"){
 				addImage(divProsColumn, srcPath, 'procid-idea-comment-img');
 			}else if(this.tone == "nuetral"){
@@ -1495,6 +1506,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var index = 0;
 		var currentSelectors = d3.selectAll(".selector").each(function() { 
 		//for (var i = 0; i < currentSelectors.length; i++){
+			console.log("index: " + index);
 			if(allCriteriaStatuses[index].previousCriteriaStatuses.length > 0){
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
 				.attr("class", "procid-selector-circle-history")
