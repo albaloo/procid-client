@@ -579,7 +579,6 @@ jQuery.fn.sortElements = (function(){
 					commentInfos[i].tags = comment.tags;
 					commentInfos[i].tone = comment.tone;
 					commentInfos[i].comments = comment.comments;
-					//commentInfos[i].criteria = comment.criteria;
 					$.each(comment.criteriaStatuses, function (){
 						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id);
 					});
@@ -907,15 +906,15 @@ jQuery.fn.sortElements = (function(){
 		divCommentColumns.appendChild(divConsColumn);
 		
 		var srcPath = ABSOLUTEPATH + "/images/comment.png";
-
 		$.each(commentInfo.comments, function() {
-			var string = "#"+this;
-			var comment = findComment(string);
-			if(comment.tone == "positive"){
+			//var string = "#"+this;
+			//var comment = findComment(string);
+		console.log("tone: "+ this.tone);
+			if(this.tone == "positive"){
 				addImage(divProsColumn, srcPath, 'procid-idea-comment-img');
-			}else if(comment.tone == "nuetral"){
+			}else if(this.tone == "nuetral"){
 				addImage(divNuetralColumn, srcPath, 'procid-idea-comment-img');
-			}else if(comment.tone == "negative"){
+			}else if(this.tone == "negative"){
 				addImage(divConsColumn, srcPath, 'procid-idea-comment-img');
 			}
 		});
@@ -965,7 +964,7 @@ jQuery.fn.sortElements = (function(){
 			toneString = "I disagree with this idea because ..."
 		else if(tone === "neutral")
 			toneString = "I think this idea ..."
-		divNewCommentBoxInput.setAttribute('placeholder', toneString);
+		divNewCommentBoxInput.innerHTML = toneString;//setAttribute('placeholder', toneString);
 
 		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
 
@@ -1045,7 +1044,7 @@ jQuery.fn.sortElements = (function(){
 		else if(criterion_track.value < 2)
 			satisfaction = " doesn't satisfy"
 			
-		divNewCommentBoxInput.setAttribute('placeholder', 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria ...');
+		divNewCommentBoxInput.innerHTML =/*setAttribute('placeholder',*/ 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria ...';//);
 
 		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
 
@@ -1059,7 +1058,7 @@ jQuery.fn.sortElements = (function(){
 				});
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
-				updateCriteriaCircleStyle();
+				updateCriteriaCircleStyle(criterion_track.value, circle);
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
@@ -1081,14 +1080,34 @@ jQuery.fn.sortElements = (function(){
 		//updating the value
 		d.value = value;		
 		d3.select(circle).attr("cx", cx);
+		d3.select(circle).attr("fill", function(){
+			if(value < 3)
+				return "#29abe2";
+			else
+				return "#8dc53c";	
+			});
+		
+		//updating line position
 		var identifier="#procid-cline-"+d.title.substr(1)+"-"+d.id;
 		d3.select(identifier).attr("x2", cx);
+		d3.select(identifier).attr("stroke", function(){
+			if(value < 3)
+				return "#29abe2";
+			else
+				return "#8dc53c";	
+			});
+		
 	}
 
-	var updateCriteriaCircleStyle = function(circle){
-		d3.select(circle).attr("fill", "#29abe2")
+	var updateCriteriaCircleStyle = function(value, circle){
+		d3.select(circle).attr("fill", function(){
+				if(value < 3)
+					return "#29abe2";
+				else
+					return "#8dc53c";	
+			})
 			.attr("stroke", "white")
-			.attr("stroke-width", '5');
+			.attr("stroke-width", '0.25');
 	}
 
 	var addCriteriaStatusCommentBox = function(comment, circle){
@@ -1198,22 +1217,29 @@ jQuery.fn.sortElements = (function(){
 				return "procid-cline-"+tempTitle+"-"+d.currentCriteriaStatus.id;
 			})
       		.attr("x1", "36")
-		.attr("y1", "30")
+		.attr("y1", "28")
 		.attr("x2", function(d) {
 				return x(d.currentCriteriaStatus.value);
 			})
-		.attr("y2", "30")
-		.attr("stroke", "#29abe2")
+		.attr("y2", "28")
+		.attr("stroke", function(d){
+			if(d.currentCriteriaStatus.value < 3)
+				return "#29abe2";
+			else
+				return "#8dc53c";	
+			})
 		.attr("stroke-width", '3');
 				
 				
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:circle")
 			.attr("class", "procid-selector-circle-default")
 			.attr("fill", function(d){
-				if(d.currentCriteriaStatus.comment!="")
+				if(d.currentCriteriaStatus.comment === "")
+					return "white";
+				if(d.currentCriteriaStatus.value < 3)
 					return "#29abe2";
 				else
-					return "white";	
+					return "#8dc53c";	
 			})
 			.attr("stroke", function(d){
 				if(d.currentCriteriaStatus.comment!="")
@@ -1222,10 +1248,10 @@ jQuery.fn.sortElements = (function(){
 					return color;	
 			})
 			.attr("stroke-width", function(d){
-				if(d.currentCriteriaStatus.comment!="")
-					return "5";
-				else
-					return "0.25";	
+				//if(d.currentCriteriaStatus.comment!="")
+					return "0.25";
+				//else
+				//	return "0.25";	
 			})
 			.attr("style", "cursor: pointer")
 			.attr("filter", "url(#procid-circle-filter)")
@@ -1235,9 +1261,11 @@ jQuery.fn.sortElements = (function(){
 			}).attr("r", "8")
 			.on("mouseover", function(d) {
 				d3.select(this).style("fill-opacity", .9);
-				this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this);
-			}).on("mouseout", function() {
-				removeCriteriaStatusCommentBox(this.prevCommentBox, this);
+				if(d.currentCriteriaStatus.comment!="")
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this);
+			}).on("mouseout", function(d) {
+				if(d.currentCriteriaStatus.comment!="")
+					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
 				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
@@ -1268,21 +1296,17 @@ jQuery.fn.sortElements = (function(){
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
 				.attr("class", "procid-selector-circle-history")
 				.attr("fill", function(d){
-					if(d.comment!="")
+					if(d.value < 3)
 						return "#29abe2";
 					else
-						return "white";	
+						return "#8dc53c";	
 				}).attr("stroke", function(d){
 					if(d.comment!="")
 						return "white";
 					else
 						return color;	
-				}).attr("stroke-width", function(d){
-					if(d.comment!="")
-					return "5";
-				else
-					return "0.25";	
-				}).attr("style", "cursor: pointer; display: none;")
+				}).attr("stroke-width", "0.25")
+				.attr("style", "cursor: pointer; display: none;")
 				.attr("filter", "url(#procid-circle-filter)")
 				.attr("cy", "30")
 				.attr("cx", function(d) {
@@ -1294,7 +1318,7 @@ jQuery.fn.sortElements = (function(){
 				}).on("mouseout", function() {
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 					d3.select(this).style("fill-opacity", 1);
-				});
+				}).attr("opacity", "0.5");
 			}
 			index ++;
 		});
@@ -1390,35 +1414,33 @@ jQuery.fn.sortElements = (function(){
 	var createCriteriaStatusTracks = function() {
 		for (var i = 0; i < commentInfos.length; i++) {
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
-				var prevStatusArray = [];				
-				for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
-					var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
-					var criterion_track = {
-						value : currentCriteriaStatus.value,
-						comment : currentCriteriaStatus.comment,
-						id : currentCriteriaStatus.id,
-						title : commentInfos[i].title,
-						classAttr: "procid-selector-circle-history",
-						display: "none"
-					};
-					prevStatusArray.push(criterion_track);
-				}
+				if(commentInfos[i].criteriaStatuses.length > 0){
+					var prevStatusArray = [];				
+					for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
+						var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
+						var criterion_track = {
+							value : currentCriteriaStatus.value,
+							comment : currentCriteriaStatus.comment,
+							id : currentCriteriaStatus.id,
+							title : commentInfos[i].title,
+						};
+						prevStatusArray.push(criterion_track);
+					}
 
-				var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
-				var criterion_track = {
-					value : lastCriteriaStatus.value,
-					comment : lastCriteriaStatus.comment,
-					id : lastCriteriaStatus.id,
-					title : commentInfos[i].title,
-					classAttr: "procid-selector-cricle-default",
-					display: "inline"
-				};
+					var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
+					var criterion_track = {
+						value : lastCriteriaStatus.value,
+						comment : lastCriteriaStatus.comment,
+						id : lastCriteriaStatus.id,
+						title : commentInfos[i].title,
+					};
 				
-				currentCriteriaStatusRecord = {
-					currentCriteriaStatus: criterion_track,
-					previousCriteriaStatuses: prevStatusArray
-				};
-				allCriteriaStatuses.push(currentCriteriaStatusRecord);
+					currentCriteriaStatusRecord = {
+						currentCriteriaStatus: criterion_track,
+						previousCriteriaStatuses: prevStatusArray
+					};
+					allCriteriaStatuses.push(currentCriteriaStatusRecord);
+				}
 			}
 		}
 	}
