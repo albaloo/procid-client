@@ -65,52 +65,95 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		loadScript("//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"); 
 		}
 
-jQuery.fn.sortElements = (function(){
+	jQuery.fn.sortElements = (function(){
  
-    var sort = [].sort;
+	    var sort = [].sort;
+	 
+	    return function(comparator, getSortable) {
  
-    return function(comparator, getSortable) {
+	        getSortable = getSortable || function(){return this;};
  
-        getSortable = getSortable || function(){return this;};
+	        var placements = this.map(function(){
+	 
+	            var sortElement = getSortable.call(this),
+	                parentNode = sortElement.parentNode,
  
-        var placements = this.map(function(){
+	                // Since the element itself will change position, we have
+	                // to have some way of storing its original position in
+	                // the DOM. The easiest way is to have a 'flag' node:
+	                nextSibling = parentNode.insertBefore(
+	                    document.createTextNode(''),
+	                    sortElement.nextSibling
+	                );
  
-            var sortElement = getSortable.call(this),
-                parentNode = sortElement.parentNode,
+	            return function() {
  
-                // Since the element itself will change position, we have
-                // to have some way of storing its original position in
-                // the DOM. The easiest way is to have a 'flag' node:
-                nextSibling = parentNode.insertBefore(
-                    document.createTextNode(''),
-                    sortElement.nextSibling
-                );
+	                if (parentNode === this) {
+	                    throw new Error(
+	                        "You can't sort elements if any one is a descendant of another."
+	                    );
+	                }
  
-            return function() {
+	                // Insert before flag:
+	                parentNode.insertBefore(this, nextSibling);
+	                // Remove flag:
+	                parentNode.removeChild(nextSibling);
+	 
+	            };
  
-                if (parentNode === this) {
-                    throw new Error(
-                        "You can't sort elements if any one is a descendant of another."
-                    );
-                }
+	        });
  
-                // Insert before flag:
-                parentNode.insertBefore(this, nextSibling);
-                // Remove flag:
-                parentNode.removeChild(nextSibling);
+	        return sort.call(this, comparator).each(function(i){
+	            placements[i].call(getSortable.call(this));
+	        });
+	 
+	    };
  
-            };
- 
-        });
- 
-        return sort.call(this, comparator).each(function(i){
-            placements[i].call(getSortable.call(this));
-        });
- 
-    };
- 
-})();
+	})();
 
+	var setUpProcid = function(){
+		//Program Starts From here
+		addCSSToHeader();
+
+		//HomePage
+		var page = document.getElementsByClassName('container-12 clear-block')[1];
+		page.setAttribute('class', 'clear-block');
+
+		createStatusVar();
+
+		//Add the left panel
+		var leftPanel = addLeftPanel();
+
+		var pageWrapper = document.createElement('div');
+		pageWrapper.setAttribute('id', 'procid-page-wrapper');
+
+		$("#page").wrap(pageWrapper);
+
+		var outerPageWrapper = document.createElement('div');
+		outerPageWrapper.setAttribute('id', 'procid-outer-page-wrapper');
+		outerPageWrapper.appendChild(leftPanel);
+
+		$("#procid-page-wrapper").wrap(outerPageWrapper);
+
+		//IdeaPageWrapper
+		var ideaPageWrapper = document.createElement('div');
+		ideaPageWrapper.setAttribute('id', 'procid-idea-page-wrapper');
+
+		$("#procid-page-wrapper").after(ideaPageWrapper);
+
+		//InvitePageWrapper
+		var invitePageWrapper = document.createElement('div');
+		invitePageWrapper.setAttribute('id', 'procid-invite-page-wrapper');
+
+		$("#procid-page-wrapper").after(invitePageWrapper);
+
+		//Procid Header
+		createProcidHeader();
+
+		createHomePageBody();
+		createIdeaPageBody();
+		createInvitePageBody();
+	}
 
 	var addCSSToHeader = function() {
 		var header = document.getElementsByTagName('head')[0];
@@ -121,6 +164,7 @@ jQuery.fn.sortElements = (function(){
 		header.appendChild(csslink);
 	};
 
+	//Add Procid Panel
 	var addLeftPanel = function() {
 		var leftPanel = document.createElement('div');
 		leftPanel.setAttribute('id', 'procid-left-panel');
@@ -275,6 +319,139 @@ jQuery.fn.sortElements = (function(){
 		$("#procid-menus li").css("border-image", "url("+ ABSOLUTEPATH +"/images/icon-border-left.png) 2 5 round");
 	}
 
+/*************HOME PAGE BODY*********************/
+	var createHomePageBody = function() {
+		//Procid Home Body
+		var lenses = document.createElement('ul');
+		lenses.setAttribute('id', 'procid-lenses');
+		$("#procid-left-panel-body").append(lenses);
+
+		createLens('mustread', 'procid-lenses', 'View Must Read Comments');
+		createLens('idea', 'procid-lenses', 'View Ideas');
+		createLens('conversation', 'procid-lenses', 'View Conversation Comments');
+		createLens('expert', 'procid-lenses', 'View Comments Posted by Experienced');
+		createLens('patch', 'procid-lenses', 'View Patches');
+		createLens('search', 'procid-lenses', 'Search');
+		$("#procid-search-link").css("border-image", "url("+ ABSOLUTEPATH +"/images/icon-border-left.png) 2 5 round");
+
+		addSearchPanel('procid-search', "procid-left-panel-body");
+		$("#procid-search-panel").css("display", "none");
+		initializeCommentInfo();
+		initializeIssueInfo();
+		
+		$.ajaxSetup({
+			'async' : false
+		});
+
+		$.post(serverURL+"postcomments", {
+			"issue" : JSON.stringify(issue),
+			"commentInfos" : JSON.stringify(commentInfos)
+		}, function(data) {
+			$.each(data.issueComments, function(i, comment) {
+				if(i>=commentInfos.length){
+					var newComment = {
+						title : comment.title,
+						link : comment.link,
+						author : comment.author,
+						authorLink : comment.authorLink,
+						content : comment.content,
+						tags : comment.tags,
+						status : comment.status,
+						comments : comment.comments,
+						idea : "#1",
+						criteriaStatuses : comment.criteriaStatuses,
+						tone: comment.tone,
+						image : "",
+						commented_at: comment.commented_at,
+						summary: comment.summary
+					};
+					commentInfos.push(newComment);
+					applyTags(newComment)
+				}
+				else{
+					commentInfos[i].tags = comment.tags;
+					commentInfos[i].tone = comment.tone;
+					commentInfos[i].comments = comment.comments;
+					$.each(comment.criteriaStatuses, function (){
+						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id);
+					});
+					commentInfos[i].status = comment.status;
+					commentInfos[i].summary = comment.summary;
+					applyTags(commentInfos[i]);
+				}
+			});
+			criteria=data.criteria;
+		});
+
+		//update individual comments
+		var index = -1;
+		$.each($("ul[class=links]"), function(){	
+			if(index > -1){
+				createLensSelectorForIndividualComments(this, 'patch', commentInfos[index], 'Tag this comment as Patch');
+				createLensSelectorForIndividualComments(this, 'expert', commentInfos[index], 'Tag this comment as Posted by Experienced');
+				createLensSelectorForIndividualComments(this, 'conversation', commentInfos[index], 'Tag this comment as part of a Conversation');
+				createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
+				createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
+			}
+			index++;
+		});
+
+	}
+
+	var createLens = function(name, parent, tooltipText) {
+	//TODO: use CSS sprite
+		//Lenses
+		$('<li />').attr({
+			id : "procid-" + name,
+		}).appendTo("#" + parent);
+
+		$('<a />').attr({
+			id : 'procid-' + name + '-link',
+			href : '#',
+			rel : 'tooltip',
+			title : tooltipText, 
+			class : 'unselected'
+		})/*.hover(function highlightLensIcon(evt) {
+			$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-2.png')
+		})*/.appendTo("#procid-" + name);
+
+		if(name == "search")
+			$("#procid-"+name+"-link").click(function addthePanel(evt) {
+				if($("#procid-"+name+"-link").hasClass('unselected')){
+					$("#procid-"+name+"-link").attr('class', 'selected');
+					$("#procid-search-panel").css("display", "block");
+					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
+				}
+				else{
+					$("#procid-"+name+"-link").attr('class', 'unselected');
+					$("#procid-search-panel").css("display", "none");
+					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
+				}
+				return false;
+		});
+		else
+			$("#procid-"+name+"-link").click(function highlightComments(evt) {
+			if ($("div[id='procid-comment-" + name + "'] a").hasClass('procid-lens-unselected')) {
+				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-selected');
+				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-selected');
+				$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
+				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
+			} else {
+				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
+				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
+				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
+			}
+			return false;
+
+		});
+
+		$('<img />').attr({
+			id : 'procid-' + name + '-image',
+			src : ABSOLUTEPATH + '/images/' + name + '-1.png',
+		}).appendTo("#procid-" + name + '-link');
+
+	}
+
 	var addSearchPanel = function(name, parent) {
 		$('<div />').attr({
 			id : name+"-panel",
@@ -324,58 +501,6 @@ jQuery.fn.sortElements = (function(){
 		$("#" + parent).remove("#" + name+"-panel");
 	}
 
-	var createLense = function(name, parent, tooltipText) {
-	//TODO: use CSS sprite
-		//Lenses
-		$('<li />').attr({
-			id : "procid-" + name,
-		}).appendTo("#" + parent);
-
-		$('<a />').attr({
-			id : 'procid-' + name + '-link',
-			href : '#',
-			rel : 'tooltip',
-			title : tooltipText, 
-			class : 'unselected'
-		})/*.hover(function highlightLensIcon(evt) {
-			$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-2.png')
-		})*/.appendTo("#procid-" + name);
-
-		if(name == "search")
-			$("#procid-"+name+"-link").click(function addthePanel(evt) {
-				if($("#procid-"+name+"-link").hasClass('unselected')){
-					$("#procid-"+name+"-link").attr('class', 'selected');
-					$("#procid-search-panel").css("display", "block");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
-				}
-				else{
-					$("#procid-"+name+"-link").attr('class', 'unselected');
-					$("#procid-search-panel").css("display", "none");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
-				}
-		});
-		else
-			$("#procid-"+name+"-link").click(function highlightComments(evt) {
-			if ($("div[id='procid-comment-" + name + "'] a").hasClass('unselected')) {
-				$("div[id='procid-comment-" + name + "'] a").attr('class', 'selected');
-				$("div[id='procid-comment-" + name + "'] img").attr('class', 'image-selected');
-				$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
-			} else {
-				$("div[id='procid-comment-" + name + "'] a").attr('class', 'unselected');
-				$("div[id='procid-comment-" + name + "'] img").attr('class', 'image-unselected');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
-			}
-			return true;
-
-		});
-
-		$('<img />').attr({
-			id : 'procid-' + name + '-image',
-			src : ABSOLUTEPATH + '/images/' + name + '-1.png',
-		}).appendTo("#procid-" + name + '-link');
-
-	}
 	var initializeIssueInfo = function(){
 		var issueAuthor = $("#content-inner div[class='submitted'] a").first().text();
 		var issueAuthorLink = $("#content-inner div[class='submitted'] a").first().attr('href');
@@ -403,6 +528,7 @@ jQuery.fn.sortElements = (function(){
 		issue.created_at = issueCreationDate;
   
 	}
+
 	var initializeCommentInfo = function() {
 		var array_title = $("h3[class='comment-title']").map(function() {
 			return $(this).text();
@@ -496,7 +622,9 @@ jQuery.fn.sortElements = (function(){
 	}
 	
 	var applyTags = function(commentInfo) {
+		//update the left panel
 		var div1 = document.createElement('div');
+		div1.setAttribute('id', 'procid-comment'+commentInfo.title.substr(1));
 		div1.setAttribute('class', 'procid-comment');
 		var divinner = div1;
 		$(".procid-comment").map(function(){
@@ -512,91 +640,163 @@ jQuery.fn.sortElements = (function(){
 
 		$('<img />').attr({
 			id : 'procid-selected-comment-image',
-			class : 'image-unselected',
+			class : 'procid-lens-image-unselected',
 			src : ABSOLUTEPATH + '/images/patch-tiny.png',
 		}).appendTo(divinner);
 
 		$('<a />').attr({
 			id : 'procid-comment-link',
 			href : commentInfo.link,
-			class : 'unselected',
+			class : 'procid-lens-unselected',
 			rel : 'tooltip',
 			title : 'see comment'
 		}).text(commentInfo.title + "\t" + commentInfo.author + commentInfo.summary).appendTo(divinner);
 
 		$("#procid-left-panel-body").append(div1);
 	}
-	var createHomePageBody = function() {
-		//Procid Home Body
-		var lenses = document.createElement('ul');
-		lenses.setAttribute('id', 'procid-lenses');
-		$("#procid-left-panel-body").append(lenses);
 
-		createLense('mustread', 'procid-lenses', 'View Must Read Comments');
-		createLense('idea', 'procid-lenses', 'View Ideas');
-		createLense('conversation', 'procid-lenses', 'View Conversation Comments');
-		createLense('expert', 'procid-lenses', 'View Comments Posted by Experts');
-		createLense('patch', 'procid-lenses', 'View Patches');
-		createLense('search', 'procid-lenses', 'Search');
-		$("#procid-search-link").css("border-image", "url("+ ABSOLUTEPATH +"/images/icon-border-left.png) 2 5 round");
+	var createLensSelectorForIndividualComments = function(parent, name, commentInfo, tooltipText){
+		var className = 'procid-lens-tag-unselected';
+		var imgClassName = 'procid-lens-tag-image-unselected';
+		var imgSource = ABSOLUTEPATH + '/images/' + name + '-1.png';
+		if($.inArray(name, commentInfo.tags) != -1){
+			className = 'procid-lens-tag-selected';
+			imgClassName = 'procid-lens-tag-image-selected';
+			tooltipText = "Remove " + name + " tag from this comment"
+			imgSource = ABSOLUTEPATH + '/images/' + name + '-3.png';
+		}
+			
+		var lens = document.createElement('li');
+		$(parent).prepend(lens);
 
-		addSearchPanel('procid-search', "procid-left-panel-body");
-		$("#procid-search-panel").css("display", "none");
-		initializeCommentInfo();
-		initializeIssueInfo();
+		var lensLink = document.createElement('a');
+		lensLink.setAttribute('class', className);
+		lensLink.setAttribute('rel', 'tooltip');
+		lensLink.setAttribute('title', tooltipText);
+		lensLink.setAttribute('href', '#');
+		$(lens).append(lensLink);
+
+		var lensImage = document.createElement('img');
+		lensImage.setAttribute('class', imgClassName);
+		lensImage.setAttribute('src', imgSource);
+		$(lensLink).append(lensImage);
 		
-		$.ajaxSetup({
-			'async' : false
-		});
+		$(lensLink).click(function addRemoveTag(evt) {
+			console.log("Do you get herea??");
+			if ($(lensLink).hasClass('procid-lens-tag-unselected')) {
+				$(lensLink).attr('class', 'procid-lens-tag-selected');
+				$(lensImage).attr('class', 'procid-lens-tag-image-selected');
+				$(lensImage).attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
+				commentInfo.tags.push(name);
+				var divTag = document.createElement('div');
+				divTag.setAttribute('id', 'procid-comment-' + this);
+				if($("#procid-comment"+commentInfo.title.substr(1) + " div").empty())
+						$("#procid-comment"+commentInfo.title.substr(1) + " a, " + "#procid-comment"+commentInfo.title.substr(1) + " img").wrapAll(divTag);
+				else
+					$("#procid-comment"+commentInfo.title.substr(1) + " div").wrap(divTag);
 
-		
-		$.post(serverURL+"postcomments", {
-			"issue" : JSON.stringify(issue),
-			"commentInfos" : JSON.stringify(commentInfos)
-		}, function(data) {
-			$.each(data.issueComments, function(i, comment) {
-				if(i>=commentInfos.length){
-					var newComment = {
-						title : comment.title,
-						link : comment.link,
-						author : comment.author,
-						authorLink : comment.authorLink,
-						content : comment.content,
-						tags : comment.tags,
-						status : comment.status,
-						comments : comment.comments,
-						idea : "#1",
-						criteriaStatuses : comment.criteriaStatuses,
-						tone: comment.tone,
-						image : "",
-						commented_at: comment.commented_at,
-						summary: comment.summary
-					};
-					commentInfos.push(newComment);
-					applyTags(newComment)
-				}
-				else{
-					commentInfos[i].tags = comment.tags;
-					commentInfos[i].tone = comment.tone;
-					commentInfos[i].comments = comment.comments;
-					$.each(comment.criteriaStatuses, function (){
-						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id);
-					});
-					commentInfos[i].status = comment.status;
-					commentInfos[i].summary = comment.summary;
-					applyTags(commentInfos[i]);
-				}
-			});
-			criteria=data.criteria;
+			} else {
+				$(lensLink).attr('class', 'procid-lens-tag-unselected');
+				$(lensImage).attr('class', 'procid-lens-tag-image-unselected');
+				$(lensImage).attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+				var index = $.inArray(name, commentInfo.tags);
+				if (index>=0) commentInfo.tags.splice(index, 1);
+			}
+			return false;
 		});
 
 	}
+
+
+/*********************IDEA PAGE BODY************************/
+
+	var createIdeaPageBody = function() {
+		//Header
+		var ideaPageHeader = document.createElement('div');
+		ideaPageHeader.setAttribute('id', 'procid-ideaPage-header');
+		$("#procid-idea-page-wrapper").append(ideaPageHeader);
+
+		createLabel('Expand all', "");
+		createLabel('Status', "");
+		createLabel('Criteria ', "(edit)");
+		createLabel('Comments ', "");
+		//<hr/>
+		var hr2 = document.createElement('hr');
+		hr2.style.background = "url(" + ABSOLUTEPATH + "/images/sidebar_divider.png) repeat-x";
+		$("#procid-idea-page-wrapper").append(hr2);
+
+		console.log("numComments:" + commentInfos.length);
+
+		//Body
+		for (var i = 0; i < commentInfos.length; i++) {
+
+			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				var divIdeaBlock = document.createElement('div');
+				divIdeaBlock.setAttribute('class', 'procid-idea-block');
+
+				createIdeaImage(divIdeaBlock, commentInfos[i]);
+				createIdeaStatus(divIdeaBlock, commentInfos[i]);
+				createIdeaCriteria(divIdeaBlock, commentInfos[i]);
+				createIdeaComments(divIdeaBlock, commentInfos[i]);
+
+			}
+			$("#procid-idea-page-wrapper").append(divIdeaBlock);		
+		}
+		
+		createCriteriaStatusTracks();
+		createCriterionSelectors();
+	}
+
+	var createLabel = function(name, link) {
+		var label = document.createElement('a');
+		label.setAttribute('id', 'procid-' + name + '-label');
+		label.setAttribute('class', 'ideaPage-header-label');
+		label.setAttribute('href', "#");
+		label.innerHTML = name;
+		$("#procid-ideaPage-header").append(label);
+		
+		if (name === "Expand all"){
+			label.onclick = function(e) { 
+				if($("#procid-idea-page-wrapper").hasClass("procid-idea-block")){
+					$(".procid-idea-block").attr("class", "procid-idea-block-expanded");
+					expandIdeaImage();
+					expandIdeaStatus();
+					expandIdeaCriteria();
+					expandIdeaComments();
+				}else{
+					$(".procid-idea-block-expanded").attr("class", "procid-idea-block");
+					collapseIdeaImage();
+					collapseIdeaStatus();
+					collapseIdeaCriteria();
+					collapseIdeaComments();
+				
+				}
+				return false;
+			};
+		}		
+
+		var link1 = document.createElement('a');
+		link1.setAttribute('id', 'procid-edit-link');
+		link1.setAttribute('href', "#");
+		link1.innerHTML = link;
+		if (link === "(edit)"){
+			link1.onclick = function(e) { 
+				createEditCriteriaBox();
+				return false;
+			};
+		}
+
+		label.appendChild(link1);
+	}
+
+/**********IdeaPage-Criteria Edit Box**********/
 	var createEditCriteriaBox = function() {
 		var editCriteriaBox = document.createElement("div");
 		editCriteriaBox.setAttribute("id", "procid-editCriteriaBox");
 		editCriteriaBox.onclick = function(e) {
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox"));
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox-div"));
+			return false;
 		};
 		$('body').append(editCriteriaBox);
 
@@ -611,6 +811,7 @@ jQuery.fn.sortElements = (function(){
 		editCriteriaBoxDivClose.onclick = function(e) {
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox"));
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox-div"));
+			return false;
 		};
 		$("#procid-editCriteriaBox-div").append(editCriteriaBoxDivClose);
 
@@ -720,9 +921,12 @@ jQuery.fn.sortElements = (function(){
 
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox"));
 			document.body.removeChild(document.getElementById("procid-editCriteriaBox-div"));
+			return false;
 		};
 		$("#procid-editCriteriaBox-div").append(saveButton);
 	}
+
+/**********IdeaPage-Image**********/
 
 	var createIdeaImage = function(divIdeaBlock, commentInfo) {
 		var divIdea = document.createElement('div');
@@ -750,6 +954,8 @@ jQuery.fn.sortElements = (function(){
 		divIdea.appendChild(divIdeaImage);
 
 	}
+
+/**********IdeaPage-Status**********/
 	var createIdeaStatus = function(divIdeaBlock, commentInfo) {
 		var divStatus = document.createElement('div');
 		divStatus.setAttribute('class', 'procid-idea-block-status');
@@ -794,6 +1000,7 @@ jQuery.fn.sortElements = (function(){
 				}, function() {
 					console.log("success");
 				});
+				return false;
  
 			};
 
@@ -808,69 +1015,8 @@ jQuery.fn.sortElements = (function(){
 
 		});
 	}
-	var addIcon = function(divParent, iconPath, divClass, iconClass) {		
-		var divIcon = document.createElement('div');
-		divIcon.setAttribute('class', divClass);
-		divParent.appendChild(divIcon);
-		
-		addImage(divIcon, iconPath, iconClass);
-	}
 	
-	var addImage = function(divParent, iconPath, iconClass) {
-		var icon = document.createElement('img');
-		icon.setAttribute('class', iconClass);
-		icon.setAttribute('src', iconPath);
-		divParent.appendChild(icon);
-	}
-	
-	var findComment = function(number){
-		
-		var result = $.grep(commentInfos, function(e) {
-			return e.title == number;
-		});
-		if (result.length == 0)
-			return -1;
-		else
-			return result[0];
-	}
-
-	var createNewCommentBoxFrame = function(currentElement, className){
-		var divNewComment = document.createElement('div');
-		divNewComment.setAttribute('class', className);
-//		divNewComment.setAttribute('top', position);
-		currentElement.appendChild(divNewComment);
-	
-		var divNewCommentBox = document.createElement('div');
-		divNewCommentBox.setAttribute('class', 'procid-new-comment-box');
-		divNewComment.appendChild(divNewCommentBox);
-
-		var divArrow = document.createElement('div');
-		divArrow.setAttribute('class', 'arrow');
-		divNewComment.appendChild(divArrow);
-
-		var divShadow = document.createElement('div');
-		divShadow.setAttribute('class', 'shadow');
-		divNewComment.appendChild(divShadow);
-
-		return divNewComment;
-	}	
-
-	var createCommentBoxButtons = function (divNewCommentBox){
-		var divNewCommentBoxSubmit = document.createElement('input');
-		divNewCommentBoxSubmit.setAttribute('class', 'submit');
-		divNewCommentBoxSubmit.setAttribute('type', 'submit');
-		divNewCommentBoxSubmit.setAttribute('value', 'Comment');
-		divNewCommentBoxSubmit.setAttribute('name', 'submit');
-		$(divNewCommentBox).append(divNewCommentBoxSubmit);
-
-		var divNewCommentBoxCancel = document.createElement('input');
-		divNewCommentBoxCancel.setAttribute('class', 'cancel');
-		divNewCommentBoxCancel.setAttribute('type', 'submit');
-		divNewCommentBoxCancel.setAttribute('value', 'Cancel');
-		divNewCommentBoxCancel.setAttribute('name', 'cancel');
-		$(divNewCommentBox).append(divNewCommentBoxCancel);
-	}
-
+/**********IdeaPage-Comments**********/
 	var createIdeaComments = function(divIdeaBlock, commentInfo) {
 		//comments on an idea
 		var divComments = document.createElement('div');
@@ -927,6 +1073,7 @@ jQuery.fn.sortElements = (function(){
 		addProsComment.innerHTML = "+";
 		addProsComment.onclick = function(e) {
 			createNewCommentBox(divProsColumn, "positive", commentInfo);
+			return false;
 		};
 		divProsColumn.appendChild(addProsComment);
 
@@ -938,6 +1085,7 @@ jQuery.fn.sortElements = (function(){
 		addNuetralComment.innerHTML = "+";
 		addNuetralComment.onclick = function(e) {
 			createNewCommentBox(divNuetralColumn, "neutral", commentInfo);
+			return false;
 		};
 		divNuetralColumn.appendChild(addNuetralComment);
 
@@ -949,10 +1097,37 @@ jQuery.fn.sortElements = (function(){
 		addConsComment.innerHTML = "+";
 		addConsComment.onclick = function(e) {
 			createNewCommentBox(divConsColumn, "negative", commentInfo);
+			return false;
 		};
-		divConsColumn.appendChild(addConsComment);
-		
+		divConsColumn.appendChild(addConsComment);		
 	}
+
+	var addIcon = function(divParent, iconPath, divClass, iconClass) {		
+		var divIcon = document.createElement('div');
+		divIcon.setAttribute('class', divClass);
+		divParent.appendChild(divIcon);
+		
+		addImage(divIcon, iconPath, iconClass);
+	}
+	
+	var addImage = function(divParent, iconPath, iconClass) {
+		var icon = document.createElement('img');
+		icon.setAttribute('class', iconClass);
+		icon.setAttribute('src', iconPath);
+		divParent.appendChild(icon);
+	}
+	
+	var findComment = function(number){
+		
+		var result = $.grep(commentInfos, function(e) {
+			return e.title == number;
+		});
+		if (result.length == 0)
+			return -1;
+		else
+			return result[0];
+	}
+
 
 	var createNewCommentBox = function(currentElement, tone, commentInfo){
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment');
@@ -986,7 +1161,47 @@ jQuery.fn.sortElements = (function(){
 			});
 
 		return divNewComment;
+	}
+
+	var createNewCommentBoxFrame = function(currentElement, className){
+		var divNewComment = document.createElement('div');
+		divNewComment.setAttribute('class', className);
+//		divNewComment.setAttribute('top', position);
+		currentElement.appendChild(divNewComment);
+	
+		var divNewCommentBox = document.createElement('div');
+		divNewCommentBox.setAttribute('class', 'procid-new-comment-box');
+		divNewComment.appendChild(divNewCommentBox);
+
+		var divArrow = document.createElement('div');
+		divArrow.setAttribute('class', 'arrow');
+		divNewComment.appendChild(divArrow);
+
+		var divShadow = document.createElement('div');
+		divShadow.setAttribute('class', 'shadow');
+		divNewComment.appendChild(divShadow);
+
+		return divNewComment;
 	}	
+
+	var createCommentBoxButtons = function (divNewCommentBox){
+		var divNewCommentBoxSubmit = document.createElement('input');
+		divNewCommentBoxSubmit.setAttribute('class', 'submit');
+		divNewCommentBoxSubmit.setAttribute('type', 'submit');
+		divNewCommentBoxSubmit.setAttribute('value', 'Comment');
+		divNewCommentBoxSubmit.setAttribute('name', 'submit');
+		$(divNewCommentBox).append(divNewCommentBoxSubmit);
+
+		var divNewCommentBoxCancel = document.createElement('input');
+		divNewCommentBoxCancel.setAttribute('class', 'cancel');
+		divNewCommentBoxCancel.setAttribute('type', 'submit');
+		divNewCommentBoxCancel.setAttribute('value', 'Cancel');
+		divNewCommentBoxCancel.setAttribute('name', 'cancel');
+		$(divNewCommentBox).append(divNewCommentBoxCancel);
+	}
+	
+
+/*******IdeaPage-Criteria List Manipulation*********/
 
 	var createNewCritera = function(title_, description_) {
 		var newCritera = {
@@ -1003,24 +1218,6 @@ jQuery.fn.sortElements = (function(){
 		return newCritera;
 	}
 	
-	var addCriteriaStatus = function(commentInfo, value_, comment_, id_) {
-		var criteriaStatus = {
-			value : value_,
-			comment : comment_,
-			id : id_
-		};
-		commentInfo.criteriaStatuses.push(criteriaStatus);
-		return criteriaStatus;
-	}
-	var findCriteriaStatus = function(commentInfo, id_) {
-		var result = $.grep(commentInfo.criteriaStatuses, function(e) {
-			return e.id == id_;
-		});
-		if (result.length == 0)
-			return -1;
-		else
-			return result[0];
-	}
 	var findCriteriaTitle = function(id){
 		var result = $.grep(criteria, function(e) {
 			return e.id == id;
@@ -1032,102 +1229,108 @@ jQuery.fn.sortElements = (function(){
 		
 	}
 
+/**********IdeaPage-Criteria-Statuses**********/
 	
-	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle){
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment');
+	var createIdeaCriteria = function(divIdeaBlock, commentInfo) {
+		//criteris
+		var divCriteria = document.createElement('div');
+		divCriteria.setAttribute('class', 'procid-idea-block-criteria');
+		divIdeaBlock.appendChild(divCriteria);
+		var counter = 0;
 
-		var divNewCommentBoxInput = document.createElement('textarea');
-		divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
-		var satisfaction = " satisfies";
-		if(criterion_track.value >= 2 && criterion_track.value <= 4 )
-			satisfaction = " somewhat satisfies"
-		else if(criterion_track.value < 2)
-			satisfaction = " doesn't satisfy"
+		if(criteria.length == 0){
+			var link1 = document.createElement('a');
+			link1.setAttribute('class', 'procid-edit-criteria-link');
+			link1.setAttribute('href', "#");
+			link1.innerHTML = "add a new criteria";
+			link1.onclick = function(e) {
+				createEditCriteriaBox();
+				return false;
+			};				
+		}
+
+		$.each(criteria, function() {
+			var divCriteriaStatus = document.createElement('div');
+			divCriteriaStatus.setAttribute('class', 'procid-criteria-block-cell');
+			divCriteria.appendChild(divCriteriaStatus);
+
+			var criteriaStatus = findCriteriaStatus(commentInfo, this.id);
+			if(criteriaStatus == -1)
+				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id);
+				
+			/*var divNewComment = createNewCommentBoxFrame(currentElement, "procid-criterion-prev-comment");
+
+			var divNewCommentBoxInput = document.createElement('div');
+			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
 			
-		divNewCommentBoxInput.innerHTML =/*setAttribute('placeholder',*/ 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria ...';//);
+			$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
 
-		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+			$(divCriterion).append(divNewComment);*/
 
-		createCommentBoxButtons($(divNewComment).children(".procid-new-comment-box").first());
-		
-		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
-				//TODO: the user name should be firguerd out right.
-				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : "nigel", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
-					console.log("success");
-				});
-				//close the comment Input box
-				currentElement.removeChild(divNewComment);
-				updateCriteriaCircleStyle(criterion_track.value, circle);
-			});
-		
-		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
-				//go back to the original Location
-				updateCriteriaCircleLocation(criterion_track, originalValue, originalPosition, circle);
-				//close the comment Input box
-				currentElement.removeChild(divNewComment);
-			});
-
-		return divNewComment;
-	}	
-
-	var removeCommentBox = function(parent, currentCommentBox){
-		if($(parent).hasClass(".procid-new-comment"))
-			parent.removeChild(currentCommentBox);
+		});
 	}
 
-	var updateCriteriaCircleLocation = function(d, value, cx, circle){
-		//updating the value
-		d.value = value;		
-		d3.select(circle).attr("cx", cx);
-		d3.select(circle).attr("fill", function(){
-			if(value < 3)
-				return "#29abe2";
-			else
-				return "#8dc53c";	
-			});
-		
-		//updating line position
-		var identifier="#procid-cline-"+d.title.substr(1)+"-"+d.id;
-		d3.select(identifier).attr("x2", cx);
-		d3.select(identifier).attr("stroke", function(){
-			if(value < 3)
-				return "#29abe2";
-			else
-				return "#8dc53c";	
-			});
-		
+	var addCriteriaStatus = function(commentInfo, value_, comment_, id_) {
+		var criteriaStatus = {
+			value : value_,
+			comment : comment_,
+			id : id_
+		};
+		commentInfo.criteriaStatuses.push(criteriaStatus);
+		return criteriaStatus;
 	}
 
-	var updateCriteriaCircleStyle = function(value, circle){
-		d3.select(circle).attr("fill", function(){
-				if(value < 3)
-					return "#29abe2";
-				else
-					return "#8dc53c";	
-			})
-			.attr("stroke", "white")
-			.attr("stroke-width", '0.25');
+	var findCriteriaStatus = function(commentInfo, id_) {
+		var result = $.grep(commentInfo.criteriaStatuses, function(e) {
+			return e.id == id_;
+		});
+		if (result.length == 0)
+			return -1;
+		else
+			return result[0];
 	}
+	
 
-	var addCriteriaStatusCommentBox = function(comment, circle){
-		var parent = circle.parentNode.parentNode;
+	var expandIdeaCriteria = function(){
+		$(".procid-idea-block-criteria").attr("class", "procid-idea-block-criteria-expanded");
+	};
 
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment');
+	var collapseIdeaCriteria = function(){
 
-		var divNewCommentBoxInput = document.createElement('div');
-		divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
-			
-		divNewCommentBoxInput.innerHTML =comment;
+	};
 
-		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+	var createCriteriaStatusTracks = function() {
+		for (var i = 0; i < commentInfos.length; i++) {
+			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				if(commentInfos[i].criteriaStatuses.length > 0){
+					var prevStatusArray = [];				
+					for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
+						var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
+						var criterion_track = {
+							value : currentCriteriaStatus.value,
+							comment : currentCriteriaStatus.comment,
+							id : currentCriteriaStatus.id,
+							title : commentInfos[i].title,
+						};
+						prevStatusArray.push(criterion_track);
+					}
 
-		return divNewComment;
-	}
-
-	var removeCriteriaStatusCommentBox = function (prevCommentBox, circle){
-		var parent = circle.parentNode.parentNode;
-		parent.removeChild(prevCommentBox);
+					var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
+					var criterion_track = {
+						value : lastCriteriaStatus.value,
+						comment : lastCriteriaStatus.comment,
+						id : lastCriteriaStatus.id,
+						title : commentInfos[i].title,
+					};
+				
+					currentCriteriaStatusRecord = {
+						currentCriteriaStatus: criterion_track,
+						previousCriteriaStatuses: prevStatusArray
+					};
+					allCriteriaStatuses.push(currentCriteriaStatusRecord);
+				}
+			}
+		}
 	}
 
 	var createCriterionSelectors = function(){
@@ -1325,165 +1528,233 @@ jQuery.fn.sortElements = (function(){
 
 	}
 
-	var expandIdeaCriteria = function(){
-		$(".procid-idea-block-criteria").attr("class", "procid-idea-block-criteria-expanded");
-	};
+	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle){
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment');
 
-	var collapseIdeaCriteria = function(){
-
-	};
-
-	var createIdeaCriteria = function(divIdeaBlock, commentInfo) {
-		//criteris
-		var divCriteria = document.createElement('div');
-		divCriteria.setAttribute('class', 'procid-idea-block-criteria');
-		divIdeaBlock.appendChild(divCriteria);
-		var counter = 0;
-
-		if(criteria.length == 0){
-			var link1 = document.createElement('a');
-			link1.setAttribute('class', 'procid-edit-criteria-link');
-			link1.setAttribute('href', "#");
-			link1.innerHTML = "add a new criteria";
-			link1.onclick = function(e) {
-				createEditCriteriaBox();
-			};				
-		}
-
-		$.each(criteria, function() {
-			var divCriteriaStatus = document.createElement('div');
-			divCriteriaStatus.setAttribute('class', 'procid-criteria-block-cell');
-			divCriteria.appendChild(divCriteriaStatus);
-
-			var criteriaStatus = findCriteriaStatus(commentInfo, this.id);
-			if(criteriaStatus == -1)
-				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id);
-				
-			/*var divNewComment = createNewCommentBoxFrame(currentElement, "procid-criterion-prev-comment");
-
-			var divNewCommentBoxInput = document.createElement('div');
-			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
+		var divNewCommentBoxInput = document.createElement('textarea');
+		divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
+		var satisfaction = " satisfies";
+		if(criterion_track.value >= 2 && criterion_track.value <= 4 )
+			satisfaction = " somewhat satisfies"
+		else if(criterion_track.value < 2)
+			satisfaction = " doesn't satisfy"
 			
-			$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+		divNewCommentBoxInput.innerHTML =/*setAttribute('placeholder',*/ 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria ...';//);
 
-			$(divCriterion).append(divNewComment);*/
+		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+
+		createCommentBoxButtons($(divNewComment).children(".procid-new-comment-box").first());
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
+				//TODO: the user name should be firguerd out right.
+				$.post(serverURL+"updateCriteriaStatus", {
+				"issueLink" : issue.link, "userName" : "nigel", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+					console.log("success");
+				});
+				//close the comment Input box
+				currentElement.removeChild(divNewComment);
+				updateCriteriaCircleStyle(criterion_track.value, circle);
+			});
+		
+		$(divNewComment).children(".procid-new-comment-box").first().children(".cancel").first().click(function(e) {
+				//go back to the original Location
+				updateCriteriaCircleLocation(criterion_track, originalValue, originalPosition, circle);
+				//close the comment Input box
+				currentElement.removeChild(divNewComment);
+			});
+
+		return divNewComment;
+	}	
+
+	var removeCommentBox = function(parent, currentCommentBox){
+		if($(parent).hasClass(".procid-new-comment"))
+			parent.removeChild(currentCommentBox);
+	}
+
+	var updateCriteriaCircleLocation = function(d, value, cx, circle){
+		//updating the value
+		d.value = value;		
+		d3.select(circle).attr("cx", cx);
+		d3.select(circle).attr("fill", function(){
+			if(value < 3)
+				return "#29abe2";
+			else
+				return "#8dc53c";	
+			});
+		
+		//updating line position
+		var identifier="#procid-cline-"+d.title.substr(1)+"-"+d.id;
+		d3.select(identifier).attr("x2", cx);
+		d3.select(identifier).attr("stroke", function(){
+			if(value < 3)
+				return "#29abe2";
+			else
+				return "#8dc53c";	
+			});
+		
+	}
+
+	var updateCriteriaCircleStyle = function(value, circle){
+		d3.select(circle).attr("fill", function(){
+				if(value < 3)
+					return "#29abe2";
+				else
+					return "#8dc53c";	
+			})
+			.attr("stroke", "white")
+			.attr("stroke-width", '0.25');
+	}
+
+	var addCriteriaStatusCommentBox = function(comment, circle){
+		var parent = circle.parentNode.parentNode;
+
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment');
+
+		var divNewCommentBoxInput = document.createElement('div');
+		divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
+			
+		divNewCommentBoxInput.innerHTML =comment;
+
+		$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
+
+		return divNewComment;
+	}
+
+	var removeCriteriaStatusCommentBox = function (prevCommentBox, circle){
+		var parent = circle.parentNode.parentNode;
+		parent.removeChild(prevCommentBox);
+	}
+
+/***********************INVITE PAGE********************/
+	var createInvitePageBody = function() {
+		//Procid Invite Page Body
+		var divInviteTitle = document.createElement('h2');
+		divInviteTitle.setAttribute('id', 'procid-invite-title');
+		divInviteTitle.innerHTML = "Suggested Users to Invite to the Discussion";
+		$("#procid-invite-page-wrapper").append(divInviteTitle);
+		
+		//invite page filter panel
+		var divInviteFilter = document.createElement('div');
+		divInviteFilter.setAttribute('id', 'procid-invite-filter');
+		$("#procid-invite-page-wrapper").append(divInviteFilter);
+
+		createInviteLense("experience", "procid-invite-filter", "View experienced participants", ABSOLUTEPATH + "/images/experience");
+		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches", ABSOLUTEPATH + "/images/patches");
+		createInviteLense("recency", "procid-invite-filter", "View recent participants", ABSOLUTEPATH + "/images/recency");
+		createInviteLense("consensus", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/consensus");
+		createInviteLense("connections", "procid-invite-filter", "View participants with most connections", ABSOLUTEPATH + "/images/connections");
+		createInviteLense("search", "procid-invite-filter", "Search Participants", ABSOLUTEPATH + "/images/search-invite");
+		
+		//Search
+		addSearchPanel('procid-invite-search', 'procid-invite-page-wrapper');
+		$("#procid-invite-search-panel").css("display", "none");
+
+		//List potential members to invite
+		var suggestedPeaple = findPeopletoInvite();
+		for (var i = 0; i < suggestedPeaple.length; i++) {
+
+			var divInviteBlock = document.createElement('div');
+			divInviteBlock.setAttribute('class', 'procid-invite-block');
+
+			var divAuthorName = document.createElement('div');
+			divAuthorName.setAttribute('class', 'procid-author-name-unselected');
+			divAuthorName.textContent = suggestedPeaple[i].author;
+			
+			divInviteBlock.appendChild(divAuthorName);
+
+			var divAuthorDescription = document.createElement('div');
+			divAuthorDescription.setAttribute('class', 'procid-author-description-unselected');
+			divAuthorDescription.textContent = suggestedPeaple[i].description;
+			divInviteBlock.appendChild(divAuthorDescription);
+
+			var divInviteLink = document.createElement('a');
+			divInviteLink.setAttribute('class', 'procid-invite-invitationlink');
+			divInviteLink.setAttribute('href', '#');
+			divInviteLink.setAttribute('rel', 'tooltip')
+			divInviteLink.setAttribute('title', 'Invite this person');
+			divInviteLink.onclick = function invitePerson(evt) {
+				//TODO: invite this person
+				return false;
+			};
+
+			var divInviteLinkImage = document.createElement('img');
+			divInviteLinkImage.setAttribute('class', 'procid-invite-invitationlink-image');
+			divInviteLinkImage.setAttribute('src', ABSOLUTEPATH + "/images/invite.png");
+			divInviteLink.appendChild(divInviteLinkImage);
+
+			divInviteBlock.appendChild(divInviteLink);
+			$("#procid-invite-page-wrapper").append(divInviteBlock);
+
+		}
+	}
+
+	var createInviteLense = function(name, parent, tooltipText, imagePath){
+		$('<a />').attr({
+			id : 'procid-invite-' + name + '-link',
+			href : '#',
+			rel : 'tooltip',
+			title : tooltipText, 
+			class : 'procid-invite-lens-unselected'
+		}).appendTo("#" + parent);
+
+		if(name == "search")
+			$("#procid-invite-"+name+"-link").click(function addthePanel(evt) {
+				if($("#procid-invite-"+name+"-link").hasClass('procid-invite-lens-unselected')){
+					$("#procid-invite-"+name+"-link").attr('class', 'procid-invite-lens-selected');
+					$("#procid-invite-search-panel").css("display", "block");
+					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png')
+				}
+				else{
+					$("#procid-invite-"+name+"-link").attr('class', 'procid-invite-lens-unselected');
+					$("#procid-invite-search-panel").css("display", "none");
+					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png')
+				}
+			return false;
+		});
+		else
+			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
+			if ($("img[id='procid-invite-"+name+"-image']").attr('src') === imagePath + '-1.png') {
+				$("div[id=procid-invite-page-wrapper] .procid-invite-block").sortElements(function(a, b){
+					var strA=$(a).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
+    					var strB=$(b).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
+					return sortInvitedMembers(name, strA, strB);
+				});
+				
+		
+				$(".procid-author-name-unselected").slice(0,10).attr('class', 'procid-author-name-selected');
+				$(".procid-author-description-unselected").slice(0,10).map(function(){
+					var strings = $(this).text().split(",");
+
+					if(name === "experience"){
+						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
+					}else if(name === "patches"){//usability patches
+						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
+					}else if(name === "consensus"){//closed threads
+						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
+					}else if(name == "recency"){//recency
+						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
+					}					
+				});
+				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
+				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png');
+			} else {
+				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
+				$(".procid-author-description-selected").map(function(){
+					$(this).html($(this).text());
+				});
+				$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
+				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
+			}
+			return false;
 
 		});
-	}
 
-	var createLabel = function(name, link) {
-		var label = document.createElement('a');
-		label.setAttribute('id', 'procid-' + name + '-label');
-		label.setAttribute('class', 'ideaPage-header-label');
-		label.setAttribute('href', "#");
-		label.innerHTML = name;
-		$("#procid-ideaPage-header").append(label);
-		
-		if (name === "Expand all"){
-			label.onclick = function(e) { 
-				if($("#procid-idea-page-wrapper").hasClass("procid-idea-block")){
-					$(".procid-idea-block").attr("class", "procid-idea-block-expanded");
-					expandIdeaImage();
-					expandIdeaStatus();
-					expandIdeaCriteria();
-					expandIdeaComments();
-				}else{
-					$(".procid-idea-block-expanded").attr("class", "procid-idea-block");
-					collapseIdeaImage();
-					collapseIdeaStatus();
-					collapseIdeaCriteria();
-					collapseIdeaComments();
-				
-				}
-			};
-		}		
-
-		var link1 = document.createElement('a');
-		link1.setAttribute('id', 'procid-edit-link');
-		link1.setAttribute('href', "#");
-		link1.innerHTML = link;
-		if (link === "(edit)"){
-			link1.onclick = function(e) { 
-				createEditCriteriaBox();
-			};
-		}
-
-		label.appendChild(link1);
-	}
-
-	var createCriteriaStatusTracks = function() {
-		for (var i = 0; i < commentInfos.length; i++) {
-			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
-				if(commentInfos[i].criteriaStatuses.length > 0){
-					var prevStatusArray = [];				
-					for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
-						var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
-						var criterion_track = {
-							value : currentCriteriaStatus.value,
-							comment : currentCriteriaStatus.comment,
-							id : currentCriteriaStatus.id,
-							title : commentInfos[i].title,
-						};
-						prevStatusArray.push(criterion_track);
-					}
-
-					var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
-					var criterion_track = {
-						value : lastCriteriaStatus.value,
-						comment : lastCriteriaStatus.comment,
-						id : lastCriteriaStatus.id,
-						title : commentInfos[i].title,
-					};
-				
-					currentCriteriaStatusRecord = {
-						currentCriteriaStatus: criterion_track,
-						previousCriteriaStatuses: prevStatusArray
-					};
-					allCriteriaStatuses.push(currentCriteriaStatusRecord);
-				}
-			}
-		}
-	}
-
-	var createIdeaPageBody = function() {
-		//Header
-		var ideaPageHeader = document.createElement('div');
-		ideaPageHeader.setAttribute('id', 'procid-ideaPage-header');
-		$("#procid-idea-page-wrapper").append(ideaPageHeader);
-
-		createLabel('Expand all', "");
-		createLabel('Status', "");
-		createLabel('Criteria ', "(edit)");
-		createLabel('Comments ', "");
-
-		//<hr/>
-		var hr2 = document.createElement('hr');
-		hr2.style.background = "url(" + ABSOLUTEPATH + "/images/sidebar_divider.png) repeat-x";
-		$("#procid-idea-page-wrapper").append(hr2);
-
-		console.log("numComments:" + commentInfos.length);
-
-		//Body
-		for (var i = 0; i < commentInfos.length; i++) {
-
-			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
-				var divIdeaBlock = document.createElement('div');
-				divIdeaBlock.setAttribute('class', 'procid-idea-block');
-
-				createIdeaImage(divIdeaBlock, commentInfos[i]);
-				createIdeaStatus(divIdeaBlock, commentInfos[i]);
-				createIdeaCriteria(divIdeaBlock, commentInfos[i]);
-				createIdeaComments(divIdeaBlock, commentInfos[i]);
-
-			}
-			$("#procid-idea-page-wrapper").append(divIdeaBlock);		
-		}
-		
-		createCriteriaStatusTracks();
-		createCriterionSelectors();
+		$('<img />').attr({
+			id : 'procid-invite-' + name + '-image',
+			src : imagePath + '-1.png',
+		}).appendTo("#procid-invite-" + name + '-link');
 
 	}
-
 	var findPeopletoInvite = function() {
 		var suggestedMembers = [];
 		$.post(serverURL+"findPotentialParticipants", {
@@ -1534,176 +1805,8 @@ jQuery.fn.sortElements = (function(){
 		}				    
 	
 	}
-
-	var createInviteLense = function(name, parent, tooltipText, imagePath){
-		$('<a />').attr({
-			id : 'procid-invite-' + name + '-link',
-			href : '#',
-			rel : 'tooltip',
-			title : tooltipText, 
-			class : 'unselected'
-		}).appendTo("#" + parent);
-
-		if(name == "search")
-			$("#procid-invite-"+name+"-link").click(function addthePanel(evt) {
-				if($("#procid-invite-"+name+"-link").hasClass('unselected')){
-					$("#procid-invite-"+name+"-link").attr('class', 'selected');
-					$("#procid-invite-search-panel").css("display", "block");
-					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png')
-				}
-				else{
-					$("#procid-invite-"+name+"-link").attr('class', 'unselected');
-					$("#procid-invite-search-panel").css("display", "none");
-					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png')
-				}
-		});
-		else
-			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
-			if ($("img[id='procid-invite-"+name+"-image']").attr('src') === imagePath + '-1.png') {
-				$("div[id=procid-invite-page-wrapper] .procid-invite-block").sortElements(function(a, b){
-					var strA=$(a).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
-    					var strB=$(b).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
-					return sortInvitedMembers(name, strA, strB);
-				});
-				
-		
-				$(".procid-author-name-unselected").slice(0,10).attr('class', 'procid-author-name-selected');
-				$(".procid-author-description-unselected").slice(0,10).map(function(){
-					var strings = $(this).text().split(",");
-
-					if(name === "experience"){
-						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
-					}else if(name === "patches"){//usability patches
-						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
-					}else if(name === "consensus"){//closed threads
-						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
-					}else if(name == "recency"){//recency
-						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
-					}					
-				});
-				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png');
-			} else {
-				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
-				$(".procid-author-description-selected").map(function(){
-					$(this).html($(this).text());
-				});
-				$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
-			}
-			return true;
-
-		});
-
-		$('<img />').attr({
-			id : 'procid-invite-' + name + '-image',
-			src : imagePath + '-1.png',
-		}).appendTo("#procid-invite-" + name + '-link');
-
-	}
-	var createInvitePageBody = function() {
-		//Procid Invite Page Body
-		var divInviteTitle = document.createElement('h2');
-		divInviteTitle.setAttribute('id', 'procid-invite-title');
-		divInviteTitle.innerHTML = "Suggested Users to Invite to the Discussion";
-		$("#procid-invite-page-wrapper").append(divInviteTitle);
-		
-		//invite page filter panel
-		var divInviteFilter = document.createElement('div');
-		divInviteFilter.setAttribute('id', 'procid-invite-filter');
-		$("#procid-invite-page-wrapper").append(divInviteFilter);
-
-		createInviteLense("experience", "procid-invite-filter", "View experienced participants", ABSOLUTEPATH + "/images/experience");
-		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches", ABSOLUTEPATH + "/images/patches");
-		createInviteLense("recency", "procid-invite-filter", "View recent participants", ABSOLUTEPATH + "/images/recency");
-		createInviteLense("consensus", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/consensus");
-		createInviteLense("connections", "procid-invite-filter", "View participants with most connections", ABSOLUTEPATH + "/images/connections");
-		createInviteLense("search", "procid-invite-filter", "Search Participants", ABSOLUTEPATH + "/images/search-invite");
-		
-		//Search
-		addSearchPanel('procid-invite-search', 'procid-invite-page-wrapper');
-		$("#procid-invite-search-panel").css("display", "none");
-
-		//List potential members to invite
-		var suggestedPeaple = findPeopletoInvite();
-		for (var i = 0; i < suggestedPeaple.length; i++) {
-
-			var divInviteBlock = document.createElement('div');
-			divInviteBlock.setAttribute('class', 'procid-invite-block');
-
-			var divAuthorName = document.createElement('div');
-			divAuthorName.setAttribute('class', 'procid-author-name-unselected');
-			divAuthorName.textContent = suggestedPeaple[i].author;
-			
-			divInviteBlock.appendChild(divAuthorName);
-
-			var divAuthorDescription = document.createElement('div');
-			divAuthorDescription.setAttribute('class', 'procid-author-description-unselected');
-			divAuthorDescription.textContent = suggestedPeaple[i].description;
-			divInviteBlock.appendChild(divAuthorDescription);
-
-			var divInviteLink = document.createElement('a');
-			divInviteLink.setAttribute('class', 'procid-invite-invitationlink');
-			divInviteLink.setAttribute('href', '#');
-			divInviteLink.setAttribute('rel', 'tooltip')
-			divInviteLink.setAttribute('title', 'Invite this person');
-			divInviteLink.onclick = function invitePerson(evt) {
-				//TODO: invite this person
-				return true;
-			};
-
-			var divInviteLinkImage = document.createElement('img');
-			divInviteLinkImage.setAttribute('class', 'procid-invite-invitationlink-image');
-			divInviteLinkImage.setAttribute('src', ABSOLUTEPATH + "/images/invite.png");
-			divInviteLink.appendChild(divInviteLinkImage);
-
-			divInviteBlock.appendChild(divInviteLink);
-			$("#procid-invite-page-wrapper").append(divInviteBlock);
-
-		}
-	}
-	//Program Starts From here
-	addCSSToHeader();
-
-	//HomePage
-	var page = document.getElementsByClassName('container-12 clear-block')[1];
-	page.setAttribute('class', 'clear-block');
-
-	createStatusVar();
-
-	//Add the left panel
-	var leftPanel = addLeftPanel();
-
-	var pageWrapper = document.createElement('div');
-	pageWrapper.setAttribute('id', 'procid-page-wrapper');
-
-	$("#page").wrap(pageWrapper);
-
-	var outerPageWrapper = document.createElement('div');
-	outerPageWrapper.setAttribute('id', 'procid-outer-page-wrapper');
-	outerPageWrapper.appendChild(leftPanel);
-
-	$("#procid-page-wrapper").wrap(outerPageWrapper);
-
-	//IdeaPageWrapper
-	var ideaPageWrapper = document.createElement('div');
-	ideaPageWrapper.setAttribute('id', 'procid-idea-page-wrapper');
-
-	$("#procid-page-wrapper").after(ideaPageWrapper);
-
-	//InvitePageWrapper
-	var invitePageWrapper = document.createElement('div');
-	invitePageWrapper.setAttribute('id', 'procid-invite-page-wrapper');
-
-	$("#procid-page-wrapper").after(invitePageWrapper);
-
-	//Procid Header
-	createProcidHeader();
-
-	createHomePageBody();
-	createIdeaPageBody();
-	createInvitePageBody();
-
+	
+	setUpProcid();
 	console.log("done");
 	});
 };
