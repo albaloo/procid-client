@@ -22,6 +22,9 @@
 
 //<div id="userinfo"><a href="/user" title="View &amp; edit your user profile">Logged in as rzilouc2</a> <a href="/logout">Log out</a></div>        </div>
 
+//TODO: multi tab problem
+//You should be able to store values in tab elements in order to avoid them being global to all tabs. I recommend you being with a tutorial like XUL School to get an idea of how JS is handled in Firefox and what you can do from extension code.
+
 
 // a function that loads head.js which then loads jQuery and d3
 function addJQuery(callback) {
@@ -47,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	var serverURL='http://0.0.0.0:3000/';
-	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	//var serverURL='http://0.0.0.0:3000/';
+	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -568,7 +571,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				returnValue += $(this).text();
 			});
 			$.each(ulContents, function() {
-				console.log("li: " + $(this).text());
 				returnValue += $(this).text();
 			});
 			$.each(h3Contents, function() {
@@ -694,7 +696,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(lensLink).append(lensImage);
 		
 		$(lensLink).click(function addRemoveTag(evt) {
-			console.log("Do you get herea??");
 			if ($(lensLink).hasClass('procid-lens-tag-unselected')) {
 				$(lensLink).attr('class', 'procid-lens-tag-selected');
 				$(lensImage).attr('class', 'procid-lens-tag-image-selected');
@@ -1266,8 +1267,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divCriteria.appendChild(divCriteriaStatus);
 
 			var criteriaStatus = findCriteriaStatus(commentInfo, this.id);
-			if(criteriaStatus == -1)
+			if(criteriaStatus == -1){
 				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id);
+			}
 				
 			/*var divNewComment = createNewCommentBoxFrame(currentElement, "procid-criterion-prev-comment");
 
@@ -1310,13 +1312,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	};
 
+	var findAllCriteriaStatuses = function(statuses, id_){
+		var result = [];
+		$.each(statuses, function(){
+		  if(this.id === id_)
+			result.push(this);
+		});
+		return result;
+	};
+
 	var createCriteriaStatusTracks = function() {
 		for (var i = 0; i < commentInfos.length; i++) {
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
 				if(commentInfos[i].criteriaStatuses.length > 0){
+					$.each(criteria, function(){
+					var currentStatusArray = findAllCriteriaStatuses(commentInfos[i].criteriaStatuses, this.id);
+
 					var prevStatusArray = [];				
-					for(var j = 0; j < commentInfos[i].criteriaStatuses.length-1; j++){
-						var currentCriteriaStatus = commentInfos[i].criteriaStatuses[j];
+					for(var j = 0; j < currentStatusArray.length-1; j++){
+						var currentCriteriaStatus = currentStatusArray[j];
 						var criterion_track = {
 							value : currentCriteriaStatus.value,
 							comment : currentCriteriaStatus.comment,
@@ -1326,7 +1340,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						prevStatusArray.push(criterion_track);
 					}
 
-					var lastCriteriaStatus = commentInfos[i].criteriaStatuses[commentInfos[i].criteriaStatuses.length-1];
+					var lastCriteriaStatus = currentStatusArray[currentStatusArray.length-1];
 					var criterion_track = {
 						value : lastCriteriaStatus.value,
 						comment : lastCriteriaStatus.comment,
@@ -1339,6 +1353,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						previousCriteriaStatuses: prevStatusArray
 					};
 					allCriteriaStatuses.push(currentCriteriaStatusRecord);
+					});
 				}
 			}
 		}
@@ -1506,7 +1521,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var index = 0;
 		var currentSelectors = d3.selectAll(".selector").each(function() { 
 		//for (var i = 0; i < currentSelectors.length; i++){
-			console.log("index: " + index);
+			if(index >= allCriteriaStatuses.length) return;
 			if(allCriteriaStatuses[index].previousCriteriaStatuses.length > 0){
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
 				.attr("class", "procid-selector-circle-history")
@@ -1560,7 +1575,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : "nigel", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
 					console.log("success");
 				});
 				//close the comment Input box
