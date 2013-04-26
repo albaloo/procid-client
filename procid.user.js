@@ -726,7 +726,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var createIdeaPageBody = function() {
 		//Header
 		var ideaPageHeader = document.createElement('div');
-		ideaPageHeader.setAttribute('id', 'procid-ideaPage-header');
+		ideaPageHeader.setAttribute('class', 'procid-ideaPage-header');
 		$("#procid-idea-page-wrapper").append(ideaPageHeader);
 
 		createLabel('Expand all', "");
@@ -766,7 +766,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		label.setAttribute('class', 'ideaPage-header-label');
 		label.setAttribute('href', "#");
 		label.innerHTML = name;
-		$("#procid-ideaPage-header").append(label);
+		$(".procid-ideaPage-header").append(label);
 		
 		if (name === "Expand all"){
 			label.onclick = function(e) { 
@@ -793,9 +793,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var link1 = document.createElement('a');
 			link1.setAttribute('id', 'procid-edit-link');
 			link1.setAttribute('href', "#");
-			link1.innerHTML = link;	
 			link1.onclick = function(e) { 
-				createEditCriteriaBox($("#procid-ideaPage-header")[0]);
+				createEditCriteriaBox($(".procid-ideaPage-header")[0]);
 				return false;
 			};
 			label.appendChild(link1);
