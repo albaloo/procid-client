@@ -786,20 +786,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 				return false;
 			};
-		}		
+		}
 
-		var link1 = document.createElement('a');
-		link1.setAttribute('id', 'procid-edit-link');
-		link1.setAttribute('href', "#");
-		link1.innerHTML = link;
-		if (link === "(edit)"){
+		if (link === "(edit)"){		
+
+			var link1 = document.createElement('a');
+			link1.setAttribute('id', 'procid-edit-link');
+			link1.setAttribute('href', "#");
+			link1.innerHTML = link;	
 			link1.onclick = function(e) { 
 				createEditCriteriaBox($("#procid-ideaPage-header")[0]);
 				return false;
 			};
-		}
+			label.appendChild(link1);
 
-		label.appendChild(link1);
+			var img1 = document.createElement('img');
+			img1.setAttribute('id', 'procid-edit-img');
+			img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
+			link1.appendChild(img1);
+		}
 	}
 
 /**********IdeaPage-Criteria Edit Box**********/
@@ -898,6 +903,35 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		};
 		tempCriteria.push(tempCurrentCriteria);
 
+		var divCriteriaTitle = document.createElement('div');
+		divCriteriaTitle.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
+		divCriteriaTitle.innerHTML = currentCriteria.title;
+		divCriteria.appendChild(divCriteriaTitle);
+
+		var divCriteriaDescription = document.createElement('div');
+		divCriteriaDescription.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
+		divCriteriaDescription.innerHTML = currentCriteria.description;
+		divCriteria.appendChild(divCriteriaDescription);
+		
+		var deleteCriteria = document.createElement('a');
+		deleteCriteria.setAttribute('href', "#");
+		deleteCriteria.setAttribute('rel', "tooltip");
+		deleteCriteria.setAttribute('class', "procid-addcomment-link");
+		deleteCriteria.setAttribute('title', "Add a new criteria");
+		deleteCriteria.innerHTML = "delete";
+		deleteCriteria.onclick = function(e) {
+			//TODO: delete the criteria
+		};
+		divCriteria.appendChild(deleteCriteria);
+
+		var editCriteria = document.createElement('a');
+		editCriteria.setAttribute('href', "#");
+		editCriteria.setAttribute('rel', "tooltip");
+		editCriteria.setAttribute('class', "procid-addcomment-link");
+		editCriteria.setAttribute('title', "Add a new criteria");
+		editCriteria.innerHTML = "edit";
+		editCriteria.onclick = function(e) {
+
 		var title = document.createElement('label');
 		title.setAttribute('id', 'procid-editCriteriaBox-title-label');
 		title.innerHTML = "Title";
@@ -930,6 +964,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			tempCriteria[index].description = this.value;
 		});
 		divCriteria.appendChild(description);
+
+		};
+		divCriteria.appendChild(editCriteria);
+
 		index++;
 	}
 
@@ -1569,7 +1607,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+				"issueLink" : issue.link, "userName" : "yoroy", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
 					console.log("success");
 				});
 				//close the comment Input box
