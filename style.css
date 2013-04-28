@@ -244,7 +244,7 @@ img.procid-lens-image-unselected {
 
 /*Idea Page Styling*/
 #procid-idea-page-wrapper {
-	margin: 5px 1px 1px 1px;
+	margin: 0px 0px 1px 0px;
 	min-width: 960px;
 	display: none;
 	min-height: 55px;
@@ -264,25 +264,65 @@ img.procid-lens-image-unselected {
 }
 
 .ideaPage-header-label {
-	display: inline-block;
-	color: #1F1F20;
+	color: white;
 	font-size: 15px;
 	font-weight: regular;
-	margin: 8px 0 3px 6px;
-	width: 230px;
+	margin: 8px 0 8px 6px;
 	/*background:#f8f8f8;*/
 	text-align: left;
+}
+
+.ideaPage-header-label a {
+	color:white;
+}
+
+a[id='procid-Ideas-label'] {
+	color:white;
+	margin: 0 220px 0 5px;
+}
+
+.procid-ideaPage-header{
+	padding-left: 16%;
+	border-bottom: 1px solid #aaa;
+	position: relative;
+	padding-bottom: 10px;
+	background-color: #117ebc;
+}
+
+.procid-ideaPage-header a{
+	color:white;
+}
+
+.procid-new-comment-box a{
+	color: black;
+	padding-left: 10px;
 }
 
 #procid-Idea-label{
 	margin-left: 16%;
 	padding-left: 12px;
 	padding-right: 18px;
+}
+
+#procid-Idea-label a{
+	color:white;
 	
 }
 
 #procid-Status-label {
-	padding-left: 20px;
+	color:white;
+	margin: 0 163px 0 5px;
+}
+
+#procid-edit-img {
+	position: relative;
+	left: 140px;
+	top: 7px;
+}
+
+a[id='procid-Criteria -label'] {
+	margin: 0 173px 0 5px;
+	color:white;
 }
 
 .procid-idea-block {
@@ -301,11 +341,11 @@ img.procid-lens-image-unselected {
 
 .procid-idea-block-status {
 	display: inline-block;
-	margin: 8px 0 3px 6px;
+	margin: 31px 0 3px 6px;
 	text-align: center;
 	height: 160px;
 	vertical-align: top;
-	width: 250px;
+	width: 210px;
 }
 
 .procid-idea-block-status-expanded {
@@ -315,11 +355,11 @@ img.procid-lens-image-unselected {
 
 .procid-idea-block-criteria {
 	display: inline-block;
-	margin: 8px 0 3px 6px;
+	margin: 20px 0 3px 6px;
 	text-align: center;
 	height: 160px;
 	vertical-align: top;
-	width: 250px;
+	width: 275px;
 }
 
 .procid-idea-block-criteria-expanded {
@@ -341,11 +381,11 @@ img.procid-lens-image-unselected {
 
 .procid-idea-block-comments {
 	display: inline-block;
-	margin: 15px 0 3px 6px;
+	margin: 27px 0 3px 15px;
 	text-align: left;
 	height: 160px;
 	vertical-align: top;
-	width: 230px;
+	width: 250px;
 }
 
 .procid-idea-block-comments-expanded {
@@ -394,7 +434,7 @@ a.ideaPage-link {
     /* Size and position */
     position: relative;
     width: 150px;
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 10px;
  
     /* Styles */
@@ -531,7 +571,7 @@ height: 16px;
 
 .procid-idea-comment-column {
   height: 14px;
-  padding: 3px 0 1px 0;
+  padding: 2px 0 2px 0;
 }
 
 .procid-idea-comment-divider{
@@ -540,7 +580,7 @@ height:5px;
 }
 
 .procid-idea-comment-div-icon{
-	margin: 12px 1px 12px 0;
+	margin: 14px 1px 14px 0;
 	max-height: 150px;
 }
 
@@ -600,7 +640,7 @@ height:5px;
 	border-radius: 5px;
 	position: relative;
 	z-index: 10;
-	width: 100%;
+	width: 200px;
 	height: 100%;
 }
             
@@ -647,7 +687,7 @@ height:5px;
 }
 
 .procid-new-comment-box .submit{
-	margin: 2px 7px 5px 18px;
+	margin: 2px 7px 5px 35px;
 	background:#8dc53c;
 	background-color:#8dc53c;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
@@ -655,7 +695,7 @@ height:5px;
 }
 
 .procid-new-comment-box .cancel{
-	margin: 2px 18px 5px 7px;
+	margin: 2px 35px 5px 7px;
 	background:#6e6e6e;
 	background-color:#6e6e6e;
 	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));
@@ -684,10 +724,23 @@ height:5px;
 }
 
 .procid-edit-criteria{
-	position:absolute;
-	width: 500px;
-	height: 270px;
-	margin: 0 auto;
+	position: absolute;
+	width: 200px;
+	height: auto;
+	margin: 15px auto 0 666px;
+}
+
+#procid-editCriteriaBox-header-label {
+	color: #0678BE;
+	font-size: 1.2em;
+	font-weight: thin;
+	text-align: center;
+	padding-top: 10px;
+}
+
+.procid-addcriteria-link {
+	margin: 5px 15px 15px 25px;
+	display: block;
 }
 
 .procid-edit-criteria .arrow, .procid-edit-criteria .shadow {
@@ -761,7 +814,7 @@ height:5px;
 }
 
 #procid-editCriteriaBox-div-block{
-	margin: 5px 15px 15px 25px;
+	margin: 5px 15px 15px 15px;
 	display: block;
 }
 #procid-editCriteriaBox-div-close {

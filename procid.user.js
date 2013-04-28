@@ -751,9 +751,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createLabel('Criteria ', "(edit)");
 		createLabel('Comments ', "");
 		//<hr/>
-		var hr2 = document.createElement('hr');
+		/*var hr2 = document.createElement('hr');
 		hr2.style.background = "url(" + ABSOLUTEPATH + "/images/sidebar_divider.png) repeat-x";
-		$("#procid-idea-page-wrapper").append(hr2);
+		$("#procid-idea-page-wrapper").append(hr2);*/
 
 		console.log("numComments:" + commentInfos.length);
 
@@ -853,7 +853,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var addCriteria = document.createElement('a');
 		addCriteria.setAttribute('href', "#");
 		addCriteria.setAttribute('rel', "tooltip");
-		addCriteria.setAttribute('class', "procid-addcomment-link");
+		addCriteria.setAttribute('class', "procid-addcriteria-link");
 		addCriteria.setAttribute('title', "Add a new criteria");
 		addCriteria.innerHTML = "+";
 		addCriteria.onclick = function(e) {
