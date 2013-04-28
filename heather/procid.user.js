@@ -49,7 +49,7 @@ function main() {
 head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js", function() {
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
-	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
+	var CSSSERVERPATH = "."//'http://web.engr.illinois.edu/~rzilouc2/procid';
 	//var serverURL='http://0.0.0.0:3000/';
 	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
@@ -734,9 +734,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createLabel('Criteria ', "(edit)");
 		createLabel('Comments ', "");
 		//<hr/>
-		var hr2 = document.createElement('hr');
+		//I Commented this out -heather
+		/*var hr2 = document.createElement('hr');
 		hr2.style.background = "url(" + ABSOLUTEPATH + "/images/sidebar_divider.png) repeat-x";
 		$("#procid-idea-page-wrapper").append(hr2);
+		*/
 
 		console.log("numComments:" + commentInfos.length);
 
@@ -747,21 +749,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				var divIdeaBlock = document.createElement('div');
 				divIdeaBlock.setAttribute('class', 'procid-idea-block');
 
-				var closeButtonLink = document.createElement('a');
-				closeButtonLink.setAttribute("href", "#");
-				closeButtonLink.setAttribute('rel', "tooltip");
-				closeButtonLink.setAttribute('title', "Delete this Idea");
-				closeButtonLink.onclick = function(e){
-					//TODO: delete the idea and close the block
-					$("#procid-idea-page-wrapper").remove(divIdeaBlock);
-				}
-				divIdeaBlock.appendChild(closeButtonLink);
-
-				var closeButton = document.createElement('img');
-				closeButton.setAttribute("class", "procid-idea-block-close");
-				closeButton.setAttribute("src", ABSOLUTEPATH + "/images/delete.png");
-				closeButtonLink.appendChild(closeButton);
-				
 				createIdeaImage(divIdeaBlock, commentInfos[i]);
 				createIdeaStatus(divIdeaBlock, commentInfos[i]);
 				createIdeaCriteria(divIdeaBlock, commentInfos[i]);
@@ -785,14 +772,30 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		if (name === "Ideas"){
 			label.onclick = function(e) { 
+				if($("#procid-idea-page-wrapper").hasClass("procid-idea-block")){
+					$(".procid-idea-block").attr("class", "procid-idea-block-expanded");
+					expandIdeaImage();
+					expandIdeaStatus();
+					expandIdeaCriteria();
+					expandIdeaComments();
+				}else{
+					$(".procid-idea-block-expanded").attr("class", "procid-idea-block");
+					collapseIdeaImage();
+					collapseIdeaStatus();
+					collapseIdeaCriteria();
+					collapseIdeaComments();
+				
+				}
 				return false;
 			};
 		}
 
 		if (link === "(edit)"){		
+
 			var link1 = document.createElement('a');
 			link1.setAttribute('id', 'procid-edit-link');
 			link1.setAttribute('href', "#");
+			//link1.innerHTML = link;	
 			link1.onclick = function(e) { 
 				createEditCriteriaBox($(".procid-ideaPage-header")[0]);
 				return false;
@@ -836,7 +839,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var addCriteria = document.createElement('a');
 		addCriteria.setAttribute('href', "#");
 		addCriteria.setAttribute('rel', "tooltip");
-		addCriteria.setAttribute('class', "procid-addcomment-link");
+		//changed -heather
+		addCriteria.setAttribute('class', "procid-addcriteria-link");
 		addCriteria.setAttribute('title', "Add a new criteria");
 		addCriteria.innerHTML = "+";
 		addCriteria.onclick = function(e) {
@@ -904,12 +908,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var divCriteriaTitle = document.createElement('div');
 		divCriteriaTitle.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
-		divCriteriaTitle.innerHTML = currentCriteria.title;
+		divCriteriaTitle.innerHTML = "currentCriteria.title";
 		divCriteria.appendChild(divCriteriaTitle);
 
 		var divCriteriaDescription = document.createElement('div');
 		divCriteriaDescription.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
-		divCriteriaDescription.innerHTML = currentCriteria.description;
+		divCriteriaDescription.innerHTML = "currentCriteria.description";
 		divCriteria.appendChild(divCriteriaDescription);
 		
 		var deleteCriteria = document.createElement('a');
@@ -1334,6 +1338,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			return result[0];
 	}
 	
+
+	var expandIdeaCriteria = function(){
+		$(".procid-idea-block-criteria").attr("class", "procid-idea-block-criteria-expanded");
+	};
+
+	var collapseIdeaCriteria = function(){
+
+	};
 
 	var findAllCriteriaStatuses = function(statuses, id_){
 		var result = [];
