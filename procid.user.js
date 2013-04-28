@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	//var serverURL='http://0.0.0.0:3000/';
-	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	var serverURL='http://0.0.0.0:3000/';
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -390,10 +390,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var index = -1;
 		$.each($("ul[class=links]"), function(){	
 			if(index > -1){
-				createLensSelectorForIndividualComments(this, 'patch', commentInfos[index], 'Tag this comment as Patch');
-				createLensSelectorForIndividualComments(this, 'expert', commentInfos[index], 'Tag this comment as Posted by Experienced');
-				createLensSelectorForIndividualComments(this, 'conversation', commentInfos[index], 'Tag this comment as part of a Conversation');
-				createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
+				//createLensSelectorForIndividualComments(this, 'patch', commentInfos[index], 'Tag this comment as Patch');
+				//createLensSelectorForIndividualComments(this, 'expert', commentInfos[index], 'Tag this comment as Posted by Experienced');
+				//createLensSelectorForIndividualComments(this, 'conversation', commentInfos[index], 'Tag this comment as part of a Conversation');
+				//createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
 				createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
 			}
 			index++;
@@ -628,8 +628,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				commented_at: array_dateTimes[i],
 				summary: ""
 			};
-			if(comment.title === "#61")
-							console.log(comment.content);
+			
 			commentInfos.push(comment);
 		}
 		return commentInfos;
@@ -703,17 +702,35 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				commentInfo.tags.push(name);
 				var divTag = document.createElement('div');
 				divTag.setAttribute('id', 'procid-comment-' + name);
-				if($("#procid-comment"+commentInfo.title.substr(1) + " div").empty())
+				if($("#procid-comment"+commentInfo.title.substr(1) + " div").length === 0){
 						$("#procid-comment"+commentInfo.title.substr(1) + " a, " + "#procid-comment"+commentInfo.title.substr(1) + " img").wrapAll(divTag);
-				else
+				}
+				else{
 					$("#procid-comment"+commentInfo.title.substr(1) + " div").wrap(divTag);
+				}
+
+				$.post(serverURL+"addTag", {
+					"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "tag" : name}, function() {
+						console.log("success");
+					});
 
 			} else {
 				$(lensLink).attr('class', 'procid-lens-tag-unselected');
 				$(lensImage).attr('class', 'procid-lens-tag-image-unselected');
 				$(lensImage).attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+				$("#procid-comment"+commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "] a").attr('class', 'procid-lens-unselected');
+				$("#procid-comment"+commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "] img").attr('class', 'procid-lens-image-unselected');
+				
 				var index = $.inArray(name, commentInfo.tags);
 				if (index>=0) commentInfo.tags.splice(index, 1);
+				var cnt = $("#procid-comment"+commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").contents()
+				$("#procid-comment"+commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").replaceWith(cnt);
+				
+				$.post(serverURL+"removeTag", {
+					"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "tag" : name}, function() {
+						console.log("success");
+					});
+
 			}
 			return false;
 		});
