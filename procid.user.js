@@ -55,6 +55,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
+	var currentUser = "";
+	var username= "";
+	var password= "";
 	var issue = {
 				title : "",
 				link : "",
@@ -115,8 +118,23 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	})();
 
 	var setUpProcid = function(){
+
+		//Check if the user has logged in Drupal
+		if (!$("#page").find('#comment-form').length) {
+		    return;
+		  }
+
+		//find the currentUser
+		//<div id="userinfo"><a href="/user" title="View &amp; edit your user profile">Logged in as rzilouc2</a> <a href="/logout">Log out</a></div>        </div>
+
+		var currentUserInfo = $("#userinfo a").first().text();
+		currentUser = currentUserInfo.substr(13);
+
 		//Program Starts From here
 		addCSSToHeader();
+
+		username=prompt("Enter username");
+		password=prompt("Enter password");
 
 		//HomePage
 		var page = document.getElementsByClassName('container-12 clear-block')[1];
@@ -710,7 +728,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 
 				$.post(serverURL+"addTag", {
-					"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "tag" : name}, function() {
+					"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "tag" : name}, function() {
 						console.log("addTag success");
 					});
 
@@ -727,7 +745,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$("#procid-comment"+commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").replaceWith(cnt);
 				
 				$.post(serverURL+"removeTag", {
-					"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "tag" : name}, function() {
+					"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "tag" : name}, function() {
 						console.log("removeTag success");
 					});
 
@@ -876,25 +894,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				action: ""
 			};
 
-/*$("#tblData tbody").append(
-        "<tr>"+
-        "<td><input type='text'/></td>"+
-        "<td><input type='text'/></td>"+
-        "<td><input type='text'/></td>"+
-        "<td><img src='images/disk.png' class='btnSave'><img src='images/delete.png' class='btnDelete'/></td>"+
-        "</tr>");
-     
-        $(".btnSave").bind("click", Save);     
-        $(".btnDelete").bind("click", Delete);
-
-*/
-//Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-with-jquery/26721#ixzz2RoxzVluu
-
-			var divCriteria = document.createElement('div');
-			divCriteria.setAttribute('id', 'procid-editCriteriaBox-div-block');
-			$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".submit").first().before(divCriteria);
-	
 			tempCriteria.push(tempNewCriteria);
+
+			var tableR = document.createElement("tr");
+			$("#procid-editCriteriaBox-table tbody").append(tableR);
+
+			var tableC1 = document.createElement("td");
+			tableR.appendChild(tableC1);
 
 			var titleInput = document.createElement('input');
 			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
@@ -902,11 +908,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			titleInput.setAttribute('type', 'text');
 			titleInput.setAttribute('name', 'labelInput');
 			titleInput.value = tempNewCriteria.title;
-			divCriteria.appendChild(titleInput);
+			tableC1.appendChild(titleInput);
 			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
 				tempCriteria[index].title = this.value; 
 			});
 		
+			var tableC2 = document.createElement("td");
+			tableR.appendChild(tableC2);
+
 			var description = document.createElement('input');
 			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + tempNewCriteria.id);
 			description.setAttribute('class', 'descriptionInput');
@@ -916,7 +925,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			$(description).keyup(function() {
 				tempCriteria[index].description = this.value;
 			});
-			divCriteria.appendChild(description);
+			tableC2.appendChild(description);
+
+			var tableC3 = document.createElement("td");
+			tableC3.innerHTML = "";
+			tableR.appendChild(tableC3);
+
+			var tableC4 = document.createElement("td");
+			tableC4.innerHTML = "";
+			tableR.appendChild(tableC4);
 
 			return false;
 		};
@@ -929,7 +946,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				if(tempCriteria[i].action === "delete"){
 					criteriaToBeDeleted.push(this.id);
 					$.post(serverURL+"deleteCriteria", {
-					"issueLink" : issue.link, "userName" : "webchick", "id" : tempCriteria[i].id}, function() {
+					"issueLink" : issue.link, "userName" : currentUser, "id" : tempCriteria[i].id}, function() {
 						console.log("delete criteria success");
 					});
 				}
@@ -937,7 +954,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					this.title = tempCriteria[i].title;
 					this.description = tempCriteria[i].description;
 					$.post(serverURL+"editCriteria", {
-					"issueLink" : issue.link, "userName" : "webchick", "title" : this.title, "description" : this.description, "id" : this.id}, function() {
+					"issueLink" : issue.link, "userName" : currentUser, "title" : this.title, "description" : this.description, "id" : this.id}, function() {
 						console.log("edit criteria success");
 					});
 				/*$(".procid-svg-criteria-lower" + this.id).map(function() {
@@ -954,9 +971,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			if(tempCriteria.length > i){
 				var newCriteria = createNewCritera(tempCriteria[tempCriteria.length-1].title, tempCriteria[tempCriteria.length-1].description);
-				//TODO: Username needs to be determined
 				$.post(serverURL+"addCriteria", {
-				"issueLink" : issue.link, "userName" : "webchick", "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
 					console.log("add criteria success");
 				});
 			}
@@ -1037,53 +1053,43 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		editCriteria.setAttribute('rel', "tooltip");
 		editCriteria.setAttribute('class', "procid-addcomment-link");
 		editCriteria.setAttribute('title', "Add a new criteria");
-		editCriteria.innerHTML = "edit";
 		editCriteria.onclick = function(e) {
 
-/*var par = $(this).parent().parent(); //tr
-    var tdName = par.children("td:nth-child(1)");
-    var tdPhone = par.children("td:nth-child(2)");
-    var tdEmail = par.children("td:nth-child(3)");
-    var tdButtons = par.children("td:nth-child(4)");
+		if($(editImage).attr('src') === ABSOLUTEPATH + "/images/edit-criteria.png"){
+			var par = $(this).parent().parent(); //tr
+			var tdTitle = par.children("td:nth-child(1)");
+			var tdDescription = par.children("td:nth-child(2)");
  
-    tdName.html("<input type='text' id='txtName' value='"+tdName.html()+"'/>");
-    tdPhone.html("<input type='text' id='txtPhone' value='"+tdPhone.html()+"'/>");
-    tdEmail.html("<input type='text' id='txtEmail' value='"+tdEmail.html()+"'/>");
-    tdButtons.html("<img src='images/disk.png' class='btnSave'/>");
- 
-    $(".btnSave").bind("click", Save);
-    $(".btnEdit").bind("click", Edit);
-    $(".btnDelete").bind("click", Delete);
-
-
-Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-with-jquery/26721#ixzz2RoyGU4VX
-*/			
-
-			/*var titleInput = document.createElement('input');
-			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + currentCriteria.id);
-			titleInput.setAttribute('class', 'titleInput');
-			titleInput.setAttribute('type', 'text');
-			titleInput.setAttribute('name', 'labelInput');
-			titleInput.value = currentCriteria.title;
-			divCriteria.appendChild(titleInput);
+			tdTitle.html("<input type='text' class = 'titleInput' id='procid-editCriteriaBox-title-input'" + currentCriteria.id+"' value='"+tdTitle.html()+"'/>");
 			$("#procid-editCriteriaBox-title-input" + currentCriteria.id).keyup(function() {
 				tempCriteria[index].title = this.value; 
 			});
-				
-		
-			var description = document.createElement('input');
-			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + currentCriteria.id);
-			description.setAttribute('class', 'descriptionInput');
-			description.setAttribute('type', 'text');
-			description.setAttribute('name', 'description');
-			description.value = currentCriteria.description;
-			$(description).keyup(function() {
-				tempCriteria[index].description = this.value;
+
+			tdDescription.html("<input type='text' class = 'descriptionInput' id='procid-editCriteriaBox-description-input'" + currentCriteria.id+"' value='"+tdDescription.html()+"'/>");
+
+			$("#procid-editCriteriaBox-description-input" + currentCriteria.id).keyup(function() {
+				tempCriteria[index].description = this.value; 
 			});
-			divCriteria.appendChild(description);*/
+
+			$(editImage).attr('src', ABSOLUTEPATH + "/images/undo.png");
+		}else{
+			var par = $(this).parent().parent(); //tr
+			var tdTitle = par.children("td:nth-child(1)");
+			var tdDescription = par.children("td:nth-child(2)");
+			
+			tdTitle.html(currentCriteria.title);
+			tdDescription.html(currentCriteria.description);
+
+			$(editImage).attr('src', ABSOLUTEPATH + "/images/edit-criteria.png");
+		}
 
 		};
 		tableC3.appendChild(editCriteria);
+
+		var editImage = document.createElement('img');
+		editImage.setAttribute('class', "procid-edit-criteria-icons");
+		editImage.setAttribute('src', ABSOLUTEPATH + "/images/edit-criteria.png");
+		editCriteria.appendChild(editImage);
 
 
 		var tableC4 = document.createElement('td');
@@ -1094,7 +1100,6 @@ Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-wit
 		deleteCriteriaLink.setAttribute('rel', "tooltip");
 		deleteCriteriaLink.setAttribute('class', "procid-addcomment-link");
 		deleteCriteriaLink.setAttribute('title', "Add a new criteria");
-		deleteCriteriaLink.innerHTML = "delete";
 		deleteCriteriaLink.onclick = function(e) {
                     $(this).closest('tr').find('td').fadeOut(1000, 
                         function(){ 
@@ -1105,63 +1110,12 @@ Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-wit
 		};
 		tableC4.appendChild(deleteCriteriaLink);
 
-	
-		/*var divCriteria = document.createElement('div');
-		divCriteria.setAttribute('id', 'procid-editCriteriaBox-div-block');
-		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".submit").first().before(divCriteria);
+		var deleteImage = document.createElement('img');
+		deleteImage.setAttribute('class', "procid-edit-criteria-icons");
+		deleteImage.setAttribute('src', ABSOLUTEPATH + "/images/delete-criteria.png");
+		deleteCriteriaLink.appendChild(deleteImage);
 
-		var divCriteriaTitle = document.createElement('div');
-		divCriteriaTitle.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
-		divCriteriaTitle.innerHTML = currentCriteria.title;
-		divCriteria.appendChild(divCriteriaTitle);
-
-		var divCriteriaDescription = document.createElement('div');
-		divCriteriaDescription.setAttribute('class', 'procid-editCriteriaBox-div-block-cell');
-		divCriteriaDescription.innerHTML = currentCriteria.description;
-		divCriteria.appendChild(divCriteriaDescription);
 		
-		var editCriteria = document.createElement('a');
-		editCriteria.setAttribute('href', "#");
-		editCriteria.setAttribute('rel', "tooltip");
-		editCriteria.setAttribute('class', "procid-addcomment-link");
-		editCriteria.setAttribute('title', "Add a new criteria");
-		editCriteria.innerHTML = "edit";
-		editCriteria.onclick = function(e) {
-			var title = document.createElement('label');
-			title.setAttribute('id', 'procid-editCriteriaBox-title-label');
-			title.innerHTML = "Title";
-			divCriteria.appendChild(title);
-
-			var titleInput = document.createElement('input');
-			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + currentCriteria.id);
-			titleInput.setAttribute('class', 'titleInput');
-			titleInput.setAttribute('type', 'text');
-			titleInput.setAttribute('name', 'labelInput');
-			titleInput.value = currentCriteria.title;
-			divCriteria.appendChild(titleInput);
-			$("#procid-editCriteriaBox-title-input" + currentCriteria.id).keyup(function() {
-				tempCriteria[index].title = this.value; 
-			});
-				
-			var descriptionLabel = document.createElement('label');
-			descriptionLabel.setAttribute('id', 'procid-editCriteriaBox-description-label');
-			descriptionLabel.innerHTML = "Description";
-			divCriteria.appendChild(descriptionLabel);
-
-			var description = document.createElement('input');
-			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + currentCriteria.id);
-			description.setAttribute('class', 'descriptionInput');
-			description.setAttribute('type', 'text');
-			description.setAttribute('name', 'description');
-			description.value = currentCriteria.description;
-			$(description).keyup(function() {
-				tempCriteria[index].description = this.value;
-			});
-			divCriteria.appendChild(description);
-
-		};
-		divCriteria.appendChild(editCriteria);
-*/
 	}
 
 /**********IdeaPage-Image**********/
@@ -1380,7 +1334,7 @@ Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-wit
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				$.post(serverURL+"addNewComment", {
-				"issueLink" : issue.link, "userName" : "webchick", "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function() {
 					console.log("addNewComment success");
 				});
 				//TODO: add the comment to the right column/row
@@ -1806,7 +1760,7 @@ Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-wit
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : "yoroy", "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
 					console.log("updateCriteriaStatus success");
 				});
 				//close the comment Input box

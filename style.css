@@ -749,6 +749,11 @@ height:5px;
 	padding-top: 10px;
 }
 
+.procid-edit-criteria-icons{
+	height: 16px;
+	width: 16px;
+}
+
 .procid-addcriteria-link {
 	margin: 5px 15px 15px 25px;
 	display: block;
@@ -799,61 +804,9 @@ height:5px;
 	z-index: 100;
 }
 
-#procid-editCriteriaBox-div {
-	position: absolute;
-	z-index: 101;
-	left: 35%;
-	top: 40%;
-	width: 500px;
-	height: 500px;
-	background: white;
-}
-
-#procid-editCriteriaBox-div h3 {
-	display: block;
-	text-shadow: 0 1px 0 #fff;
-	font-size: 16px;
-	margin: 18px 0 8px 30px;
-}
-
-#procid-editCriteriaBox-div hr {
-	border: none;
-	outline: none;
-	display: block;
-	width: 90%;
-	height: 4px;
-}
-
-#procid-editCriteriaBox-div-block{
-	margin: 5px 15px 15px 15px;
-	display: block;
-}
-#procid-editCriteriaBox-div-close {
-	z-index: 102;
-	display: block;
-	width: 30px;
-	height: 30px;
-	cursor: pointer;
-	position: absolute;
-	right: -15px;
-	top: -15px;
-}
-
-.procid-idea-block-close {
-	z-index: 102;
-/*	display: block;*/
-	width: 30px;
-	height: 30px;
-	cursor: pointer;
-	position: absolute;
-	right: -15px;
-	top: -15px;
-}
-
-
-#procid-editCriteriaBox-div .titleInput, #procid-editCriteriaBox-div .descriptionInput {
+#procid-editCriteriaBox-table .titleInput, #procid-editCriteriaBox-table .descriptionInput {
 	display: inline-block;
-	margin: 5px 0 1px 10px;
+	/*margin: 5px 0 1px 10px;*/
 	height: 15px;
 	background: #fff;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
@@ -869,39 +822,23 @@ height:5px;
 	vertical-align: middle;
 }
 
-#procid-editCriteriaBox-div .descriptionInput{
-	width: 150px;
+#procid-editCriteriaBox-table .descriptionInput{
+	width: 120px;
 }
 
-#procid-editCriteriaBox-div .titleInput{
-	width: 75px;
+#procid-editCriteriaBox-table .titleInput{
+	width: 65px;
 }
 
-#procid-editCriteriaBox-save {
-	background:#8dc53c;
-	background-color:#8dc53c;
-	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
-	background: -moz-linear-gradient(top,  #9fc848,  #96bc43);
-	border: 1px solid #ccc;
-	color: white;
-	display:block;
-	margin: 10px 5px 5px 5px;
-	font-size: 13px;
-	font-weight: normal;
-	line-height: 18px;
-	padding:4px 10px 4px;
-	text-align: center;
-	text-shadow: 0 1px 1px rgba(255,255,255,0.3);
-	vertical-align: middle;
+.procid-idea-block-close {
+	z-index: 102;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
-	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
-	box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
+	position: absolute;
+	right: -15px;
+	top: -15px;
 }
-
 
 /*Invitation Page Styling*/
 #procid-invite-page-wrapper {
