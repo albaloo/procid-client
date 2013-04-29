@@ -640,8 +640,8 @@ height:5px;
 	border-radius: 5px;
 	position: relative;
 	z-index: 10;
-	width: 200px;
-	height: 100%;
+	width: 100%;/*200px;*/
+	height: auto;/*100%;*/
 }
             
 .procid-new-comment .arrow, .procid-new-comment .shadow {
@@ -725,9 +725,20 @@ height:5px;
 
 .procid-edit-criteria{
 	position: absolute;
-	width: 200px;
+	width: 400px;
 	height: auto;
 	margin: 15px auto 0 666px;
+}
+
+#procid-editCriteriaBox-table {
+	margin: 1em 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+#procid-editCriteriaBox-table td, #procid-editCriteriaBox-table th {
+	border: 1px solid #eee;
+	padding: .6em 10px;
+	text-align: left;
 }
 
 #procid-editCriteriaBox-header-label {
