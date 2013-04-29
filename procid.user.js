@@ -876,6 +876,20 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				action: ""
 			};
 
+/*$("#tblData tbody").append(
+        "<tr>"+
+        "<td><input type='text'/></td>"+
+        "<td><input type='text'/></td>"+
+        "<td><input type='text'/></td>"+
+        "<td><img src='images/disk.png' class='btnSave'><img src='images/delete.png' class='btnDelete'/></td>"+
+        "</tr>");
+     
+        $(".btnSave").bind("click", Save);     
+        $(".btnDelete").bind("click", Delete);
+
+*/
+//Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-with-jquery/26721#ixzz2RoxzVluu
+
 			var divCriteria = document.createElement('div');
 			divCriteria.setAttribute('id', 'procid-editCriteriaBox-div-block');
 			$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".submit").first().before(divCriteria);
@@ -1016,7 +1030,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		tableR.appendChild(tableC2);
 
 		var tableC3 = document.createElement('td');
-//		tableC3.innerHTML = "edit";
 		tableR.appendChild(tableC3);
 
 		var editCriteria = document.createElement('a');
@@ -1026,7 +1039,26 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		editCriteria.setAttribute('title', "Add a new criteria");
 		editCriteria.innerHTML = "edit";
 		editCriteria.onclick = function(e) {
-			
+
+/*var par = $(this).parent().parent(); //tr
+    var tdName = par.children("td:nth-child(1)");
+    var tdPhone = par.children("td:nth-child(2)");
+    var tdEmail = par.children("td:nth-child(3)");
+    var tdButtons = par.children("td:nth-child(4)");
+ 
+    tdName.html("<input type='text' id='txtName' value='"+tdName.html()+"'/>");
+    tdPhone.html("<input type='text' id='txtPhone' value='"+tdPhone.html()+"'/>");
+    tdEmail.html("<input type='text' id='txtEmail' value='"+tdEmail.html()+"'/>");
+    tdButtons.html("<img src='images/disk.png' class='btnSave'/>");
+ 
+    $(".btnSave").bind("click", Save);
+    $(".btnEdit").bind("click", Edit);
+    $(".btnDelete").bind("click", Delete);
+
+
+Read more: http://mrbool.com/how-to-add-edit-and-delete-rows-of-a-html-table-with-jquery/26721#ixzz2RoyGU4VX
+*/			
+
 			/*var titleInput = document.createElement('input');
 			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + currentCriteria.id);
 			titleInput.setAttribute('class', 'titleInput');
