@@ -316,7 +316,7 @@ a[id='procid-Ideas-label'] {
 
 #procid-edit-img {
 	position: relative;
-	left: 10px;
+	left: 140px;
 	top: 7px;
 }
 
@@ -328,7 +328,7 @@ a[id='procid-Criteria -label'] {
 .procid-idea-block {
 	background: #F0F0F0;
 	height: 200px;
-	width: 1020px;
+	width: 1000px;
 	margin: 20px 0 20px 16%;
 	-webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -355,7 +355,7 @@ a[id='procid-Criteria -label'] {
 
 .procid-idea-block-criteria {
 	display: inline-block;
-	margin: 30px 0 3px 6px;
+	margin: 20px 0 3px 6px;
 	text-align: center;
 	height: 160px;
 	vertical-align: top;
@@ -635,12 +635,10 @@ height:5px;
             
 .procid-new-comment-box {
 	background: #fff;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-	/*box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);*/
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 	border-radius: 5px;
 	position: relative;
-	z-index: 103;
-	padding-bottom: 40px;
+	z-index: 10;
 	width: 100%;/*200px;*/
 	height: auto;/*100%;*/
 }
@@ -674,7 +672,7 @@ height:5px;
 	font-size: 13px;
 	font-weight: normal;
 	line-height: 18px;
-	padding:0px 10px 4px;
+	padding:4px 10px 4px;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(255,255,255,0.3);
 	vertical-align: middle;
@@ -688,7 +686,7 @@ height:5px;
 }
 
 .procid-new-comment-box .submit{
-	margin: 2px 7px 5px 10px;
+	margin: 2px 7px 5px 35px;
 	background:#8dc53c;
 	background-color:#8dc53c;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
@@ -696,7 +694,7 @@ height:5px;
 }
 
 .procid-new-comment-box .cancel{
-	margin: 2px 0px 5px 7px;
+	margin: 2px 35px 5px 7px;
 	background:#6e6e6e;
 	background-color:#6e6e6e;
 	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));
@@ -728,26 +726,22 @@ height:5px;
 	position: absolute;
 	width: 400px;
 	height: auto;
-	margin: 15px auto 0 540px;
+	margin: 15px auto 0 666px;
 }
 
 #procid-editCriteriaBox-table {
-	margin: 0;
+	margin: 1em 0;
 	border-collapse: collapse;
 	width: 100%;
 }
 #procid-editCriteriaBox-table td, #procid-editCriteriaBox-table th {
-	/*border: 1px solid #eee;*/
+	border: 1px solid #eee;
 	padding: .6em 10px;
 	text-align: left;
 }
 
- #procid-editCriteriaBox-table th {
-	background-color: #ddd;
- }
-
 #procid-editCriteriaBox-header-label {
-	/*color: #0678BE;*/
+	color: #0678BE;
 	font-size: 1.2em;
 	font-weight: thin;
 	text-align: center;
@@ -760,14 +754,14 @@ height:5px;
 }
 
 .procid-addcriteria-link {
-	margin: 10px 15px 7px 5px;
+	margin: 5px 15px 15px 25px;
 	display: block;
 }
 
 .procid-edit-criteria .arrow, .procid-edit-criteria .shadow {
 	width: 10px;
 	height: 10px;
-	background: #ddd;
+	background: #fff;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -781,7 +775,7 @@ height:5px;
 }
             
 .procid-edit-criteria .shadow {
-	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
 	z-index: 9;
 }
 
@@ -837,13 +831,12 @@ height:5px;
 
 .procid-idea-block-close {
 	z-index: 102;
-	width: 21px;
-	height: 21px;
-	float:right;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
-	position: relative;
-	right: -10px;
-	top: -10px;
+	position: absolute;
+	right: -15px;
+	top: -15px;
 }
 
 /*Invitation Page Styling*/

@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	var serverURL='http://0.0.0.0:3000/';
-	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	//var serverURL='http://0.0.0.0:3000/';
+	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -120,9 +120,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var setUpProcid = function(){
 
 		//Check if the user has logged in Drupal
-		if (!$("#page").find('#comment-form').length) {
-		    return;
-		  }
+		//if (!$("#page").find('#comment-form').length) {
+		//    return;
+		//  }
 
 		//find the currentUser
 		//<div id="userinfo"><a href="/user" title="View &amp; edit your user profile">Logged in as rzilouc2</a> <a href="/logout">Log out</a></div>        </div>
@@ -133,8 +133,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//Program Starts From here
 		addCSSToHeader();
 
-		username=prompt("Enter username");
-		password=prompt("Enter password");
+		//username=prompt("Enter username");
+		//password=prompt("Enter password");
 
 		//HomePage
 		var page = document.getElementsByClassName('container-12 clear-block')[1];
@@ -885,7 +885,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addCriteria.setAttribute('rel', "tooltip");
 		addCriteria.setAttribute('class', "procid-addcriteria-link");
 		addCriteria.setAttribute('title', "Add a new criteria");
-		addCriteria.innerHTML = "+";
+		addCriteria.innerHTML = "Add Criteria +";
 		addCriteria.onclick = function(e) {
 			tempNewCriteria = {
 				title: "Title...",
@@ -1000,11 +1000,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			tableHeader.appendChild(tableR);
 
 			var tableC1 = document.createElement("th");
+			tableC1.setAttribute('style', 'width:120px');
 			tableC1.innerHTML = "Title";
 			tableR.appendChild(tableC1);
 
 			var tableC2 = document.createElement("th");
 			tableC2.innerHTML = "Description";
+			tableC2.setAttribute('style', 'width:120px');
 			tableR.appendChild(tableC2);
 		
 			var tableC3 = document.createElement("th");
@@ -1039,10 +1041,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var tableC1 = document.createElement('td');
 		tableC1.innerHTML = currentCriteria.title;
+		tableC1.setAttribute('style', 'width:120px');
 		tableR.appendChild(tableC1);
 
 		var tableC2 = document.createElement('td');
 		tableC2.innerHTML = currentCriteria.description;
+		tableC2.setAttribute('style', 'width:120px');
 		tableR.appendChild(tableC2);
 
 		var tableC3 = document.createElement('td');
@@ -1368,7 +1372,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}else if(midElement === "div"){
 			var divNewCommentBoxInput = document.createElement('div');
 			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
-			
 			divNewCommentBoxInput.innerHTML = placeHolderString;
 		}
 
@@ -1452,12 +1455,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var link1 = document.createElement('a');
 			link1.setAttribute('class', 'procid-edit-criteria-link');
 			link1.setAttribute('href', "#");
-			link1.innerHTML = "add a new criteria";
+			link1.innerHTML = "Add Criteria +";
+			divCriteria.appendChild(link1);
 			link1.onclick = function(e) {
-				createEditCriteriaBox();
+				createEditCriteriaBox($(".procid-ideaPage-header")[0]);
+				divCriteria.removeChild(link1);
 				return false;
 			};				
-			divCriteria.appenChild(link1);
 		}
 
 		$.each(criteria, function() {
@@ -1756,7 +1760,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
 
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr);
-
+		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.
 				$.post(serverURL+"updateCriteriaStatus", {
@@ -1819,7 +1823,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var addCriteriaStatusCommentBox = function(comment, circle){
 		var parent = circle.parentNode.parentNode;
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", comment);
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-criterion-prev-comment', "", "div", comment);
 
 		return divNewComment;
 	}
