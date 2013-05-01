@@ -780,15 +780,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
 				var divIdeaBlock = document.createElement('div');
+				divIdeaBlock.setAttribute('id', 'procid-idea-block-'+commentInfos[i].title.substr(1));
 				divIdeaBlock.setAttribute('class', 'procid-idea-block');
 
 				var closeButtonLink = document.createElement('a');
 				closeButtonLink.setAttribute("href", "#");
 				closeButtonLink.setAttribute('rel', "tooltip");
-				closeButtonLink.setAttribute('title', "Delete this Idea");
+				closeButtonLink.setAttribute('title', "Not an idea? Delete it.");
 				closeButtonLink.onclick = function(e){
 					//TODO: delete the idea and close the block
-					$("#procid-idea-page-wrapper").remove(divIdeaBlock);
+					$(this).parent().remove();
 				}
 				divIdeaBlock.appendChild(closeButtonLink);
 
@@ -1373,6 +1374,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var divNewCommentBoxInput = document.createElement('div');
 			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
 			divNewCommentBoxInput.innerHTML = placeHolderString;
+			divNewCommentBox.appendChild(divNewCommentBoxInput);
 		}
 
 		var divArrow = document.createElement('div');
@@ -1455,11 +1457,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var link1 = document.createElement('a');
 			link1.setAttribute('class', 'procid-edit-criteria-link');
 			link1.setAttribute('href', "#");
-			link1.innerHTML = "Add Criteria +";
+			link1.innerHTML = "Add a New Criteria +";
 			divCriteria.appendChild(link1);
 			link1.onclick = function(e) {
 				createEditCriteriaBox($(".procid-ideaPage-header")[0]);
-				divCriteria.removeChild(link1);
+				if(criteria.length != 0)
+					$(".procid-idea-block-criteria").remove(".procid-edit-criteria-link");
 				return false;
 			};				
 		}
@@ -1822,8 +1825,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var addCriteriaStatusCommentBox = function(comment, circle){
-		var parent = circle.parentNode.parentNode;
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-criterion-prev-comment', "", "div", comment);
+		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", comment);
 
 		return divNewComment;
 	}

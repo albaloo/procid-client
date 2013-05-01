@@ -593,27 +593,20 @@ height:5px;
 	height:80%;
 	padding:7px 3px 3px;
 	margin: 1px 4px 4px 4px; 
+	text-align: left;
 	/* easy rounded corners for modern browsers */
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	border-radius: 1px;
 }
-
-.procid-criterion-prev-comment {
-	/*TODO: show for expanded version*/
-	position:absolute;
-	width: 200px;
-	height: 170px;
-	margin: 0 auto;
-}
-
+	
 .procid-new-comment-textarea {
 	background-color: white;
 	border: none;
 	border-color: Transparent; 
 	resize: none;
 	width: 80%;
-	height:118px;
+	height:110px;
 	padding:3px 3px 3px;
 	margin: 4px 4px 1px 4px; 
 	/* easy rounded corners for modern browsers */
@@ -639,7 +632,7 @@ height:5px;
 	/*box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);*/
 	border-radius: 5px;
 	position: relative;
-	z-index: 103;
+	z-index: 10;
 	padding-bottom: 40px;
 	width: 100%;/*200px;*/
 	height: auto;/*100%;*/
@@ -791,7 +784,7 @@ height:5px;
 	color: #1F1F20;
 	font-size: 12px;
 	font-weight: regular;
-	margin: 8px 0 3px 6px;
+	margin: 21px 0 3px 6px;
 	width: 230px;
 	/*background:#f8f8f8;*/
 	text-align: left;
