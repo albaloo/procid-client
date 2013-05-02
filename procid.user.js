@@ -1225,7 +1225,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divComments.appendChild(divCommentHeader);
 		
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
-		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/nuetral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
+		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/neutral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon");
 
 		var divCommentColumns = document.createElement('div');
@@ -1238,9 +1238,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider");
 		
-		var divNuetralColumn = document.createElement('div');
-		divNuetralColumn.setAttribute('id', 'procid-idea-comment-column');
-		divCommentColumns.appendChild(divNuetralColumn);
+		var divNeutralColumn = document.createElement('div');
+		divNeutralColumn.setAttribute('id', 'procid-idea-comment-column');
+		divCommentColumns.appendChild(divNeutralColumn);
 		
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider");
 		
@@ -1254,8 +1254,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			//var comment = findComment(string);
 			if(this.tone == "positive"){
 				addImage(divProsColumn, srcPath, 'procid-idea-comment-img');
-			}else if(this.tone == "nuetral"){
-				addImage(divNuetralColumn, srcPath, 'procid-idea-comment-img');
+			}else if(this.tone == "neutral"){
+				addImage(divNeutralColumn, srcPath, 'procid-idea-comment-img');
 			}else if(this.tone == "negative"){
 				addImage(divConsColumn, srcPath, 'procid-idea-comment-img');
 			}
@@ -1273,17 +1273,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		};
 		divProsColumn.appendChild(addProsComment);
 
-		var addNuetralComment = document.createElement('a');
-		addNuetralComment.setAttribute('href', "#");
-		addNuetralComment.setAttribute('rel', "tooltip");
-		addNuetralComment.setAttribute('class', "procid-addcomment-link");
-		addNuetralComment.setAttribute('title', "Add a new comment");
-		addNuetralComment.innerHTML = "+";
-		addNuetralComment.onclick = function(e) {
-			createNewCommentBox(divNuetralColumn, "neutral", commentInfo);
+		var addNeutralComment = document.createElement('a');
+		addNeutralComment.setAttribute('href', "#");
+		addNeutralComment.setAttribute('rel', "tooltip");
+		addNeutralComment.setAttribute('class', "procid-addcomment-link");
+		addNeutralComment.setAttribute('title', "Add a new comment");
+		addNeutralComment.innerHTML = "+";
+		addNeutralComment.onclick = function(e) {
+			createNewCommentBox(divNeutralColumn, "neutral", commentInfo);
 			return false;
 		};
-		divNuetralColumn.appendChild(addNuetralComment);
+		divNeutralColumn.appendChild(addNeutralComment);
 
 		var addConsComment = document.createElement('a');
 		addConsComment.setAttribute('href', "#");
@@ -1334,9 +1334,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			toneString = "I think this idea ..."		
 		
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString);
+		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 
-		//$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
-		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				$.post(serverURL+"addNewComment", {
 				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function() {
@@ -1476,16 +1475,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			if(criteriaStatus == -1){
 				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id);
 			}
-				
-			/*var divNewComment = createNewCommentBoxFrame(currentElement, "procid-criterion-prev-comment");
-
-			var divNewCommentBoxInput = document.createElement('div');
-			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
-			
-			$(divNewComment).children(".procid-new-comment-box").first().append(divNewCommentBoxInput);
-
-			$(divCriterion).append(divNewComment);*/
-
 		});
 	}
 
