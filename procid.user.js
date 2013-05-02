@@ -1696,10 +1696,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			.on("mouseover", function(d) {
 				d3.select(this).style("fill-opacity", .9);
 				if(d.currentCriteriaStatus.comment!="")
-					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this, x(d.currentCriteriaStatus.value)+"px");
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this, (x(d.currentCriteriaStatus.value)-30)+"px");
 			}).on("mouseout", function(d) {
-				//if(d.currentCriteriaStatus.comment!="")
-					//removeCriteriaStatusCommentBox(this.prevCommentBox, this);
+				if(d.currentCriteriaStatus.comment!="")
+					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
 				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
@@ -1719,7 +1719,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 			}).on("dragend", function(d) {
 				if(this.__originx != x(d.currentCriteriaStatus.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this);
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30));
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
@@ -1751,7 +1751,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}).attr("r", "8")
 				.on("mouseover", function(d) {
 					d3.select(this).style("fill-opacity", .9);
-					this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, this, x(d.value)+"px");
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, this, (x(d.value)-30)+"px");
 				}).on("mouseout", function() {
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 					d3.select(this).style("fill-opacity", 1);
@@ -1762,7 +1762,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	}
 
-	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle){
+	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle, currentPosition){
 
 		var satisfaction = " satisfies";
 		if(criterion_track.value >= 2 && criterion_track.value <= 4 )
@@ -1771,7 +1771,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			satisfaction = " doesn't satisfy"				
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
 
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", "20px");
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.

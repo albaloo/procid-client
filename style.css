@@ -589,9 +589,9 @@ height:5px;
 	background-color: white;
 	border: none;
 	border-color: Transparent; 
-	width: 80%;
-	height:80%;
-	padding:7px 3px 3px;
+	width: 90%;
+	height:90%;
+	padding:7px 6px 3px;
 	margin: 1px 4px 4px 4px; 
 	text-align: left;
 	/* easy rounded corners for modern browsers */
@@ -605,7 +605,7 @@ height:5px;
 	border: none;
 	border-color: Transparent; 
 	resize: none;
-	width: 80%;
+	width: 90%;
 	height:110px;
 	padding:3px 3px 3px;
 	margin: 4px 4px 1px 4px; 
@@ -623,7 +623,8 @@ height:5px;
 	position:absolute;
 	width: 200px;
 	height: 170px;
-	margin: 0 auto;
+	/*margin: 0 auto;*/
+	margin: 0px 0px 0px 30px; 
 }
             
 .procid-new-comment-box {
