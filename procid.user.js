@@ -394,7 +394,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					commentInfos[i].tone = comment.tone;
 					commentInfos[i].comments = comment.comments;
 					$.each(comment.criteriaStatuses, function (){
-						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id);
+						addCriteriaStatus(commentInfos[i], this.value, this.comment, this.id, this.author, this.commentTitle);
 					});
 					commentInfos[i].status = comment.status;
 					commentInfos[i].summary = comment.summary;
@@ -786,10 +786,20 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				var closeButtonLink = document.createElement('a');
 				closeButtonLink.setAttribute("href", "#");
 				closeButtonLink.setAttribute('rel', "tooltip");
+				closeButtonLink.setAttribute('id', "procid-idea-close-" + commentInfos[i].title.substr(1));
 				closeButtonLink.setAttribute('title', "Not an idea? Delete it.");
 				closeButtonLink.onclick = function(e){
-					//TODO: delete the idea and close the block
+					//TODO: remove idea tag
 					$(this).parent().remove();
+					var buttonId = this.id;
+					var commentNumber = parseInt(buttonId.match(/\d+/)[0], 10);
+					var commentTitle = "#"+commentNumber;
+					$.post(serverURL+"deleteIdea", {
+				"issueLink" : issue.link, "commentTitle" : commentTitle, "userName" : currentUser
+				}, function() {
+					console.log("deleteIdea success");
+				});
+					return false;
 				}
 				divIdeaBlock.appendChild(closeButtonLink);
 
@@ -847,7 +857,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 /**********IdeaPage-Criteria Edit Box**********/
 	var createEditCriteriaBox = function(currentElement) {
-		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save", "", "", "400px", "20px");
+		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save", "", "", "400px", "20px", "");
 
 		/*$(document).mouseup(function (e){
 		    var container = $(divNewCriteriaEditBox);
@@ -1188,7 +1198,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				obj.index = opt.index();
 				wrapperDropdownText.innerHTML = obj.val;
 				$.post(serverURL+"setIdeaStatus", {
-				"issueLink" : issue.link, "commentTitle" : commentInfo.title, "status" : opt.text()
+				"issueLink" : issue.link, "commentTitle" : commentInfo.title, "status" : opt.text(), "userName" : currentUser
 				}, function() {
 					console.log("setIdeaStatus success");
 				});
@@ -1234,7 +1244,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 		
 		var divNeutralColumn = document.createElement('div');
-		divNeutralColumn.setAttribute('id', 'procid-idea-comment-column');
+		divNeutralColumn.setAttribute('class', 'procid-idea-comment-column');
 		divCommentColumns.appendChild(divNeutralColumn);
 		
 		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
@@ -1245,14 +1255,26 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		var srcPath = ABSOLUTEPATH + "/images/comment.png";
 		$.each(commentInfo.comments, function() {
-			//var string = "#"+this;
+			var contentString = "<strong style='color: #29abe2;'>" + this.title + "</strong> <small><i>Posted by " + this.author + "</i></small> <br/>" + this.content;
 			//var comment = findComment(string);
+			var divEachComment = document.createElement('div');
+			divEachComment.setAttribute('class', "procid-idea-comment-img-div");
+			var authorName = this.author;
+			var ind = authorName.indexOf(" ");
+			if( ind > 0)
+				authorName = authorName.substr(0, ind+1);
+								
+			createCommentAuthorBox(divEachComment, authorName, "20px", "1px");
+			addImage(divEachComment, srcPath, 'procid-idea-comment-img', contentString);
 			if(this.tone == "positive"){
-				addImage(divProsColumn, srcPath, 'procid-idea-comment-img');
+				
+				divProsColumn.appendChild(divEachComment);
 			}else if(this.tone == "neutral"){
-				addImage(divNeutralColumn, srcPath, 'procid-idea-comment-img');
+				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
+				divNeutralColumn.appendChild(divEachComment);
 			}else if(this.tone == "negative"){
-				addImage(divConsColumn, srcPath, 'procid-idea-comment-img');
+				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
+				divConsColumn.appendChild(divEachComment);
 			}
 		});
 
@@ -1263,7 +1285,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addProsComment.setAttribute('title', "Add a new comment");
 		addProsComment.innerHTML = "+";
 		addProsComment.onclick = function(e) {
-			createNewCommentBox(divProsColumn, "positive", commentInfo);
+			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
+			createNewCommentBox(divProsColumn, "positive", commentInfo, x+"px");
 			return false;
 		};
 		divProsColumn.appendChild(addProsComment);
@@ -1275,8 +1298,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addNeutralComment.setAttribute('title', "Add a new comment");
 		addNeutralComment.innerHTML = "+";
 		addNeutralComment.onclick = function(e) {
-			createNewCommentBox(divNeutralColumn, "neutral", commentInfo);
-			//createNewCommentBox(addNeutralComment, "positive", commentInfo);
+			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
+			createNewCommentBox(divNeutralColumn, "neutral", commentInfo, x+"px");
 			return false;
 		};
 		divNeutralColumn.appendChild(addNeutralComment);
@@ -1288,7 +1311,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addConsComment.setAttribute('title', "Add a new comment");
 		addConsComment.innerHTML = "+";
 		addConsComment.onclick = function(e) {
-			createNewCommentBox(divConsColumn, "negative", commentInfo);
+			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
+			createNewCommentBox(divConsColumn, "negative", commentInfo, x+"px");
 			return false;
 		};
 		divConsColumn.appendChild(addConsComment);		
@@ -1302,15 +1326,101 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		divParent.appendChild(divIcon);
 		
-		addImage(divIcon, iconPath, iconClass);
+		addImage(divIcon, iconPath, iconClass, "");
 	}
-	
-	var addImage = function(divParent, iconPath, iconClass) {
+
+	var getOffset = function( el ) {
+		var _x = 0;
+		var _y = 0;
+		while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+			_x += el.offsetLeft - el.scrollLeft;
+			_y += el.offsetTop - el.scrollTop;
+			el = el.offsetParent;
+		}
+		return { top: _y, left: _x };
+	}
+
+	var addImage = function(divParent, iconPath, iconClass, content) {
 		var icon = document.createElement('img');
 		icon.setAttribute('class', iconClass);
 		icon.setAttribute('src', iconPath);
 		divParent.appendChild(icon);
+		var currentBox = "";
+		var clicked = false;
+		//var y = getOffset(icon).top + 20;// - getOffset(this.parentNode.parentNode).top + 6;
+		if(content != "") {
+			icon.onmouseover = function(e){
+				var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 6;
+				//currentBox = addCommentContentBox(this, content, x+"px"); 			
+			};
+			icon.onmouseout = function(e){
+				if(currentBox != "" && !clicked){
+				//	removeCommentContentBox(this, currentBox);
+				//	currentBox = "";
+				}
+			};
+			icon.onclick = function(e){
+				console.log("clicked: "  + clicked);
+				if(!clicked){
+					clicked = true;
+					if(currentBox == ""){
+						var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
+						//console.log("y: " + y + " parent y: " + getOffset(this.parentNode.parentNode).top);
+						currentBox = addCommentContentBox(this, content, x+"px", "50px"); 			
+					}
+				}else{
+					clicked = false;
+					if(currentBox != ""){
+						removeCommentContentBox(this, currentBox);
+						currentBox = "";
+					}
+				}
+			};
+		}
 	}
+
+	var addCommentContentBox = function(image, content, arrowPosition, topPosition){
+		var parent = image.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "250px", arrowPosition, "1px");
+		divNewComment.style.top=topPosition;
+		//divNewComment.style.position="relative";
+		return divNewComment;
+	}
+
+	var removeCommentContentBox = function (image, prevCommentBox){
+		var parent = image.parentNode.parentNode;
+		parent.removeChild(prevCommentBox);
+	}
+
+	var createCommentAuthorBox = function(currentElement, authorName, arrowPosition, marginLeft){
+		var divAuthorName = document.createElement('div');
+		divAuthorName.setAttribute('class', "procid-comment-author");
+//		if(marginLeft != "")
+//			divAuthorName.style.marginLeft = marginLeft;
+		currentElement.appendChild(divAuthorName);
+	
+		var divAuthorNameBox = document.createElement('div');
+		divAuthorNameBox.setAttribute('class', 'procid-comment-author-box');
+		divAuthorName.appendChild(divAuthorNameBox);
+
+		var divAuthorNameBoxInput = document.createElement('div');
+		divAuthorNameBoxInput.setAttribute('class', 'procid-comment-author-text');
+		divAuthorNameBoxInput.innerHTML = authorName;
+		divAuthorNameBox.appendChild(divAuthorNameBoxInput);
+		
+		var divArrow = document.createElement('div');
+		divArrow.setAttribute('class', 'arrow');
+//		divArrow.style.left = arrowPosition;
+		divAuthorName.appendChild(divArrow);
+
+		var divShadow = document.createElement('div');
+		divShadow.setAttribute('class', 'shadow');
+//		divShadow.style.left = arrowPosition;
+		divAuthorName.appendChild(divShadow);
+	
+		return divAuthorName;
+	}	
+
 	
 	var findComment = function(number){
 		
@@ -1324,7 +1434,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 
-	var createNewCommentBox = function(currentElement, tone, commentInfo){
+	var createNewCommentBox = function(currentElement, tone, commentInfo, arrowPosition){
 
 		var toneString = "I like this idea because ...";
 		if(tone === "negative" )
@@ -1332,7 +1442,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		else if(tone === "neutral")
 			toneString = "I think this idea ..."		
 		
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", "20px");
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", arrowPosition, "1px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
@@ -1353,10 +1463,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		return divNewComment;
 	}
 
-	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition){
+	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft){
 		var divNewComment = document.createElement('div');
 		divNewComment.setAttribute('class', className);
 		divNewComment.style.width = width;
+		if(marginLeft != "")
+			divNewComment.style.marginLeft = marginLeft;
 //		divNewComment.setAttribute('top', position);
 		currentElement.appendChild(divNewComment);
 	
@@ -1400,6 +1512,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divNewCommentBoxCancel.setAttribute('value', 'Cancel');
 			divNewCommentBoxCancel.setAttribute('name', 'cancel');
 			divNewCommentBox.appendChild(divNewCommentBoxCancel);
+		}else{
+			divNewCommentBox.style.paddingBottom = "4px";
 		}
 		return divNewComment;
 	}	
@@ -1487,16 +1601,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			var criteriaStatus = findCriteriaStatus(commentInfo, this.id);
 			if(criteriaStatus == -1){
-				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id);
+				criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id, "", "");
 			}
 		});
 	}
 
-	var addCriteriaStatus = function(commentInfo, value_, comment_, id_) {
+	var addCriteriaStatus = function(commentInfo, value_, comment_, id_, author_, statusCommentTitle_) {
 		var criteriaStatus = {
 			value : value_,
 			comment : comment_,
-			id : id_
+			id : id_,
+			author: author_,
+			statusCommentTitle: statusCommentTitle_
 		};
 		commentInfo.criteriaStatuses.push(criteriaStatus);
 		return criteriaStatus;
@@ -1537,6 +1653,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 							comment : currentCriteriaStatus.comment,
 							id : currentCriteriaStatus.id,
 							title : commentInfos[i].title,
+							author: currentCriteriaStatus.author,
+							statusCommentTitle: currentCriteriaStatus.statusCommentTitle,
 						};
 						prevStatusArray.push(criterion_track);
 					}
@@ -1547,6 +1665,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						comment : lastCriteriaStatus.comment,
 						id : lastCriteriaStatus.id,
 						title : commentInfos[i].title,
+						author: lastCriteriaStatus.author,
+						statusCommentTitle: lastCriteriaStatus.statusCommentTitle,
 					};
 				
 					currentCriteriaStatusRecord = {
@@ -1696,7 +1816,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			.on("mouseover", function(d) {
 				d3.select(this).style("fill-opacity", .9);
 				if(d.currentCriteriaStatus.comment!="")
-					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, this, (x(d.currentCriteriaStatus.value)-30)+"px");
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, d.currentCriteriaStatus.author, d.currentCriteriaStatus.statusCommentTitle, this, (x(d.currentCriteriaStatus.value)-30)+"px");
 			}).on("mouseout", function(d) {
 				if(d.currentCriteriaStatus.comment!="")
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
@@ -1751,7 +1871,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}).attr("r", "8")
 				.on("mouseover", function(d) {
 					d3.select(this).style("fill-opacity", .9);
-					this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, this, (x(d.value)-30)+"px");
+					this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, d.author, d.statusCommentTitle, this, (x(d.value)-30)+"px");
 				}).on("mouseout", function() {
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 					d3.select(this).style("fill-opacity", 1);
@@ -1771,7 +1891,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			satisfaction = " doesn't satisfy"				
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
 
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px");
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewComment).children(".procid-new-comment-box").first().children(".submit").first().click(function(e) {
 				//TODO: the user name should be firguerd out right.
@@ -1833,9 +1953,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			.attr("stroke-width", '0.25');
 	}
 
-	var addCriteriaStatusCommentBox = function(comment, circle, arrowPosition){
+	var addCriteriaStatusCommentBox = function(comment, author, statusCommentTitle, circle, arrowPosition){
+
+		var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
+
 		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", comment, "200px", arrowPosition);
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px");
 
 		return divNewComment;
 	}
