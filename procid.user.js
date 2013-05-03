@@ -1137,7 +1137,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		link1.setAttribute('id', 'procid-author-link');
 		link1.setAttribute('href', commentInfo.authorLink);
 		link1.setAttribute('class', 'ideaPage-link');
-		link1.innerHTML = commentInfo.author;
+		link1.innerHTML = commentInfo.title + " " +commentInfo.author;
 
 		var divIdeaImage = document.createElement('div');
 		divIdeaImage.setAttribute('id', 'procid-idea-div-image');
@@ -1203,7 +1203,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					console.log("setIdeaStatus success");
 				});
 				return false;
- 
 			};
 
 			var wrapperDropdownListOptionLink = document.createElement('a');
@@ -1225,33 +1224,74 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divComments.setAttribute('class', 'procid-idea-block-comments');
 		divIdeaBlock.appendChild(divComments);
 
-		var divCommentHeader = document.createElement('div');
+		/*var divCommentHeader = document.createElement('div');
 		divCommentHeader.setAttribute('class', 'procid-idea-comment-header');
 		divComments.appendChild(divCommentHeader);
 		
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Positive Comments");
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/neutral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Neutral Comments");
 		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Constructive Comments");
+*/
 
-		var divCommentColumns = document.createElement('div');
-		divCommentColumns.setAttribute('class', 'procid-idea-comment-columns');
-		divComments.appendChild(divCommentColumns);
+		var divCommentRows = document.createElement('div');
+		divCommentRows.setAttribute('class', 'procid-idea-comment-rows');
+		divComments.appendChild(divCommentRows);
 		
-		var divProsColumn = document.createElement('div');
-		divProsColumn.setAttribute('class', 'procid-idea-comment-column');
-		divCommentColumns.appendChild(divProsColumn);
+		/******Setting UP the pros row******/
+		var divProsRow = document.createElement('div');
+		divProsRow.setAttribute('class', 'procid-idea-comment-row');
+		divCommentRows.appendChild(divProsRow);
+
+		var divProsRowHeader = document.createElement('div');
+		divProsRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
+		divProsRow.appendChild(divProsRowHeader);
 		
-		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divProsRowHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Positive Comments");
+
+		var divProsRowBody = document.createElement('div');
+		divProsRowBody.setAttribute('class', 'procid-idea-comment-row-body');
+		divProsRow.appendChild(divProsRowBody);
+
+		var divProsRowContent = document.createElement('div');
+		divProsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+		divProsRowBody.appendChild(divProsRowContent);
 		
-		var divNeutralColumn = document.createElement('div');
-		divNeutralColumn.setAttribute('class', 'procid-idea-comment-column');
-		divCommentColumns.appendChild(divNeutralColumn);
+		/******Setting UP the neutral row******/
+		var divNeutralRow = document.createElement('div');
+		divNeutralRow.setAttribute('class', 'procid-idea-comment-row');
+		divCommentRows.appendChild(divNeutralRow);
+
+		var divNeutralRowHeader = document.createElement('div');
+		divNeutralRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
+		divNeutralRow.appendChild(divNeutralRowHeader);
 		
-		addIcon(divCommentColumns, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divNeutralRowHeader, ABSOLUTEPATH + "/images/neutral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Neutral Comments");
+
+		var divNeutralRowBody = document.createElement('div');
+		divNeutralRowBody.setAttribute('class', 'procid-idea-comment-row-body');
+		divNeutralRow.appendChild(divNeutralRowBody);
+
+		var divNeutralRowContent = document.createElement('div');
+		divNeutralRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+		divNeutralRowBody.appendChild(divNeutralRowContent);
+	
+		/******Setting UP the cons row******/
+		var divConsRow = document.createElement('div');
+		divConsRow.setAttribute('class', 'procid-idea-comment-row');
+		divCommentRows.appendChild(divConsRow);
+
+		var divConsRowHeader = document.createElement('div');
+		divConsRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
+		divConsRow.appendChild(divConsRowHeader);
 		
-		var divConsColumn = document.createElement('div');
-		divConsColumn.setAttribute('class', 'procid-idea-comment-column');
-		divCommentColumns.appendChild(divConsColumn);
+		addIcon(divConsRowHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Constructive Comments");
+		var divConsRowBody = document.createElement('div');
+		divConsRowBody.setAttribute('class', 'procid-idea-comment-row-body');
+		divConsRow.appendChild(divConsRowBody);
+		
+		var divConsRowContent = document.createElement('div');
+		divConsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+		divConsRowBody.appendChild(divConsRowContent);
 		
 		var srcPath = ABSOLUTEPATH + "/images/comment.png";
 		$.each(commentInfo.comments, function() {
@@ -1268,15 +1308,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			addImage(divEachComment, srcPath, 'procid-idea-comment-img', contentString);
 			if(this.tone == "positive"){
 				
-				divProsColumn.appendChild(divEachComment);
+				divProsRowContent.appendChild(divEachComment);
 			}else if(this.tone == "neutral"){
 				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
-				divNeutralColumn.appendChild(divEachComment);
+				divNeutralRowContent.appendChild(divEachComment);
 			}else if(this.tone == "negative"){
 				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
-				divConsColumn.appendChild(divEachComment);
+				divConsRowContent.appendChild(divEachComment);
 			}
 		});
+
+		var divAddProsComment = document.createElement('div');
+		divAddProsComment.setAttribute('class', 'procid-addcomment-link-div');
+		divProsRowContent.appendChild(divAddProsComment);
 
 		var addProsComment = document.createElement('a');
 		addProsComment.setAttribute('href', "#");
@@ -1286,10 +1330,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addProsComment.innerHTML = "+";
 		addProsComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
-			createNewCommentBox(divProsColumn, "positive", commentInfo, x+"px");
+			createNewCommentBox(divProsRow, "positive", commentInfo, x+"px");
 			return false;
 		};
-		divProsColumn.appendChild(addProsComment);
+		divAddProsComment.appendChild(addProsComment);
+		if($(divProsRowContent).find(".procid-idea-comment-img-div").length > 0)
+			divAddProsComment.style.top="16px";
+
+//Adding the divider
+		addIcon(divProsRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+
+		var divAddNeutralComment = document.createElement('div');
+		divAddNeutralComment.setAttribute('class', 'procid-addcomment-link-div');
+		divNeutralRowContent.appendChild(divAddNeutralComment);
 
 		var addNeutralComment = document.createElement('a');
 		addNeutralComment.setAttribute('href', "#");
@@ -1299,10 +1352,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addNeutralComment.innerHTML = "+";
 		addNeutralComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
-			createNewCommentBox(divNeutralColumn, "neutral", commentInfo, x+"px");
+			createNewCommentBox(divNeutralRow, "neutral", commentInfo, x+"px");
 			return false;
 		};
-		divNeutralColumn.appendChild(addNeutralComment);
+		divAddNeutralComment.appendChild(addNeutralComment);
+		if($(divNeutralRowContent).find(".procid-idea-comment-img-div").length > 0)
+			divAddNeutralComment.style.top="16px";
+
+//Adding the divider
+		addIcon(divNeutralRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+
+		var divAddConsComment = document.createElement('div');
+		divAddConsComment.setAttribute('class', 'procid-addcomment-link-div');
+		divConsRowContent.appendChild(divAddConsComment);
 
 		var addConsComment = document.createElement('a');
 		addConsComment.setAttribute('href', "#");
@@ -1312,10 +1374,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addConsComment.innerHTML = "+";
 		addConsComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
-			createNewCommentBox(divConsColumn, "negative", commentInfo, x+"px");
+			createNewCommentBox(divConsRow, "negative", commentInfo, x+"px");
 			return false;
 		};
-		divConsColumn.appendChild(addConsComment);		
+		divAddConsComment.appendChild(addConsComment);		
+		if($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
+			divAddConsComment.style.top="16px";
+		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 	}
 
 	var addIcon = function(divParent, iconPath, divClass, iconClass, tooltipText) {		

@@ -545,8 +545,10 @@ a.ideaPage-link {
 }
 
 .procid-idea-comment-icon{
+	padding-right: 20px;
 width: 16px; 
 height: 16px;
+margin: 0;
 }
 
 .procid-idea-comment-img
@@ -565,20 +567,41 @@ width: 38px;
 height: auto;
 }
 
-.procid-idea-comment-header{
+.procid-idea-comment-row-header{
   display: inline-block;
-  vertical-align: top;
+  vertical-align: bottom;
   max-width: 25%;
+  margin-bottom: 15px;
 }
 
-.procid-idea-comment-columns {
+.procid-idea-comment-row-content{
   display: inline-block;
-  margin: 12px 0 0 15px;
+  vertical-align: bottom;
+  max-width: 100%;
+}
+
+.procid-addcomment-link-div {
+	display:inline-block;
+	vertical-align: bottom;
+	top: -1px;
+	position: relative;
+}
+
+.procid-idea-comment-row-body{
+  display: inline-block;
+  vertical-align: top;
   max-width: 75%;
 }
 
-.procid-idea-comment-column {
-  height: 14px;
+.procid-idea-comment-rows{
+  display: block;
+  margin: 12px 0 0 15px;
+  max-width: 100%;
+}
+
+.procid-idea-comment-row {
+  min-height: 30px;
+  overflow: visible;
   padding: 2px 0 2px 0;
   position:relative;
 }
@@ -589,7 +612,7 @@ height:5px;
 }
 
 .procid-idea-comment-div-icon{
-	margin: 14px 1px 14px 0;
+	margin: 0;
 	max-height: 150px;
 }
 
@@ -749,6 +772,7 @@ height:5px;
 	width: auto;
 	padding: 0 5px 0px 5px;
 	margin: 0 auto;
+	margin-top: -12px;
 	float:left;
 	position:relative;
 	left: -18px;
