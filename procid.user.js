@@ -1380,7 +1380,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divAddConsComment.appendChild(addConsComment);		
 		if($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddConsComment.style.top="16px";
-		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sidebar_divider_end.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 	}
 
 	var addIcon = function(divParent, iconPath, divClass, iconClass, tooltipText) {		
