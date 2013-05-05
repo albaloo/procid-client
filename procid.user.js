@@ -207,7 +207,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var currentScore = 0;
 			var currentTone = "";
 			var currentAdverage = 0;
-			var mediaTone = ;
+			var mediaTone = 0;
 			if(commentInput.value() != ""){
 			$.post(serverURL+"findSentiment", {"comment" : commentInput.value()}, function(data) {
 						currentScore = data.sentimentScore;
