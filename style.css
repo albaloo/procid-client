@@ -6,6 +6,109 @@
 	margin: 0 0 0 0;
 }
 
+#procid-dialog-overlay {
+    /* set it to fill the whil screen */
+    width:100%; 
+    height:100%;
+    
+    /* transparency for different browsers */
+    filter:alpha(opacity=0); 
+    -moz-opacity:0; 
+    -khtml-opacity: 0; 
+    opacity: 0; 
+    background:#000; 
+    /* make sure it appear behind the dialog box but above everything else */
+    position:fixed; 
+    top:0; left:0; 
+    z-index:3000; 
+    /* hide it by default */
+    display:none;
+}
+#procid-dialog-box {
+    
+    /* css3 drop shadow */
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    
+    /* css3 border radius */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    
+    background:#fff;
+    /* styling of the dialog box, i have a fixed dimension for this demo */ 
+    width:328px; 
+    height:110px;
+    
+    /* make sure it has the highest z-index */
+    position:fixed; 
+    z-index:5000; 
+    /* hide it by default */
+    display:none;
+}
+#procid-dialog-box .procid-dialog-content {
+    /* style the content */
+    text-align:left; 
+    padding:10px; 
+    margin:13px;
+    color:#666; 
+    font-family:arial;
+    font-size:13px; 
+}
+
+#procid-dialog-message{
+    /* style the content */
+    text-align:left; 
+    color:#666; 
+    font-family:arial;
+    font-size:13px; 
+}
+
+#procid-dialog-div-buttons{
+    margin:17px 10px 7px 53px;
+    display: block;
+}
+
+/*a.procid-dialog-cancel-button, a.procid-dialog-confirm-button {
+  
+    margin:10px auto 0 auto;
+    text-align:center;
+    display: block;
+    width:50px;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    
+  
+    background-color: #e33100;
+    
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    position: relative;
+    cursor: pointer;  
+}
+
+a.procid-dialog-cancel-button:hover, a.procid-dialog-confirm-button {
+    background-color: #c33100;    
+}*/
+/* extra styling */
+#dialog-box .dialog-content p {
+    font-weight:700; margin:0;
+}
+#dialog-box .dialog-content ul {
+    margin:10px 0 10px 20px; 
+    padding:0; 
+    height:50px;
+}
+
+
 #procid-left-panel-body {
 	width: 15.6%;
 	position: absolute;
@@ -692,7 +795,7 @@ height:5px;
 	z-index: 9;
 }
 
-.procid-new-comment-box .submit, .procid-new-comment-box .cancel{
+.procid-button-submit, .procid-button-cancel{
 	border: 1px solid #ccc;
 	color: white;
 	/*display:inline;*/
@@ -713,7 +816,7 @@ height:5px;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.procid-new-comment-box .submit{
+.procid-button-submit{
 	margin: 2px 7px 5px 10px;
 	background:#8dc53c;
 	background-color:#8dc53c;
@@ -721,7 +824,7 @@ height:5px;
 	background: -moz-linear-gradient(top,  #9fc848,  #96bc43);
 }
 
-.procid-new-comment-box .cancel{
+.procid-button-cancel{
 	margin: 2px 0px 5px 7px;
 	background:#6e6e6e;
 	background-color:#6e6e6e;
@@ -729,22 +832,22 @@ height:5px;
 	background: -moz-linear-gradient(top,  #888,  #575757);
 }
 
-.procid-new-comment-box .submit:hover {
+.procid-button-submit:hover {
 	background: #7cae38;
 	background: -webkit-gradient(linear, left top, left bottom, from(#7cae38), to(#73a134));
 	background: -moz-linear-gradient(top,  #7cae38,  #73a134);
 }
-.procid-new-comment-box .submit:active {
+.procid-button-submit:active {
 	color: #a9c08c;
 	background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
 	background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 }
-.procid-new-comment-box .cancel:hover {
+.procid-button-cancel:hover {
 	background: #616161;
 	background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));
 	background: -moz-linear-gradient(top,  #757575,  #4b4b4b);
 }
-.procid-new-comment-box .cancel:active {
+.procid-button-cancel:active {
 	color: #afafaf;
 	background: -webkit-gradient(linear, left top, left bottom, from(#575757), to(#888));
 	background: -moz-linear-gradient(top,  #575757,  #888);
@@ -844,9 +947,10 @@ height:5px;
 	width: 16px;
 }
 
-.procid-addcriteria-link {
+#procid-addcriteria-link {
 	margin: 10px 15px 7px 5px;
 	display: block;
+	color: #0678BE;
 }
 
 .procid-edit-criteria .arrow, .procid-edit-criteria .shadow {
