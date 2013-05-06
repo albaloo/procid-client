@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	//var serverURL='http://0.0.0.0:3000/';
-	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	var serverURL='http://0.0.0.0:3000/';
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -204,18 +204,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		checkTone.style.marginRight="5px";
 		checkTone.onclick = function(e){
 			var commentInput = document.getElementById('edit-comment');
-			var currentScore = 0;
-			var currentTone = "";
-			var currentAdverage = 0;
-			var mediaTone = 0;
-			if(commentInput.value() != ""){
-			$.post(serverURL+"findSentiment", {"comment" : commentInput.value()}, function(data) {
-						currentScore = data.sentimentScore;
-						currentTone = data.sentimentTone;
-						currentAverage = data.sentimentAverage;
-						console.log("addTag success");
+			if(commentInput.value != ""){
+			$.post(serverURL+"findNegativeWords", {"comment" : commentInput.value}, function(data) {
+						currentWords = data.highlightedWords;
+						console.log("findNegativeWords success: " + data.totalNumWords);
+						$.each(currentWords, function (){
+							console.log("word: " + this);
+						});
 					});
-				alert("tone: " + currentScore);
+				alert("tone: ");
 			}
 			return false;
 		};
