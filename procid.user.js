@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	var serverURL='http://0.0.0.0:3000/';
-	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	//var serverURL='http://0.0.0.0:3000/';
+	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -194,7 +194,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 //<form action="/comment/reply/331893"  accept-charset="UTF-8" method="post" id="comment-form" enctype="multipart/form-data">
 //<input type="submit" name="op" id="edit-submit" value="Save"  class="form-submit" />
 		var commentForm = document.getElementById('comment-form');
-		//commentForm.setAttribute('class', 'clear-block');
 				
 		var checkTone = document.createElement('input');
 		checkTone.setAttribute('class', 'form-submit');
@@ -207,7 +206,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			if(commentInput.value != ""){
 			$.post(serverURL+"findNegativeWords", {"comment" : commentInput.value}, function(data) {
 						currentWords = data.highlightedWords;
-						console.log("findNegativeWords success: " + data.totalNumWords);
+						console.log("findNegativeWords success: " + data.totalNumWords + " message: " + data.userMessage);
 						$.each(currentWords, function (){
 							console.log("word: " + this);
 						});
