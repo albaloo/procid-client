@@ -664,12 +664,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				if($("#procid-"+name+"-link").hasClass('unselected')){
 					$("#procid-"+name+"-link").attr('class', 'selected');
 					$("#procid-search-panel").css("display", "block");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
+					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
 				}
 				else{
 					$("#procid-"+name+"-link").attr('class', 'unselected');
 					$("#procid-search-panel").css("display", "none");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
+					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+
+					$("div[class='procid-comment'] a").map(function() {
+						$(this).parents(".procid-comment").css("display","block");
+					});
+					$("#procid-search-input-form").val("");
+
 				}
 				return false;
 		});
