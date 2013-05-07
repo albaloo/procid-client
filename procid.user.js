@@ -191,10 +191,47 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	//find and change the add comment box
 	var updateAddCommentBox = function() {
-//<form action="/comment/reply/331893"  accept-charset="UTF-8" method="post" id="comment-form" enctype="multipart/form-data">
-//<input type="submit" name="op" id="edit-submit" value="Save"  class="form-submit" />
 		var commentForm = document.getElementById('comment-form');
-				
+		var commentInput = document.getElementById('edit-comment');
+		var commentWrapper = document.getElementById('edit-comment-wrapper');
+		
+		var divRadioButtonHolder = document.createElement('div');
+		divRadioButtonHolder.setAttribute('class', 'procid-radio-button-holder');
+
+		var divRadioButtonDivider1 = document.createElement('div');
+		divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
+		divRadioButtonHolder.appendChild(divRadioButtonDivider1);
+
+		var radio1 = document.createElement('input');
+		radio1.setAttribute('class', 'procid-radio-button');
+		radio1.setAttribute('type', 'radio');
+		radio1.setAttribute('name', 'radio-1-set');
+		radio1.setAttribute('value', 'This message proposes an idea.');
+		divRadioButtonDivider1.appendChild(radio1);
+
+		var radioLabel1 = document.createElement('label');
+		radioLabel1.setAttribute('class', 'procid-radio-button-label');
+		radioLabel1.innerHTML='This message proposes an idea.';
+		divRadioButtonDivider1.appendChild(radioLabel1);
+
+		var divRadioButtonDivider2 = document.createElement('div');
+		divRadioButtonDivider2.setAttribute('class', 'procid-radio-button-divider');
+		divRadioButtonHolder.appendChild(divRadioButtonDivider2);
+
+		var radio2 = document.createElement('input');
+		radio2.setAttribute('class', 'procid-radio-button');
+		radio2.setAttribute('type', 'radio');
+		radio2.setAttribute('name', 'radio-1-set');
+		radio2.setAttribute('value', 'This message referes to an idea.');
+		divRadioButtonDivider2.appendChild(radio2);
+
+		var radioLabel2 = document.createElement('label');
+		radioLabel2.setAttribute('class', 'procid-radio-button-label');
+		radioLabel2.innerHTML='This message referes to an idea.';
+		divRadioButtonDivider2.appendChild(radioLabel2);
+
+		$(commentWrapper).after(divRadioButtonHolder);
+		
 		var checkTone = document.createElement('input');
 		checkTone.setAttribute('class', 'form-submit');
 		checkTone.setAttribute('type', 'submit');
@@ -202,24 +239,93 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		checkTone.setAttribute('name', 'submit');
 		checkTone.style.marginRight="5px";
 		checkTone.onclick = function(e){
-			var commentInput = document.getElementById('edit-comment');
+			var message = "";
+			var highlightedWords = [];
+			var commentContent = "";
 			if(commentInput.value != ""){
-			$.post(serverURL+"findNegativeWords", {"comment" : commentInput.value}, function(data) {
-						currentWords = data.highlightedWords;
+				$.post(serverURL+"findNegativeWords", {"comment" : commentInput.value}, function(data) {
 						console.log("findNegativeWords success: " + data.totalNumWords + " message: " + data.userMessage);
-						$.each(currentWords, function (){
-							console.log("word: " + this);
-						});
+						message = data.userMessage;
+						highlightedWords = data.highlightedWords;
+						commentContent = commentInput.value;
 					});
-				alert("tone: ");
+				sentimentDialogPopup(message, highlightedWords, commentContent);
 			}
 			return false;
 		};
 
 		var saveComment = document.getElementById('edit-submit');
 		$(saveComment).before(checkTone);
-
 	}
+
+	var sentimentDialogPopup = function (message, highlightedWords, comment) {
+		addSentimentDialog(comment, highlightedWords);
+		// get the screen height and width  
+		var maskHeight = $(document).height();  
+		var windowHeight = $(window).height();  
+		var maskWidth = $(window).width();
+    	
+		// calculate the values for center alignment
+		var dialogTop =  (windowHeight/2) - ($('#procid-dialog-box').height());  
+		var dialogLeft = (maskWidth/2) - ($('#procid-dialog-box').width()/2); 
+    
+		// assign values to the overlay and dialog box
+		$('#procid-dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
+		$('#procid-dialog-box').css({top:dialogTop, left:dialogLeft, height:"auto"}).show();
+
+		$('.procid-dialog-content .procid-button-submit').click(function () {        
+		        $('#procid-dialog-overlay, #procid-dialog-box').hide();        
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+			document.body.removeChild(document.getElementById("procid-dialog-box"));
+			return false;
+		});				
+
+		// display the message
+		$('#procid-dialog-message').html(message);          
+	}
+
+	var addSentimentDialog = function(comment, highlightedWords){
+		var dialogOverlay = document.createElement('div');
+		dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
+	
+		var dialogBox = document.createElement('div');
+		dialogBox.setAttribute('id', 'procid-dialog-box');
+
+		var dialogContent = document.createElement('div');
+		dialogContent.setAttribute('class', 'procid-dialog-content');
+		dialogBox.appendChild(dialogContent);
+
+		var dialogMessage = document.createElement('div');
+		dialogMessage.setAttribute('id', 'procid-dialog-message');
+		dialogContent.appendChild(dialogMessage);
+
+		var currentComment = comment+"";
+		$.each(highlightedWords, function(){
+			var text = ""+this;
+			currentComment = currentComment.replace(text, "<span class='procid-highlighted-text'>"+text+"</span>");
+		});
+		console.log("currentComment: " + currentComment);
+		var dialogHighlightedComment = document.createElement('div');
+		dialogHighlightedComment.setAttribute('id', 'procid-dialog-highlighted-comment');
+		dialogHighlightedComment.innerHTML = currentComment;
+		dialogContent.appendChild(dialogHighlightedComment);
+
+		var divButtons = document.createElement('div');
+		divButtons.setAttribute('id', 'procid-dialog-div-buttons');
+		dialogContent.appendChild(divButtons);
+
+		var dialogSubmit = document.createElement('input');
+		dialogSubmit.setAttribute('class', 'procid-button-submit');
+		dialogSubmit.setAttribute('type', 'submit');
+		dialogSubmit.setAttribute('value', 'OK');
+		dialogSubmit.setAttribute('name', 'submit');
+		divButtons.appendChild(dialogSubmit);
+
+		$('body').prepend(dialogOverlay);
+		$('body').prepend(dialogBox);
+	}
+
+	
 
 	var addConfirmationDialog = function(){
 		var dialogOverlay = document.createElement('div');
