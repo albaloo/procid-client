@@ -568,7 +568,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createLens('mustread', 'procid-lenses', 'View Must Read Comments');
 		createLens('idea', 'procid-lenses', 'View Ideas');
 		createLens('conversation', 'procid-lenses', 'View Conversation Comments');
-		createLens('expert', 'procid-lenses', 'View Comments Posted by Experienced');
+		createLens('expert', 'procid-lenses', 'View Comments Posted by Experienced Participants');
 		createLens('patch', 'procid-lenses', 'View Patches');
 		createLens('search', 'procid-lenses', 'Search');
 		$("#procid-search-link").css("border-image", "url("+ ABSOLUTEPATH +"/images/icon-border-left.png) 2 5 round");
@@ -1377,8 +1377,28 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		link1.setAttribute('class', 'ideaPage-link');
 		link1.innerHTML = commentInfo.title + " " +commentInfo.author;
 
+		var contentString = "<strong style='color: #29abe2;'>" + commentInfo.title + "</strong> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
+		var clicked = false;
+		var currentBox = "";
 		var divIdeaImage = document.createElement('div');
 		divIdeaImage.setAttribute('id', 'procid-idea-div-image');
+		divIdeaImage.onclick = function(e){
+			if(!clicked){
+				clicked = true;
+				if(currentBox == ""){
+					var x = getOffset(this).left - getOffset(this.parentNode).left + 60;
+					//console.log("y: " + y + " parent y: " + getOffset(this.parentNode.parentNode).top);
+					currentBox = addCommentContentBox(this, contentString, x+"px", "-65px", "relative"); 			
+				}
+			}else{
+				clicked = false;
+				if(currentBox != ""){
+					removeCommentContentBox(this, currentBox);
+					currentBox = "";
+				}
+			}
+
+		};
 
 		if (commentInfo.image != " ") {//image attachment
 			var image1 = document.createElement('img');
@@ -1461,15 +1481,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var divComments = document.createElement('div');
 		divComments.setAttribute('class', 'procid-idea-block-comments');
 		divIdeaBlock.appendChild(divComments);
-
-		/*var divCommentHeader = document.createElement('div');
-		divCommentHeader.setAttribute('class', 'procid-idea-comment-header');
-		divComments.appendChild(divCommentHeader);
-		
-		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Positive Comments");
-		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/neutral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Neutral Comments");
-		addIcon(divCommentHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Constructive Comments");
-*/
 
 		var divCommentRows = document.createElement('div');
 		divCommentRows.setAttribute('class', 'procid-idea-comment-rows');
@@ -1669,7 +1680,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					if(currentBox == ""){
 						var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
 						//console.log("y: " + y + " parent y: " + getOffset(this.parentNode.parentNode).top);
-						currentBox = addCommentContentBox(this, content, x+"px", "50px"); 			
+						currentBox = addCommentContentBox(this, content, x+"px", "50px", ""); 			
 					}
 				}else{
 					clicked = false;
@@ -1682,11 +1693,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 	}
 
-	var addCommentContentBox = function(image, content, arrowPosition, topPosition){
+	var addCommentContentBox = function(image, content, arrowPosition, topPosition, positionStyle){
 		var parent = image.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "250px", arrowPosition, "1px");
 		divNewComment.style.top=topPosition;
-		//divNewComment.style.position="relative";
+		if(positionStyle != "")
+			divNewComment.style.position=positionStyle;
 		return divNewComment;
 	}
 
