@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	//var serverURL='http://0.0.0.0:3000/';
-	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	var serverURL='http://0.0.0.0:3000/';
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -1147,7 +1147,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			titleInput.setAttribute('class', 'titleInput');
 			titleInput.setAttribute('type', 'text');
 			titleInput.setAttribute('name', 'labelInput');
-			titleInput.value = tempNewCriteria.title;
+			titleInput.placeholder = tempNewCriteria.title;
 			tableC1.appendChild(titleInput);
 			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
 				tempCriteria[index].title = this.value; 
@@ -1161,7 +1161,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			description.setAttribute('class', 'descriptionInput');
 			description.setAttribute('type', 'text');
 			description.setAttribute('name', 'description');
-			description.value = tempNewCriteria.description;
+			description.placeholder = tempNewCriteria.description;
 			$(description).keyup(function() {
 				tempCriteria[index].description = this.value;
 			});
@@ -2117,10 +2117,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					return color;	
 			})
 			.attr("stroke-width", function(d){
-				//if(d.currentCriteriaStatus.comment!="")
 					return "0.25";
-				//else
-				//	return "0.25";	
 			})
 			.attr("style", "cursor: pointer")
 			.attr("filter", "url(#procid-circle-filter)")
@@ -2154,7 +2151,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 			}).on("dragend", function(d) {
 				if(this.__originx != x(d.currentCriteriaStatus.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30));
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
@@ -2197,7 +2194,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	}
 
-	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle, currentPosition){
+	var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle, currentPosition, d){
 
 		var satisfaction = " satisfies";
 		if(criterion_track.value >= 2 && criterion_track.value <= 4 )
@@ -2209,14 +2206,24 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
-				//TODO: the user name should be firguerd out right.
+				var newCommentTitle="";
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function(data) {
+					newCommentTitle=data.newCommentTitle;
 					console.log("updateCriteriaStatus success");
 				});
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
 				updateCriteriaCircleStyle(criterion_track.value, circle);
+
+				if(d.currentCriteriaStatus.author === currentUser){
+					d.currentCriteriaStatus.comment = divNewCommentBoxInput.value;
+					d.currentCriteriaStatus.value = criterion_track.value;
+					//		id : currentCriteriaStatus.id,
+					//		title : commentInfos[i].title,
+					//		author: currentCriteriaStatus.author,
+					d.currentCriteriaStatus.statusCommentTitle = newCommentTitle;
+				}
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
