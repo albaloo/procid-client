@@ -2092,39 +2092,47 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			})
 		.attr("y2", "28")
 		.attr("stroke", function(d){
-			if(d.currentCriteriaStatus.value < 3)
+			if(d.currentCriteriaStatus.value ==3)
+				return "#999999";
+			else if(d.currentCriteriaStatus.value < 3)
 				return "#29abe2";
 			else
 				return "#8dc53c";	
 			})
 		.attr("stroke-width", '3');
 				
-				
+		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:circle")
 			.attr("class", "procid-selector-circle-default")
 			.attr("fill", function(d){
 				if(d.currentCriteriaStatus.comment === "")
 					return "white";
-				if(d.currentCriteriaStatus.value < 3)
+				if(d.currentCriteriaStatus.value == 3)
+					return "#F0F0F0";
+				else if(d.currentCriteriaStatus.value < 3)
 					return "#29abe2";
 				else
 					return "#8dc53c";	
 			})
 			.attr("stroke", function(d){
-				if(d.currentCriteriaStatus.comment!="")
+				if(d.currentCriteriaStatus.comment=="")
 					return "white";
+				else if(d.currentCriteriaStatus.value ==3)
+					return "#999999";
 				else
 					return color;	
 			})
 			.attr("stroke-width", function(d){
-					return "0.25";
-			})
+					if(d.currentCriteriaStatus.value ==3)
+						return "1.5";
+					else
+						return "0.25";})
 			.attr("style", "cursor: pointer")
 			.attr("filter", "url(#procid-circle-filter)")
 			.attr("cy", "30")
 			.attr("cx", function(d) {
 				return x(d.currentCriteriaStatus.value);
-			}).attr("r", "8")
+			}).attr("r", "7")
 			.on("mouseover", function(d) {
 				d3.select(this).style("fill-opacity", .9);
 				if(d.currentCriteriaStatus.comment!="")
@@ -2155,7 +2163,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
-
+		
 
 		var index = 0;
 		var currentSelectors = d3.selectAll(".selector").each(function() { 
@@ -2165,16 +2173,24 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
 				.attr("class", "procid-selector-circle-history")
 				.attr("fill", function(d){
-					if(d.value < 3)
+					if(value == 3)
+						return "#F0F0F0";
+					else if(d.value < 3)
 						return "#29abe2";
 					else
 						return "#8dc53c";	
 				}).attr("stroke", function(d){
 					if(d.comment!="")
 						return "white";
+					else if(d.value ==3)
+						return "#999999";
 					else
 						return color;	
-				}).attr("stroke-width", "0.25")
+				}).attr("stroke-width", function(d){
+					if(d.value ==3)
+						return "1.5";
+					else
+						return "0.25";})
 				.attr("style", "cursor: pointer; display: none;")
 				.attr("filter", "url(#procid-circle-filter)")
 				.attr("cy", "30")
@@ -2201,7 +2217,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			satisfaction = " somewhat satisfies"
 		else if(criterion_track.value < 2)
 			satisfaction = " doesn't satisfy"				
-		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
+		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
 
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
@@ -2270,17 +2286,33 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		d.value = value;		
 		d3.select(circle).attr("cx", cx);
 		d3.select(circle).attr("fill", function(){
-			if(value < 3)
+			if(value == 0 && d.author == "")
+				return "white";
+			if(value == 3)
+				return "#F0F0F0";
+			else if(value < 3)
 				return "#29abe2";
 			else
 				return "#8dc53c";	
-			});
+			})
+			.attr("stroke", function(){
+				if(value ==3)
+					return "#999999";
+				else
+					return "white";})
+			.attr("stroke-width", function(){
+				if(value ==3)
+					return "1.5";
+				else
+					return "0.25";});
 		
 		//updating line position
 		var identifier="#procid-cline-"+d.title.substr(1)+"-"+d.id;
 		d3.select(identifier).attr("x2", cx);
 		d3.select(identifier).attr("stroke", function(){
-			if(value < 3)
+			if(value ==3)
+				return "#999999";
+			else if(value < 3)
 				return "#29abe2";
 			else
 				return "#8dc53c";	
@@ -2290,13 +2322,23 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var updateCriteriaCircleStyle = function(value, circle){
 		d3.select(circle).attr("fill", function(){
-				if(value < 3)
+				if(value == 3)
+					return "#F0F0F0";
+				else if(value < 3)
 					return "#29abe2";
 				else
 					return "#8dc53c";	
 			})
-			.attr("stroke", "white")
-			.attr("stroke-width", '0.25');
+			.attr("stroke", function(){
+				if(value ==3)
+					return "#999999";
+				else
+					return "white";})
+			.attr("stroke-width", function(){
+				if(value ==3)
+					return "1.5";
+				else
+					return "0.25";});
 	}
 
 	var addCriteriaStatusCommentBox = function(comment, author, statusCommentTitle, circle, arrowPosition){
