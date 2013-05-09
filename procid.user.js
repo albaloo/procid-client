@@ -2216,14 +2216,38 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				currentElement.removeChild(divNewComment);
 				updateCriteriaCircleStyle(criterion_track.value, circle);
 
-				if(d.currentCriteriaStatus.author === currentUser){
-					d.currentCriteriaStatus.comment = divNewCommentBoxInput.value;
-					d.currentCriteriaStatus.value = criterion_track.value;
-					//		id : currentCriteriaStatus.id,
-					//		title : commentInfos[i].title,
-					//		author: currentCriteriaStatus.author,
-					d.currentCriteriaStatus.statusCommentTitle = newCommentTitle;
-				}
+				var newCriteriaStatus = {
+							value : criterion_track.value,
+							comment : divNewCommentBoxInput.value,
+							id : criterion_track.id,
+							title : criterion_track.title,
+							author: currentUser,
+							statusCommentTitle: newCommentTitle,
+						};
+
+				if(d.currentCriteriaStatus.author != currentUser && d.currentCriteriaStatus.author != ""){
+					var index = -1;
+					for(var i=0; i<d.previousCriteriaStatuses.length-1; i++) {
+						if(d.previousCriteriaStatuses[i].author === currentUser) {
+							index = i;
+						}
+					}					
+					if(index > -1){
+						var removed = d.previousCriteriaStatuses.splice(index, 1);
+					}
+
+					var prevCriteriaStatus = {
+						value : d.currentCriteriaStatus.value,
+						comment : d.currentCriteriaStatus.comment,
+						id : d.currentCriteriaStatus.id,
+						title : d.currentCriteriaStatus.title,
+						author: d.currentCriteriaStatus.author,
+						statusCommentTitle: d.currentCriteriaStatus.statusCommentTitle,
+					};
+					d.previousCriteriaStatuses.push(prevCriteriaStatus);
+				}	
+
+				d.currentCriteriaStatus = newCriteriaStatus;
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
