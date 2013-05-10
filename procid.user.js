@@ -130,6 +130,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var currentUserInfo = $("#userinfo a").first().text();
 		currentUser = currentUserInfo.substr(13);
 
+		if(currentUser == "")
+			currentUser = "Anonymous";
+
 		//Program Starts From here
 		addCSSToHeader();
 
@@ -1495,7 +1498,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divProsRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
 		divProsRow.appendChild(divProsRowHeader);
 		
-		addIcon(divProsRowHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Positive Comments");
+		addIcon(divProsRowHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Supportive Comments");
 
 		var divProsRowBody = document.createElement('div');
 		divProsRowBody.setAttribute('class', 'procid-idea-comment-row-body');
@@ -1905,7 +1908,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				createEditCriteriaBox($(".procid-ideaPage-header")[0]);
 				if(criteria.length != 0)
 					$(".procid-idea-block-criteria").remove(".procid-edit-criteria-link");
-				return false;
+				//return false;
 			};				
 		}
 
@@ -2173,7 +2176,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
 				.attr("class", "procid-selector-circle-history")
 				.attr("fill", function(d){
-					if(value == 3)
+					if(d.value == 3)
 						return "#F0F0F0";
 					else if(d.value < 3)
 						return "#29abe2";
@@ -2232,6 +2235,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				currentElement.removeChild(divNewComment);
 				updateCriteriaCircleStyle(criterion_track.value, circle);
 
+				//update the commentbar
+				updateCommentsSection(divNewCommentBoxInput.value, currentUser, newCommentTitle);		
+				
+				//update the status bar
 				var newCriteriaStatus = {
 							value : criterion_track.value,
 							comment : divNewCommentBoxInput.value,
@@ -2341,6 +2348,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					return "0.25";});
 	}
 
+	var updateCommentsSection = function(currentCommencomment, author, title){	
+		//TODO: write this function
+
+	}
+				
+
 	var addCriteriaStatusCommentBox = function(comment, author, statusCommentTitle, circle, arrowPosition){
 
 		var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
@@ -2419,6 +2432,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 	}
 
+	var selectedInviteLens = "";
+	var selectedImagePath = "";
+
 	var createInviteLense = function(name, parent, tooltipText, imagePath){
 		$('<a />').attr({
 			id : 'procid-invite-' + name + '-link',
@@ -2442,9 +2458,22 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 			return false;
 		});
-		else
+		else{
+
 			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
 			if ($("img[id='procid-invite-"+name+"-image']").attr('src') === imagePath + '-1.png') {
+
+				if($(".procid-author-description-selected").length>0){
+					//empty the previous selection
+					$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
+					$(".procid-author-description-selected").map(function(){
+						$(this).html($(this).text());
+					});
+					$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
+					console.log("selectedInviteLens: " + selectedInviteLens);
+					$("img[id='procid-invite-"+selectedInviteLens+"-image']").attr('src', selectedImagePath + '-1.png');
+				}
+
 				$("div[id=procid-invite-page-wrapper] .procid-invite-block").sortElements(function(a, b){
 					var strA=$(a).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
     					var strB=$(b).children(".procid-author-description-unselected")[0].innerHTML.toLowerCase();
@@ -2468,6 +2497,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				});
 				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
 				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png');
+				selectedInviteLens = name;
+				selectedImagePath = imagePath;
+
 			} else {
 				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
 				$(".procid-author-description-selected").map(function(){
@@ -2475,10 +2507,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				});
 				$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
 				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
+				//selectedInviteLens = "";
 			}
 			return false;
 
-		});
+			});
+		}
 
 		$('<img />').attr({
 			id : 'procid-invite-' + name + '-image',
@@ -2516,6 +2550,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
 		}else{//recency
+
+			if(aStrings[3].indexOf("not recently in a usability thread")>0)
+				return 1;
+			else if(bStrings[3].indexOf("not recently in a usability thread")>0)
+				return -1;
+
 			var numA = parseInt(aStrings[3].match(/\d+/)[0], 10);
 			var aSubStrings = aStrings[3].split(" ");
 			var date = aSubStrings[aSubStrings.length-2];
