@@ -238,7 +238,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var checkTone = document.createElement('input');
 		checkTone.setAttribute('class', 'form-submit');
 		checkTone.setAttribute('type', 'submit');
-		checkTone.setAttribute('value', 'Check');
+		checkTone.setAttribute('value', 'Check Your Comment');
 		checkTone.setAttribute('name', 'submit');
 		checkTone.style.marginRight="5px";
 		checkTone.onclick = function(e){
@@ -276,7 +276,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$('#procid-dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
 		$('#procid-dialog-box').css({top:dialogTop, left:dialogLeft, height:"auto"}).show();
 
-		$('.procid-dialog-content .procid-button-submit').click(function () {        
+		$('.procid-dialog-content .procid-button-ok').click(function () {        
 		        $('#procid-dialog-overlay, #procid-dialog-box').hide();        
 			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 			document.body.removeChild(document.getElementById("procid-dialog-box"));
@@ -298,27 +298,30 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		dialogContent.setAttribute('class', 'procid-dialog-content');
 		dialogBox.appendChild(dialogContent);
 
-		var dialogMessage = document.createElement('div');
-		dialogMessage.setAttribute('id', 'procid-dialog-message');
-		dialogContent.appendChild(dialogMessage);
-
 		var currentComment = comment+"";
 		$.each(highlightedWords, function(){
 			var text = ""+this;
 			currentComment = currentComment.replace(text, "<span class='procid-highlighted-text'>"+text+"</span>");
+			console.log("highlightedword: " + text);
 		});
 		console.log("currentComment: " + currentComment);
+
 		var dialogHighlightedComment = document.createElement('div');
 		dialogHighlightedComment.setAttribute('id', 'procid-dialog-highlighted-comment');
 		dialogHighlightedComment.innerHTML = currentComment;
 		dialogContent.appendChild(dialogHighlightedComment);
 
+		var dialogMessage = document.createElement('div');
+		dialogMessage.setAttribute('id', 'procid-dialog-message');
+		dialogContent.appendChild(dialogMessage);
+
+
 		var divButtons = document.createElement('div');
-		divButtons.setAttribute('id', 'procid-dialog-div-buttons');
+		divButtons.setAttribute('id', 'procid-dialog-div-ok-button');
 		dialogContent.appendChild(divButtons);
 
 		var dialogSubmit = document.createElement('input');
-		dialogSubmit.setAttribute('class', 'procid-button-submit');
+		dialogSubmit.setAttribute('class', 'procid-button-ok');
 		dialogSubmit.setAttribute('type', 'submit');
 		dialogSubmit.setAttribute('value', 'OK');
 		dialogSubmit.setAttribute('name', 'submit');
@@ -2014,28 +2017,32 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		d3.selectAll(".selector").append("svg:defs").attr("class", "svgdefs");
 		d3.selectAll(".svgdefs").append("svg:filter")
 		.attr("id", "procid-circle-filter")
+		//.attr("height", "130%");	
     		.attr("x", "-20%")
     		.attr("y", "-20%")
     		.attr("width", "200%")
-    		.attr("height", "200%");	
-		
-		d3.selectAll("#procid-circle-filter").append("svg:feOffset")
-		.attr("dx", "1")
-    		.attr("dy", "2")
-    		.attr("in", "SourceAlpha")
-    		.attr("result", "offOut");
+    		.attr("height", "200%");			
 
 		d3.selectAll("#procid-circle-filter").append("svg:feGaussianBlur")
-		.attr("result", "blurOut")
-    		.attr("in", "offOut")
+		//.attr("result", "blurOut")
+    		//.attr("in", "offOut")
+		.attr("in", "SourceAlpha")
     		.attr("stdDeviation", "3");
 
+		d3.selectAll("#procid-circle-filter").append("svg:feOffset")
+		.attr("dx", "2")
+    		.attr("dy", "2")
+    		//.attr("in", "SourceAlpha")
+		.attr("result", "offsetblur");
+    		//.attr("result", "offOut");
+
+		
 		// <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-		d3.selectAll("#procid-circle-filter").append("svg:feComponentTransfer").attr("class", "svgcomponentTransfer");
+		/*d3.selectAll("#procid-circle-filter").append("svg:feComponentTransfer").attr("class", "svgcomponentTransfer");
 		d3.selectAll(".svgcomponentTransfer").append("svg:feFuncA")		
 		.attr("type", "linear")
     		.attr("slope", "4.2");
-
+*/
 		d3.selectAll("#procid-circle-filter").append("svg:feMerge").attr("class", "svgfemerge");
 		d3.selectAll(".svgfemerge").append("svg:feMergeNode")		
 		.attr("in", "SourceGraphic");
@@ -2153,7 +2160,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				this.__originx = x(d.currentCriteriaStatus.value);
 				this.__originValue = d.currentCriteriaStatus.value;
 				if(this.commentBox != null)
-					removeCommentBox(this.parentNode.parentNode, this.commentBox);
+					removeCommentBox(this.parentNode.parentNode.parentNode, this.commentBox);
 			}).on("drag", function(d) {
 				var firstNum = x.range()[0];
 				var diff = x.range()[1] - firstNum;				
@@ -2166,7 +2173,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 			}).on("dragend", function(d) {
 				if(this.__originx != x(d.currentCriteriaStatus.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
@@ -2293,7 +2300,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}	
 
 	var setCaretPosition = function(elem, caretPos) {
-		console.log("here????????");
 		if (typeof elem.selectionStart == "number") {
 		        elem.selectionStart = elem.selectionEnd = elem.value.length;
 		}else if (typeof elem.createTextRange != "undefined") {
@@ -2302,21 +2308,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			range.collapse(false);
 			range.select();
 		}
-		/*if(elem != null) {
-			if(elem.createTextRange) {
-				var range = elem.createTextRange();
-				range.move('character', caretPos);
-				range.select();
-			}
-			else {
-				if(elem.selectionStart) {
-					elem.focus();
-					elem.setSelectionRange(caretPos, caretPos);
-				}
-				else
-					elem.focus();
-			}
-		}*/	
 	}
 
 	var removeCommentBox = function(parent, currentCommentBox){
@@ -2394,14 +2385,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
 
-		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
+		var parent = circle.parentNode.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px");
 
 		return divNewComment;
 	}
 
 	var removeCriteriaStatusCommentBox = function (prevCommentBox, circle){
-		var parent = circle.parentNode.parentNode;
+		var parent = circle.parentNode.parentNode.parentNode;
 		parent.removeChild(prevCommentBox);
 	}
 

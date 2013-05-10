@@ -66,7 +66,7 @@
 #procid-dialog-highlighted-comment{
    margin-top:10px;
    text-align:left; 
-    color:#666; 
+    color:#222; 
     font-family:arial;
     font-size:13px;
 }
@@ -84,41 +84,48 @@
     display: block;
 }
 
-.procid-button-ok {
-    /* styles for button */
-    margin:10px auto 0 auto;
-    text-align:center;
+#procid-dialog-div-ok-button{
+    margin:17px 10px 7px 53px;
     display: block;
-    width:50px;
-    padding: 5px 10px 6px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    line-height: 1;
-    
-    /* button color */
-    background-color: #8dc53c;
-    
-    /* css3 implementation :) */
-    /* rounded corner */
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    
-    /* drop shadow */
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    
-    /* text shaow */
-    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-    border-bottom: 1px solid rgba(0,0,0,0.25);
-    position: relative;
-    cursor: pointer;
-    
+}
+
+.procid-button-ok {
+  	border: 1px solid #ccc;
+	color: white;
+	/*display:inline;*/
+	float:left;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 18px;
+	padding:0px 10px 4px;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+	vertical-align: middle;
+	cursor: pointer;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
+	margin: 2px 7px 5px 10px;
+	background:#8dc53c;
+	background-color:#8dc53c;
+	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
+	background: -moz-linear-gradient(top,  #9fc848,  #96bc43);
 }
 
 .procid-button-ok:hover {
-    background-color: #c33100;    
+	background: #7cae38;
+	background: -webkit-gradient(linear, left top, left bottom, from(#7cae38), to(#73a134));
+	background: -moz-linear-gradient(top,  #7cae38,  #73a134);
 }
+.procid-button-ok:active {
+	color: #a9c08c;
+	background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
+	background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
+}
+
 
 /* extra styling */
 #dialog-box .dialog-content p {
@@ -480,11 +487,12 @@ a[id='procid-Criteria -label'] {
 
 .procid-idea-block-criteria {
 	display: inline-block;
-	margin: 30px 0 3px 6px;
+	margin: 30px 0 0 6px;
 	text-align: center;
-	height: 160px;
+	height: 163px;
 	vertical-align: top;
 	width: 275px;
+	overflow-y:auto;
 }
 
 .procid-idea-block-criteria-expanded {
@@ -547,7 +555,7 @@ a.ideaPage-link {
 	/*vertical-align: middle;*/
 	background: #E6E6e6;
 	text-overflow: ellipsis;
-	overflow: scroll;
+	overflow: auto;
 	overflow-x: hidden;
 	/*clear:left;*/
 	-webkit-border-radius: 3px;
@@ -1098,13 +1106,13 @@ height:5px;
 	color: #1885c8;
 	font-size: 14px;
 	font-weight: bold;
-	width: 15%;
+	width: 19%;
 	text-align: left;
 }
 
 .procid-author-description-unselected {
 	margin: 5px 0 5px 6px;
-	width: 60%;
+	width: 55%;
 	text-align: left;
 	font-style: italic;
 	float: left;
@@ -1117,13 +1125,13 @@ height:5px;
 	color: #1885c8;
 	font-size: 14px;
 	font-weight: bold;
-	width: 15%;
+	width: 19%;
 	text-align: left;
 }
 
 .procid-author-description-selected {
 	margin: 5px 0 5px 6px;
-	width: 60%;
+	width: 55%;
 	text-align: left;
 	font-style: italic;
 	float: left;
