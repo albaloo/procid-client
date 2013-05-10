@@ -1762,6 +1762,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", arrowPosition, "1px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
+		$(divNewCommentBoxInput).focus(function(){
+			setCaretPosition(divNewCommentBoxInput, divNewCommentBoxInput.value.length);
+		});
+		$(divNewCommentBoxInput).focus();
 
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				$.post(serverURL+"addNewComment", {
@@ -2224,6 +2228,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px");
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
+		$(divNewCommentBoxInput).focus(function(){
+			setCaretPosition(divNewCommentBoxInput, divNewCommentBoxInput.value.length);
+		});
+		$(divNewCommentBoxInput).focus();
+
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				var newCommentTitle="";
 				$.post(serverURL+"updateCriteriaStatus", {
@@ -2282,6 +2291,33 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		return divNewComment;
 	}	
+
+	var setCaretPosition = function(elem, caretPos) {
+		console.log("here????????");
+		if (typeof elem.selectionStart == "number") {
+		        elem.selectionStart = elem.selectionEnd = elem.value.length;
+		}else if (typeof elem.createTextRange != "undefined") {
+			elem.focus();
+			var range = elem.createTextRange();
+			range.collapse(false);
+			range.select();
+		}
+		/*if(elem != null) {
+			if(elem.createTextRange) {
+				var range = elem.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			}
+			else {
+				if(elem.selectionStart) {
+					elem.focus();
+					elem.setSelectionRange(caretPos, caretPos);
+				}
+				else
+					elem.focus();
+			}
+		}*/	
+	}
 
 	var removeCommentBox = function(parent, currentCommentBox){
 		if($(parent).hasClass(".procid-new-comment"))
