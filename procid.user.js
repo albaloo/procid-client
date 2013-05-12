@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
-	//var serverURL='http://0.0.0.0:3000/';
-	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	var serverURL='http://0.0.0.0:3000/';
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -886,6 +886,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			initTags = [];
 			if(array_patches[i]>0)
 				initTags.push("patch");
+			if(!(array_title[i].indexOf(".") > 0)){
 			var comment = {
 				title : array_title[i],
 				link : array_links[i],
@@ -904,6 +905,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			};
 			
 			commentInfos.push(comment);
+			}
 		}
 		return commentInfos;
 	}
@@ -1281,6 +1283,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			$.each(criteriaToBeDeleted, function(){
 				deleteCriteria(this);
+				//TODO: delete the related comments
 			});
 				if(changed)
 					updateCriteriaStatusList();
@@ -1653,7 +1656,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		if($(divProsRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddProsComment.style.top="16px";
 
-//Adding the divider
+		//Adding the divider
 		addIcon(divProsRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 
 		var divAddNeutralComment = document.createElement('div');
@@ -1675,7 +1678,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		if($(divNeutralRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddNeutralComment.style.top="16px";
 
-//Adding the divider
+		//Adding the divider
 		addIcon(divNeutralRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 
 		var divAddConsComment = document.createElement('div');
@@ -1801,15 +1804,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}	
 
 	
-	var findComment = function(number){
-		
+	var findCommentInfoIndex = function(number){	
 		var result = $.grep(commentInfos, function(e) {
 			return e.title == number;
 		});
 		if (result.length == 0)
 			return -1;
 		else
-			return result[0];
+			return commentInfos.indexOf(result[0]);
 	}
 
 
@@ -1830,11 +1832,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				$.post(serverURL+"addNewComment", {
-				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function(data) {
 					console.log("addNewComment success");
+
+					//add the comment to the current commentInfo list
+					addNewComment(data.title, data.link, currentUser, divNewCommentBoxInput.value, tone, data.commented_at, data.summary);
+					addCommentToIdea(commentInfo, data.title, data.link, divNewCommentBoxInput.value, tone, currentUser);
+				
 				});
-				//TODO: add the comment to the right column/row
-				//TODO: add the comment to the currentCommentList
+				
+				updateCommentsList(commentInfo);
+
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
 			});
@@ -1844,6 +1852,38 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			});
 
 		return divNewComment;
+	}
+
+	var addNewComment = function(title_, link_, author_, content_, tone_, time_, summary_){
+		var comment = {
+				title : title_,
+				link : link_,
+				author : author_,
+				authorLink : "",
+				content : content_,
+				tags : [],
+				status : "Ongoing",
+				comments : [],
+				idea : "#1",
+				criteriaStatuses : [],
+				tone: tone_,
+				image : "",
+				commented_at: time_,
+				summary: summary_
+			};
+
+		commentInfos.push(comment);
+	}
+
+	var addCommentToIdea = function(commentInfo, title_, link_, content_, tone_, author_){
+		var relatedComment = {
+			title: title_,
+			link: link_,
+			content: content_,
+			tone: tone_,
+			author: author_
+		}
+		commentInfo.comments.push(relatedComment);
 	}
 
 	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft){
@@ -1901,6 +1941,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		return divNewComment;
 	}	
 	
+
+	var updateCommentsList = function(commentInfo){
+		var divIdeaBlock = document.getElementById('procid-idea-block-'+commentInfo.title.substr(1));
+		divIdeaBlock.removeChild($(divIdeaBlock).children('.procid-idea-block-comments')[0]);
+		createIdeaComments(divIdeaBlock, commentInfo);		
+	}
+
 
 /*******IdeaPage-Criteria List Manipulation*********/
 
@@ -2053,6 +2100,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var addCriteriaStatus = function(commentInfo, value_, comment_, id_, author_, statusCommentTitle_) {
+		var found = false;
 		var criteriaStatus = {
 			value : value_,
 			comment : comment_,
@@ -2060,7 +2108,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			author: author_,
 			statusCommentTitle: statusCommentTitle_
 		};
-		commentInfo.criteriaStatuses.push(criteriaStatus);
+
+		for (var i = 0; i < commentInfo.criteriaStatuses.length; i++){
+			if(commentInfo.criteriaStatuses[i].id == id_ && commentInfo.criteriaStatuses[i].author == author_){
+				found = true;
+				commentInfo.criteriaStatuses[i].value = criteriaStatus.value;
+				commentInfo.criteriaStatuses[i].comment = criteriaStatus.comment;
+				commentInfo.criteriaStatuses[i].statusCommentTitle = criteriaStatus.statusCommentTitle;
+				criteriaStatus = commentInfo.criteriaStatuses[i]; 				
+			}
+		}
+	
+		if(!found)
+			commentInfo.criteriaStatuses.push(criteriaStatus);
 		return criteriaStatus;
 	}
 
@@ -2333,9 +2393,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				var newCommentTitle="";
+				var newCommentLink = "";
+				var newCommentTime = "";
+				var newCommentTone = "";
+				var newCommentSummary = "";
 				$.post(serverURL+"updateCriteriaStatus", {
 				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function(data) {
 					newCommentTitle=data.newCommentTitle;
+					newCommentTime=data.newCommentTime;
+					newCommentTone=data.newCommentTone;
+					newCommentLink=data.newCommentLink;
+					newCommentSummary=data.newCommentSummary;
 					console.log("updateCriteriaStatus success");
 				});
 				//close the comment Input box
@@ -2343,7 +2411,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				updateCriteriaCircleStyle(criterion_track.value, circle);
 
 				//update the commentbar
-				updateCommentsSection(divNewCommentBoxInput.value, currentUser, newCommentTitle);		
+				var commentInfoIndex = findCommentInfoIndex(criterion_track.title);
+				addNewComment(newCommentTitle, newCommentLink, currentUser, divNewCommentBoxInput.value, newCommentTone, newCommentTime, newCommentSummary);
+				addCommentToIdea(commentInfos[commentInfoIndex], newCommentTitle, newCommentLink, divNewCommentBoxInput.value, newCommentTone, currentUser);//if exists replace it
+
+				addCriteriaStatus(commentInfos[commentInfoIndex], criterion_track.value, divNewCommentBoxInput.value, criterion_track.id, currentUser, newCommentTitle);
+
+				updateCommentsList(commentInfos[commentInfoIndex]);
+				//remove the ideas when deleting
 				
 				//update the status bar
 				var newCriteriaStatus = {
@@ -2464,13 +2539,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					return "1.5";
 				else
 					return "0.25";});
-	}
-
-	var updateCommentsSection = function(currentCommencomment, author, title){	
-		//TODO: write this function
-
-	}
-				
+	}			
 
 	var addCriteriaStatusCommentBox = function(comment, author, statusCommentTitle, circle, arrowPosition){
 
