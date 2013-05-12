@@ -247,10 +247,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var commentContent = "";
 			if(commentInput.value != ""){
 				$.post(serverURL+"findNegativeWords", {"comment" : commentInput.value}, function(data) {
-						console.log("findNegativeWords success: " + data.totalNumWords + " message: " + data.userMessage);
 						message = data.userMessage;
 						highlightedWords = data.highlightedWords;
 						commentContent = commentInput.value;
+						console.log("findNegativeWords success");
 					});
 				sentimentDialogPopup(message, highlightedWords, commentContent);
 			}
@@ -302,19 +302,21 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$.each(highlightedWords, function(){
 			var text = ""+this;
 			currentComment = currentComment.replace(text, "<span class='procid-highlighted-text'>"+text+"</span>");
-			console.log("highlightedword: " + text);
 		});
-		console.log("currentComment: " + currentComment);
 
 		var dialogHighlightedComment = document.createElement('div');
 		dialogHighlightedComment.setAttribute('id', 'procid-dialog-highlighted-comment');
 		dialogHighlightedComment.innerHTML = currentComment;
 		dialogContent.appendChild(dialogHighlightedComment);
 
+		var dialogImage = document.createElement('img');
+        	dialogImage.setAttribute('src', ABSOLUTEPATH +"/images/quote.png");
+		dialogImage.setAttribute('class', 'procid-dialog-content-image');
+		dialogContent.appendChild(dialogImage);
+
 		var dialogMessage = document.createElement('div');
 		dialogMessage.setAttribute('id', 'procid-dialog-message');
 		dialogContent.appendChild(dialogMessage);
-
 
 		var divButtons = document.createElement('div');
 		divButtons.setAttribute('id', 'procid-dialog-div-ok-button');
@@ -342,10 +344,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var dialogContent = document.createElement('div');
 		dialogContent.setAttribute('class', 'procid-dialog-content');
+		dialogContent.style.paddingTop="2px";
 		dialogBox.appendChild(dialogContent);
 
 		var dialogMessage = document.createElement('div');
 		dialogMessage.setAttribute('id', 'procid-dialog-message');
+		dialogMessage.style.paddingTop="3px";
 		dialogContent.appendChild(dialogMessage);
 
 		var divButtons = document.createElement('div');
@@ -645,8 +649,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			}
 			index++;
 		});
-
 	}
+
+	var chosenLens = "";
 
 	var createLens = function(name, parent, tooltipText) {
 	//TODO: use CSS sprite
@@ -688,14 +693,22 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		else
 			$("#procid-"+name+"-link").click(function highlightComments(evt) {
 			if ($("div[id='procid-comment-" + name + "'] a").hasClass('procid-lens-unselected')) {
+				if($(".procid-lens-selected").length>0 && chosenLens != ""){
+					$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
+					$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
+					$("img[id='procid-"+chosenLens+"-image']").attr('src', ABSOLUTEPATH + '/images/' + chosenLens + '-1.png');
+					chosenLens = "";
+				}
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png')
+				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
+				chosenLens = name;
 			} else {
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png')
+				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+				chosenLens = "";
 			}
 			return false;
 
@@ -837,6 +850,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var patches=$(this).find("tr[class^='pift-pass'],tr[class^='pift-fail']");
 			if(patches.length > 0)
 				returnValue = 1;
+			var otherAttachments=$(this).find("tr[class=' odd'] a,tr[class=' even'] a");
+			$.each(otherAttachments, function() {
+				var link = $(this).attr("href");
+				if ( (typeof link !== 'undefined' && link !== false)  && (link.indexOf(".patch") > 0)) {
+					returnValue = 1;
+				}
+			});
+
 			return returnValue;			
 		});
 
@@ -845,7 +866,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var contents = $(this).find("a");
 			$.each(contents, function() {
 				var link = $(this).attr("href");
-				if (link.match(/png$/) || link.match(/jpg$/)) {
+				if ( (typeof link !== 'undefined' && link !== false)  && (link.match(/png$/) || link.match(/jpg$/))) {
 					returnValue = link;
 				}
 			});
@@ -1102,44 +1123,21 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 /**********IdeaPage-Criteria Edit Box**********/
 	var createEditCriteriaBox = function(currentElement) {
 		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save Your Changes", "", "", "400px", "20px", "");
-
-		/*$(document).mouseup(function (e){
-		    var container = $(divNewCriteriaEditBox);
-		    if ($(".procid-edit-criteria").length != 0 && $(".procid-edit-criteria").has(e.target).length === 0){
-		        currentElement.removeChild(divNewCriteriaEditBox);
-    		    }
-		});*/
-
 		var tempCriteria = [];
 		var index = 0;
 
 		var table = createTableHeader();
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(table);
 
-		if(criteria.length > 0){
-			//make the table visible
-			//table.setAttribute("display", "block");
-		}
-
-		$.each(criteria, function() {
-			createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, index);
-			index++;
-		});
-
-		var addCriteria = document.createElement('a');
-		addCriteria.setAttribute('href', "#");
-		addCriteria.setAttribute('rel', "tooltip");
-		addCriteria.setAttribute('id', "procid-addcriteria-link");
-		addCriteria.setAttribute('title', "Add a new criteria");
-		addCriteria.innerHTML = "Add Criteria +";
-		addCriteria.onclick = function(e) {
-			tempNewCriteria = {
+		if(criteria.length === 0){
+			var tempNewCriteria = {
 				title: "Title...",
 				description: "Description...",
-				id: 100,
-				action: ""
+				id: createNewCriteriaId(),
+				action: "add"
 			};
 
+			var currentIndex = index;
 			tempCriteria.push(tempNewCriteria);
 
 			var tableR = document.createElement("tr");
@@ -1156,7 +1154,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			titleInput.placeholder = tempNewCriteria.title;
 			tableC1.appendChild(titleInput);
 			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
-				tempCriteria[index].title = this.value; 
+				tempCriteria[currentIndex].title = this.value; 
 			});
 		
 			var tableC2 = document.createElement("td");
@@ -1169,7 +1167,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			description.setAttribute('name', 'description');
 			description.placeholder = tempNewCriteria.description;
 			$(description).keyup(function() {
-				tempCriteria[index].description = this.value;
+				tempCriteria[currentIndex].description = this.value;
 			});
 			tableC2.appendChild(description);
 
@@ -1180,15 +1178,107 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var tableC4 = document.createElement("td");
 			tableC4.innerHTML = "";
 			tableR.appendChild(tableC4);
+			index ++;
 
+		}
+
+		$.each(criteria, function() {
+			createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, index);
+			index++;
+		});
+
+		var addCriteria = document.createElement('a');
+		addCriteria.setAttribute('href', "#");
+		addCriteria.setAttribute('rel', "tooltip");
+		addCriteria.setAttribute('id', "procid-addcriteria-link");
+		addCriteria.setAttribute('title', "Add a new criteria");
+		addCriteria.innerHTML = "Add Criteria +";
+		addCriteria.onclick = function(e) {
+			var tempNewCriteria = {
+				title: "Title...",
+				description: "Description...",
+				id: createNewCriteriaId(),
+				action: "add"
+			};
+
+			tempCriteria.push(tempNewCriteria);
+			var currentIndex = index;
+			var tableR = document.createElement("tr");
+			$("#procid-editCriteriaBox-table tbody").append(tableR);
+
+			var tableC1 = document.createElement("td");
+			tableR.appendChild(tableC1);
+
+			var titleInput = document.createElement('input');
+			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
+			titleInput.setAttribute('class', 'titleInput');
+			titleInput.setAttribute('type', 'text');
+			titleInput.setAttribute('name', 'labelInput');
+			titleInput.placeholder = tempNewCriteria.title;
+			tableC1.appendChild(titleInput);
+			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
+				tempCriteria[currentIndex].title = this.value; 
+			});
+		
+			var tableC2 = document.createElement("td");
+			tableR.appendChild(tableC2);
+
+			var description = document.createElement('input');
+			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + tempNewCriteria.id);
+			description.setAttribute('class', 'descriptionInput');
+			description.setAttribute('type', 'text');
+			description.setAttribute('name', 'description');
+			description.placeholder = tempNewCriteria.description;
+			$(description).keyup(function() {
+				tempCriteria[currentIndex].description = this.value;
+			});
+			tableC2.appendChild(description);
+
+			var tableC3 = document.createElement("td");
+			tableC3.innerHTML = "";
+			tableR.appendChild(tableC3);
+
+			var tableC4 = document.createElement("td");
+			tableC4.innerHTML = "";
+			tableR.appendChild(tableC4);
+			index++;	
 			return false;
 		};
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
 		
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
-			var i = 0;
 			var criteriaToBeDeleted = [];
-			$.each(criteria, function() {
+			$.each(tempCriteria, function() {
+				var currentCriteria = findCriteriaById(this.id);
+				if(this.action === "delete"){
+					criteriaToBeDeleted.push(this.id);
+					$.post(serverURL+"deleteCriteria", {
+					"issueLink" : issue.link, "userName" : currentUser, "id" : this.id}, function() {
+						console.log("delete criteria success");
+					});
+				}else if(action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
+					setCriteriaTitle(this.id, this.title);
+					setCriteriaDescription(this.id, this.description);
+					$.post(serverURL+"editCriteria", {
+					"issueLink" : issue.link, "userName" : currentUser, "title" : this.title, "description" : this.description, "id" : this.id}, function() {
+						console.log("edit criteria success");
+					});
+				//$(".procid-svg-criteria-lower" + this.id).map(function() {
+				//	this.text(criteria[i].title);
+
+				//});
+				}else if(action == "add"){
+					var newCriteria = createNewCritera(this.title, this.description, this.id);
+					$.post(serverURL+"addCriteria", {
+				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
+					console.log("add criteria success");
+				});
+
+				}
+				
+			});
+					
+			/*$.each(criteria, function() {
 				if(tempCriteria[i].action === "delete"){
 					criteriaToBeDeleted.push(this.id);
 					$.post(serverURL+"deleteCriteria", {
@@ -1203,10 +1293,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					"issueLink" : issue.link, "userName" : currentUser, "title" : this.title, "description" : this.description, "id" : this.id}, function() {
 						console.log("edit criteria success");
 					});
-				/*$(".procid-svg-criteria-lower" + this.id).map(function() {
-					this.text(criteria[i].title);
+				//$(".procid-svg-criteria-lower" + this.id).map(function() {
+				//	this.text(criteria[i].title);
 
-				});*/
+				//});
 				}
 				i++;
 			});
@@ -1221,7 +1311,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
 					console.log("add criteria success");
 				});
-			}
+			}*/
 			
 				currentElement.removeChild(divNewCriteriaEditBox);
 			});
@@ -1281,7 +1371,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		};
 		tempCriteria.push(tempCurrentCriteria);
 
-
+		var currentIndex = index;
 		var tableR = document.createElement('tr');
 		$("#procid-editCriteriaBox-table-body").append(tableR);
 
@@ -1304,7 +1394,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		editCriteria.setAttribute('class', "procid-addcomment-link");
 		editCriteria.setAttribute('title', "Edit this criteria");
 		editCriteria.onclick = function(e) {
-
 		if($(editImage).attr('src') === ABSOLUTEPATH + "/images/edit-criteria.png"){
 			var par = $(this).parent().parent(); //tr
 			var tdTitle = par.children("td:nth-child(1)");
@@ -1312,17 +1401,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
  
 			tdTitle.html("<input type='text' class = 'titleInput' id='procid-editCriteriaBox-title-input'" + currentCriteria.id+"' value='"+tdTitle.html()+"'/>");
 			$("#procid-editCriteriaBox-title-input" + currentCriteria.id).keyup(function() {
-				tempCriteria[index].title = this.value; 
+				tempCriteria[currentIndex].title = this.value; 
 			});
 
 			tdDescription.html("<input type='text' class = 'descriptionInput' id='procid-editCriteriaBox-description-input'" + currentCriteria.id+"' value='"+tdDescription.html()+"'/>");
 
 			$("#procid-editCriteriaBox-description-input" + currentCriteria.id).keyup(function() {
-				tempCriteria[index].description = this.value; 
+				tempCriteria[currentIndex].description = this.value; 
 			});
 
 			$(editImage).attr('src', ABSOLUTEPATH + "/images/undo.png");
 			editCriteria.setAttribute('title', "Undo your edit");
+			tempCriteria[currentIndex].action = "edit";
 		}else{
 			var par = $(this).parent().parent(); //tr
 			var tdTitle = par.children("td:nth-child(1)");
@@ -1333,6 +1423,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			$(editImage).attr('src', ABSOLUTEPATH + "/images/edit-criteria.png");
 			editCriteria.setAttribute('title', "Edit this criteria");
+			tempCriteria[currentIndex].action = "";
 		}
 
 		};
@@ -1357,7 +1448,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
                         function(){ 
                             $(this).parents('tr:first').remove();                    
                         });    
-			tempCriteria[index].action = "delete";
+			tempCriteria[currentIndex].action = "delete";
                     return false;
 		};
 		tableC4.appendChild(deleteCriteriaLink);
@@ -1393,7 +1484,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				clicked = true;
 				if(currentBox == ""){
 					var x = getOffset(this).left - getOffset(this.parentNode).left + 60;
-					//console.log("y: " + y + " parent y: " + getOffset(this.parentNode.parentNode).top);
 					currentBox = addCommentContentBox(this, contentString, x+"px", "-65px", "relative"); 			
 				}
 			}else{
@@ -1667,34 +1757,31 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divParent.appendChild(icon);
 		var currentBox = "";
 		var clicked = false;
-		//var y = getOffset(icon).top + 20;// - getOffset(this.parentNode.parentNode).top + 6;
+		$(document).mouseup(function (e){
+		    var container = $(icon);
+		    if (icon != e.target){// container.has(e.target).length === 0){
+		        if(currentBox != ""){
+				removeCommentContentBox(icon, currentBox);
+				currentBox = "";
+			}
+    		    }
+		});
 		if(content != "") {
-			icon.onmouseover = function(e){
-				var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 6;
-				//currentBox = addCommentContentBox(this, content, x+"px"); 			
+			icon.onmouseover = function(e){	
 			};
 			icon.onmouseout = function(e){
 				if(currentBox != "" && !clicked){
-				//	removeCommentContentBox(this, currentBox);
-				//	currentBox = "";
 				}
 			};
 			icon.onclick = function(e){
-				console.log("clicked: "  + clicked);
-				if(!clicked){
-					clicked = true;
-					if(currentBox == ""){
+					if(currentBox === ""){
 						var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
-						//console.log("y: " + y + " parent y: " + getOffset(this.parentNode.parentNode).top);
-						currentBox = addCommentContentBox(this, content, x+"px", "50px", ""); 			
+						currentBox = addCommentContentBox(this, content, x+"px", "50px", ""); 	
 					}
-				}else{
-					clicked = false;
-					if(currentBox != ""){
+					else {//if(currentBox != ""){
 						removeCommentContentBox(this, currentBox);
 						currentBox = "";
 					}
-				}
 			};
 		}
 	}
@@ -1846,21 +1933,41 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 /*******IdeaPage-Criteria List Manipulation*********/
 
-	var createNewCritera = function(title_, description_) {
+	var createNewCritera = function(title_, description_, id_) {
 		var newCriteria = {
-			id : 1,
+			id : id_,
 			title : title_,
 			description : description_
 		}
 
-		if(criteria.length > 0){
-			newCriteria.id=criteria[criteria.length-1].id+1;
-		}
+//		if(criteria.length > 0){
+//			newCriteria.id=criteria[criteria.length-1].id+1;
+//		}
 
 		criteria.push(newCriteria);
 		return newCriteria;
 	}
-	
+
+	var findCriteriaById = function(id){
+		var result = $.grep(criteria, function(e) {
+			return e.id == id;
+		});
+		if (result.length == 0)
+			return -1;
+		else
+			return result[0];
+	}
+
+	var createNewCriteriaId = function(){
+		newId = 0;
+		$.each(criteria, function(){
+			if(this.id > newId)
+				newId = this.id;
+		});
+		newId++;
+		return newId;
+	}
+
 	var findCriteriaTitle = function(id){
 		var result = $.grep(criteria, function(e) {
 			return e.id == id;
@@ -1895,6 +2002,31 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			criteria.splice(index, 1);
 		}
 		
+	}
+
+	var setCriteriaTitle = function(id, title){
+		var result = $.grep(criteria, function(e) {
+			return e.id == id;
+		});
+		if (result.length == 0)
+			return -1;
+		else{
+			var index = criteria.indexOf(result[0])
+			criteria[index].title = title;
+		}
+	}
+
+	var setCriteriaDescription = function(id, description){
+		var result = $.grep(criteria, function(e) {
+			return e.id == id;
+		});
+		if (result.length == 0)
+			return -1;
+		else{
+			var index = criteria.indexOf(result[0])
+			criteria[index].description = description;
+		}
+
 	}
 /**********IdeaPage-Criteria-Statuses**********/
 	
@@ -2160,7 +2292,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				this.__originx = x(d.currentCriteriaStatus.value);
 				this.__originValue = d.currentCriteriaStatus.value;
 				if(this.commentBox != null)
-					removeCommentBox(this.parentNode.parentNode.parentNode, this.commentBox);
+					removeCommentBox(this.parentNode.parentNode, this.commentBox);
 			}).on("drag", function(d) {
 				var firstNum = x.range()[0];
 				var diff = x.range()[1] - firstNum;				
@@ -2173,7 +2305,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 			}).on("dragend", function(d) {
 				if(this.__originx != x(d.currentCriteriaStatus.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
+					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
@@ -2234,6 +2366,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
 
 		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px");
+		
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewCommentBoxInput).focus(function(){
 			setCaretPosition(divNewCommentBoxInput, divNewCommentBoxInput.value.length);
@@ -2385,14 +2518,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
 
-		var parent = circle.parentNode.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
+		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px");
 
 		return divNewComment;
 	}
 
 	var removeCriteriaStatusCommentBox = function (prevCommentBox, circle){
-		var parent = circle.parentNode.parentNode.parentNode;
+		var parent = circle.parentNode.parentNode;
 		parent.removeChild(prevCommentBox);
 	}
 
@@ -2565,12 +2698,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var bStrings = strB.split(",");
 		//experience
 		if(name === "experience"){
-			var numA = parseInt(aStrings[0].replace(/(^\d+)(.+$)/i,'$1'), 10);
-			var numB = parseInt(bStrings[0].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			var numA = findNumExperience(aStrings[0]);
+			var numB = findNumExperience(bStrings[0]);
 			return  numA > numB ? -1 : 1;				    
 		}else if(name === "patches"){//usability patches
 			var numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			if(isNaN(numA))
+				numA = 0;
 			var numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i,'$1'), 10);
+			if(isNaN(numB))
+				numB = 0;
+
 			return  numA > numB ? -1 : 1;				    
 		}else if(name === "consensus"){//closed threads
 			var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
@@ -2603,7 +2741,23 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}				    
 	
 	}
-	
+
+	var findNumExperience = function(str){
+		var pattern = /[0-9]+/g;
+		var matches = str.match(pattern);
+		var result = 0;
+		if(matches != null && matches != []){
+			if (matches.length > 1){
+				result = parseInt(matches[0], 10)*52+parseInt(matches[1], 10);   
+			}else if(matches.length == 1 && str.indexOf('year')>0){
+				result = parseInt(matches[0], 10)*52;   
+			}else if(matches.length == 1 && str.indexOf('week')>0){  
+				result = parseInt(matches[0], 10);   
+			}
+		}
+		return result;
+	}	
+
 	setUpProcid();
 	console.log("done");
 	});
