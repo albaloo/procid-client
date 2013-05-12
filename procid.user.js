@@ -1075,13 +1075,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 				createIdeaImage(divIdeaBlock, commentInfos[i]);
 				createIdeaStatus(divIdeaBlock, commentInfos[i]);
-				createIdeaCriteria(divIdeaBlock, commentInfos[i]);
+				createIdeaCriteria(divIdeaBlock, commentInfos[i], "");
 				createIdeaComments(divIdeaBlock, commentInfos[i]);
 
 			}
 			$("#procid-idea-page-wrapper").append(divIdeaBlock);		
 		}
-		
+
 		createCriteriaStatusTracks();
 		createCriterionSelectors();
 	}
@@ -1133,7 +1133,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var tempNewCriteria = {
 				title: "Title...",
 				description: "Description...",
-				id: createNewCriteriaId(),
+				id: createNewCriteriaId(tempCriteria.length),
 				action: "add"
 			};
 
@@ -1197,7 +1197,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var tempNewCriteria = {
 				title: "Title...",
 				description: "Description...",
-				id: createNewCriteriaId(),
+				id: createNewCriteriaId(tempCriteria.length),
 				action: "add"
 			};
 
@@ -1248,71 +1248,43 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 			var criteriaToBeDeleted = [];
+			var changed = false;
 			$.each(tempCriteria, function() {
 				var currentCriteria = findCriteriaById(this.id);
+				console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
 				if(this.action === "delete"){
 					criteriaToBeDeleted.push(this.id);
 					$.post(serverURL+"deleteCriteria", {
 					"issueLink" : issue.link, "userName" : currentUser, "id" : this.id}, function() {
 						console.log("delete criteria success");
+						changed = true;
 					});
-				}else if(action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
+				}else if(this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
 					setCriteriaTitle(this.id, this.title);
 					setCriteriaDescription(this.id, this.description);
 					$.post(serverURL+"editCriteria", {
 					"issueLink" : issue.link, "userName" : currentUser, "title" : this.title, "description" : this.description, "id" : this.id}, function() {
 						console.log("edit criteria success");
+						changed = true;
 					});
-				//$(".procid-svg-criteria-lower" + this.id).map(function() {
-				//	this.text(criteria[i].title);
-
-				//});
-				}else if(action == "add"){
+					
+				}else if(this.action == "add"){
 					var newCriteria = createNewCritera(this.title, this.description, this.id);
 					$.post(serverURL+"addCriteria", {
 				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
 					console.log("add criteria success");
+					changed = true;
 				});
-
 				}
 				
-			});
-					
-			/*$.each(criteria, function() {
-				if(tempCriteria[i].action === "delete"){
-					criteriaToBeDeleted.push(this.id);
-					$.post(serverURL+"deleteCriteria", {
-					"issueLink" : issue.link, "userName" : currentUser, "id" : tempCriteria[i].id}, function() {
-						console.log("delete criteria success");
-					});
-				}
-				else if(this.title != tempCriteria[i].title || this.description != tempCriteria[i].description){
-					this.title = tempCriteria[i].title;
-					this.description = tempCriteria[i].description;
-					$.post(serverURL+"editCriteria", {
-					"issueLink" : issue.link, "userName" : currentUser, "title" : this.title, "description" : this.description, "id" : this.id}, function() {
-						console.log("edit criteria success");
-					});
-				//$(".procid-svg-criteria-lower" + this.id).map(function() {
-				//	this.text(criteria[i].title);
-
-				//});
-				}
-				i++;
 			});
 
 			$.each(criteriaToBeDeleted, function(){
 				deleteCriteria(this);
 			});
-
-			if(tempCriteria.length > i){
-				var newCriteria = createNewCritera(tempCriteria[tempCriteria.length-1].title, tempCriteria[tempCriteria.length-1].description);
-				$.post(serverURL+"addCriteria", {
-				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
-					console.log("add criteria success");
-				});
-			}*/
-			
+				if(changed)
+					updateCriteriaStatusList();
+				
 				currentElement.removeChild(divNewCriteriaEditBox);
 			});
 		
@@ -1399,12 +1371,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var tdTitle = par.children("td:nth-child(1)");
 			var tdDescription = par.children("td:nth-child(2)");
  
-			tdTitle.html("<input type='text' class = 'titleInput' id='procid-editCriteriaBox-title-input'" + currentCriteria.id+"' value='"+tdTitle.html()+"'/>");
+			tdTitle.html("<input type='text' class = 'titleInput' id='procid-editCriteriaBox-title-input" + currentCriteria.id+"' value='"+tdTitle.html()+"'/>");
 			$("#procid-editCriteriaBox-title-input" + currentCriteria.id).keyup(function() {
 				tempCriteria[currentIndex].title = this.value; 
 			});
 
-			tdDescription.html("<input type='text' class = 'descriptionInput' id='procid-editCriteriaBox-description-input'" + currentCriteria.id+"' value='"+tdDescription.html()+"'/>");
+			tdDescription.html("<input type='text' class = 'descriptionInput' id='procid-editCriteriaBox-description-input" + currentCriteria.id+"' value='"+tdDescription.html()+"'/>");
 
 			$("#procid-editCriteriaBox-description-input" + currentCriteria.id).keyup(function() {
 				tempCriteria[currentIndex].description = this.value; 
@@ -1457,9 +1429,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		deleteImage.setAttribute('class', "procid-edit-criteria-icons");
 		deleteImage.setAttribute('src', ABSOLUTEPATH + "/images/delete-criteria.png");
 		deleteCriteriaLink.appendChild(deleteImage);
-
-		
 	}
+
 
 /**********IdeaPage-Image**********/
 
@@ -1940,10 +1911,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			description : description_
 		}
 
-//		if(criteria.length > 0){
-//			newCriteria.id=criteria[criteria.length-1].id+1;
-//		}
-
 		criteria.push(newCriteria);
 		return newCriteria;
 	}
@@ -1958,13 +1925,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			return result[0];
 	}
 
-	var createNewCriteriaId = function(){
+	var createNewCriteriaId = function(tempCriteriaSize){
 		newId = 0;
 		$.each(criteria, function(){
 			if(this.id > newId)
 				newId = this.id;
 		});
-		newId++;
+		newId = newId + (tempCriteriaSize - criteria.length) + 1;
 		return newId;
 	}
 
@@ -2028,13 +1995,35 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 
 	}
+
+	var updateCriteriaStatusList = function(){
+		//remove previous criteria statuses
+		allCriteriaStatuses = [];
+		
+		//create new criteria statuses
+		for (var i = 0; i < commentInfos.length; i++) {
+			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				var divIdeaBlock = document.getElementById('procid-idea-block-'+commentInfos[i].title.substr(1));
+				divIdeaBlock.removeChild($(divIdeaBlock).children('.procid-idea-block-criteria')[0]);
+				createIdeaCriteria(divIdeaBlock, commentInfos[i], "edit");
+			}
+		}
+	
+		createCriteriaStatusTracks();
+		createCriterionSelectors();
+	}
+
+
 /**********IdeaPage-Criteria-Statuses**********/
 	
-	var createIdeaCriteria = function(divIdeaBlock, commentInfo) {
+	var createIdeaCriteria = function(divIdeaBlock, commentInfo, mode) {
 		//criteris
 		var divCriteria = document.createElement('div');
 		divCriteria.setAttribute('class', 'procid-idea-block-criteria');
-		divIdeaBlock.appendChild(divCriteria);
+		if(mode == "edit")
+			divIdeaBlock.insertBefore(divCriteria, divIdeaBlock.children[3]);
+		else
+			divIdeaBlock.appendChild(divCriteria);
 		var counter = 0;
 
 		if(criteria.length == 0){
@@ -2095,6 +2084,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		return result;
 	};
 
+
 	var createCriteriaStatusTracks = function() {
 		for (var i = 0; i < commentInfos.length; i++) {
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
@@ -2143,42 +2133,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//x function
 		var x = d3.scale.quantize().domain([0, 6]).range([43, 70, 97, 124, 151, 178, 205]);
 
-		//insert("svg:svg", ".procid-criterion-prev-comment or :class-name")
 		var mySvg = d3.selectAll('.procid-criteria-block-cell').append("svg:svg").attr("width", '260').attr("height", '50').attr("class", "selector").attr("viewBox", "0 0 260 50");
-
-		d3.selectAll(".selector").append("svg:defs").attr("class", "svgdefs");
-		d3.selectAll(".svgdefs").append("svg:filter")
-		.attr("id", "procid-circle-filter")
-		//.attr("height", "130%");	
-    		.attr("x", "-20%")
-    		.attr("y", "-20%")
-    		.attr("width", "200%")
-    		.attr("height", "200%");			
-
-		d3.selectAll("#procid-circle-filter").append("svg:feGaussianBlur")
-		//.attr("result", "blurOut")
-    		//.attr("in", "offOut")
-		.attr("in", "SourceAlpha")
-    		.attr("stdDeviation", "3");
-
-		d3.selectAll("#procid-circle-filter").append("svg:feOffset")
-		.attr("dx", "2")
-    		.attr("dy", "2")
-    		//.attr("in", "SourceAlpha")
-		.attr("result", "offsetblur");
-    		//.attr("result", "offOut");
-
-		
-		// <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-		/*d3.selectAll("#procid-circle-filter").append("svg:feComponentTransfer").attr("class", "svgcomponentTransfer");
-		d3.selectAll(".svgcomponentTransfer").append("svg:feFuncA")		
-		.attr("type", "linear")
-    		.attr("slope", "4.2");
-*/
-		d3.selectAll("#procid-circle-filter").append("svg:feMerge").attr("class", "svgfemerge");
-		d3.selectAll(".svgfemerge").append("svg:feMergeNode")		
-		.attr("in", "SourceGraphic");
-
 
 		d3.selectAll(".selector").append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/slider.png")
@@ -2188,6 +2143,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
     		.attr("height", "30");	
 
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:text")
+		.attr("id", function(d) {
+				var tempTitle = d.currentCriteriaStatus.title.substr(1);
+				return "procid-ctitle-text-"+tempTitle+"-"+d.currentCriteriaStatus.id;
+			})
 	      	.attr("class", "procid-criteria-title")
       		.attr("dx", function(d) {
 				var tempTitle = findCriteriaTitle(d.currentCriteriaStatus.id);
@@ -2198,7 +2157,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		.text(function(d) {
 				return findCriteriaTitle(d.currentCriteriaStatus.id);
 			}).append("svg:title")
-          .text(function(d) { return "" + findCriteriaDescription(d.currentCriteriaStatus.id); });
+          	.text(function(d) { return "" + findCriteriaDescription(d.currentCriteriaStatus.id); });
 
 
 		d3.selectAll(".selector").append("image")
@@ -2274,7 +2233,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					else
 						return "0.25";})
 			.attr("style", "cursor: pointer")
-			.attr("filter", "url(#procid-circle-filter)")
 			.attr("cy", "30")
 			.attr("cx", function(d) {
 				return x(d.currentCriteriaStatus.value);
