@@ -2051,6 +2051,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				createIdeaCriteria(divIdeaBlock, commentInfos[i], "edit");
 			}
 		}
+		if(criteria.length > 3)
+			$('.procid-idea-block-criteria').css('overflow-y','auto');
+		else if (criteria.length <= 3)
+			$('.procid-idea-block-criteria').css('overflow-y','');
+
 	
 		createCriteriaStatusTracks();
 		createCriterionSelectors();
@@ -2158,6 +2163,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 							title : commentInfos[i].title,
 							author: currentCriteriaStatus.author,
 							statusCommentTitle: currentCriteriaStatus.statusCommentTitle,
+							commentBox: "",
+							originX: -1,
+							originValue: -1,
 						};
 						prevStatusArray.push(criterion_track);
 					}
@@ -2170,6 +2178,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						title : commentInfos[i].title,
 						author: lastCriteriaStatus.author,
 						statusCommentTitle: lastCriteriaStatus.statusCommentTitle,
+						commentBox: "",
+						originX: -1,
+						originValue: -1,
 					};
 				
 					currentCriteriaStatusRecord = {
@@ -2191,6 +2202,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var mySvg = d3.selectAll('.procid-criteria-block-cell').append("svg:svg").attr("width", '260').attr("height", '50').attr("class", "selector").attr("viewBox", "0 0 260 50");
 
+
 		d3.selectAll(".selector").append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/slider.png")
     		.attr("width", "240")
@@ -2198,21 +2210,72 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
     		.attr('y', "15")
     		.attr("height", "30");	
 
-
-		d3.selectAll(".selector").append("image")
+		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-minus.png")
     		.attr("width", "30")
-    		.attr("x", "5")
+    		.attr("x", "0")
     		.attr('y', "15")
-    		.attr("height", "30");	
+    		.attr("height", "30")
+		.on("click",function(d){
+				var tempTitle = d.currentCriteriaStatus.title.substr(1);
+				var identifier = "#procid-criteria-circle-"+tempTitle+"-"+d.currentCriteriaStatus.id;
+
+				var currentCircle = d3.select(identifier).node();
+				
+				if(d.currentCriteriaStatus.originX == -1){
+					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
+					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
+				}
+
+				
+				var value = d.currentCriteriaStatus.value - 1;
+				if(value >= 0){
+					if(d.currentCriteriaStatus.commentBox != ""){
+						if($(currentCircle.parentNode.parentNode).find(".procid-new-comment").length > 0)
+							currentCircle.parentNode.parentNode.removeChild(d.currentCriteriaStatus.commentBox);
+						d.currentCriteriaStatus.commentBox = "";
+					}
+					var cx = x(value);
+					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
+					if(d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
+						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value)-30), d);
+				}
+			
+		}).append("svg:title")
+	          .text("Decrease Criteria Ranting");	
 
 
-		d3.selectAll(".selector").append("image")
+		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-plus.png")
     		.attr("width", "30")
     		.attr("x", "220")
     		.attr('y', "15")
-    		.attr("height", "30");	
+    		.attr("height", "30")
+		.on("click",function(d){
+			var tempTitle = d.currentCriteriaStatus.title.substr(1);
+				var identifier = "#procid-criteria-circle-"+tempTitle+"-"+d.currentCriteriaStatus.id;
+
+				var currentCircle = d3.select(identifier).node();
+
+				if(d.currentCriteriaStatus.originX == -1){
+					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
+					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
+				}
+				
+				var value = d.currentCriteriaStatus.value + 1;
+				if(value <= 6){
+					if(d.currentCriteriaStatus.commentBox != ""){
+						if($(currentCircle.parentNode.parentNode).find(".procid-new-comment").length > 0)
+							currentCircle.parentNode.parentNode.removeChild(d.currentCriteriaStatus.commentBox);
+						d.currentCriteriaStatus.commentBox = "";
+					}
+					var cx = x(value);
+					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
+					if(d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
+						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value)-30), d);
+				}
+		}).append("svg:title")
+	          .text("Increase Criteria Ranting");	
 
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:text")
 		.attr("id", function(d) {
@@ -2253,7 +2316,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				d3.selectAll(".selector .procid-criteria-line").attr("style", "");
 			}
 		}).append("svg:title")
-	          .text("View Criteria Ranking History");
+	          .text("View Criteria Ranting History");
 
 		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:line")
@@ -2280,6 +2343,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:circle")
+		      	.attr("id", function(d) {
+				var tempTitle = d.currentCriteriaStatus.title.substr(1);
+				return "procid-criteria-circle-"+tempTitle+"-"+d.currentCriteriaStatus.id;
+			})
 			.attr("class", "procid-selector-circle-default")
 			.attr("fill", function(d){
 				if(d.currentCriteriaStatus.comment === "")
@@ -2319,10 +2386,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
 				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
-				this.__originx = x(d.currentCriteriaStatus.value);
-				this.__originValue = d.currentCriteriaStatus.value;
-				if(this.commentBox != null)
-					removeCommentBox(this.parentNode.parentNode, this.commentBox);
+				if(d.currentCriteriaStatus.originX == -1){
+					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
+					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
+				}
+				if(d.currentCriteriaStatus.commentBox != null && d.currentCriteriaStatus.commentBox != ""){
+					removeCommentBox(this.parentNode.parentNode, d.currentCriteriaStatus.commentBox);
+					d.currentCriteriaStatus.commentBox = "";
+				}
 			}).on("drag", function(d) {
 				var firstNum = x.range()[0];
 				var diff = x.range()[1] - firstNum;				
@@ -2334,8 +2405,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, this);
 				
 			}).on("dragend", function(d) {
-				if(this.__originx != x(d.currentCriteriaStatus.value)){
-					this.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, this.__originx, this.__originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
+				if(d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value)){
+					d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value)-30), d);
 				}
 			})).append("svg:title")
           .text(function(d) { return "Drag to change the ranking" });
@@ -2440,6 +2511,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 							title : criterion_track.title,
 							author: currentUser,
 							statusCommentTitle: newCommentTitle,
+							originX: -1,
+							originValue: -1,
+							commentBox: "",
 						};
 
 				if(d.currentCriteriaStatus.author != currentUser && d.currentCriteriaStatus.author != ""){
@@ -2460,6 +2534,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						title : d.currentCriteriaStatus.title,
 						author: d.currentCriteriaStatus.author,
 						statusCommentTitle: d.currentCriteriaStatus.statusCommentTitle,
+						originX: -1,
+						originValue: -1,
+						commentBox: "",
 					};
 					d.previousCriteriaStatuses.push(prevCriteriaStatus);
 				}	
@@ -2472,6 +2549,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				updateCriteriaCircleLocation(criterion_track, originalValue, originalPosition, circle);
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
+				d.currentCriteriaStatus.originX = -1;
+				d.currentCriteriaStatus.originValue = -1;
+				d.currentCriteriaStatus.commentBox = "";
 			});
 
 		return divNewComment;
