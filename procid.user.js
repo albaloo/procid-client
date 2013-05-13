@@ -125,8 +125,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//  }
 
 		//find the currentUser
-		//<div id="userinfo"><a href="/user" title="View &amp; edit your user profile">Logged in as rzilouc2</a> <a href="/logout">Log out</a></div>        </div>
-
 		var currentUserInfo = $("#userinfo a").first().text();
 		currentUser = currentUserInfo.substr(13);
 
@@ -140,8 +138,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		//username=prompt("Enter username");
 		//password=prompt("Enter password");
-
-		//addConfirmationDialog();
 
 		//HomePage
 		var page = document.getElementsByClassName('container-12 clear-block')[1];
@@ -2199,6 +2195,22 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
     		.attr("xlink:href", ABSOLUTEPATH + "/images/slider.png")
     		.attr("width", "240")
     		.attr("x", "5")
+    		.attr('y', "15")
+    		.attr("height", "30");	
+
+
+		d3.selectAll(".selector").append("image")
+    		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-minus.png")
+    		.attr("width", "30")
+    		.attr("x", "5")
+    		.attr('y', "15")
+    		.attr("height", "30");	
+
+
+		d3.selectAll(".selector").append("image")
+    		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-plus.png")
+    		.attr("width", "30")
+    		.attr("x", "220")
     		.attr('y', "15")
     		.attr("height", "30");	
 
