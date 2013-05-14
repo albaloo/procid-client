@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Procid
 // @description    Interactive system supporting consensus building.
-// @icon           https://raw.github.com/albaloo/procid/master/icon.jpg
+// @icon           https://github.com/albaloo/procid-client/blob/master/images/procid-icon.png
 // @author         Roshanak Zilouchian
 // @version        1.0
 // @grant          none
