@@ -763,6 +763,7 @@ height:5px;
 	padding:7px 6px 3px;
 	margin: 1px 4px 4px 4px; 
 	text-align: left;
+	font-size: 13px;
 	/* easy rounded corners for modern browsers */
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -778,6 +779,7 @@ height:5px;
 	height:110px;
 	padding:3px 3px 3px;
 	margin: 4px 4px 1px 4px; 
+	font-size: 13px;
 	/* easy rounded corners for modern browsers */
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;

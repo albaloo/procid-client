@@ -669,6 +669,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		if(name == "search")
 			$("#procid-"+name+"-link").click(function addthePanel(evt) {
 				if($("#procid-"+name+"-link").hasClass('unselected')){
+					if($(".procid-lens-selected").length>0 && chosenLens != ""){
+						$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
+						$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
+						$("img[id='procid-"+chosenLens+"-image']").attr('src', ABSOLUTEPATH + '/images/' + chosenLens + '-1.png');
+						chosenLens = "";
+					}
 					$("#procid-"+name+"-link").attr('class', 'selected');
 					$("#procid-search-panel").css("display", "block");
 					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
@@ -1440,9 +1446,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var link1 = document.createElement('a');
 		link1.setAttribute('id', 'procid-author-link');
-		link1.setAttribute('href', commentInfo.authorLink);
+		link1.setAttribute('href', commentInfo.link);
 		link1.setAttribute('class', 'ideaPage-link');
 		link1.innerHTML = commentInfo.title + " " +commentInfo.author;
+		link1.onclick = function(e){
+			changePage('home');
+		}
 
 		var contentString = "<strong style='color: #29abe2;'>" + commentInfo.title + "</strong> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
 		var clicked = false;
@@ -2673,21 +2682,26 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$("#procid-invite-search-panel").css("display", "none");
 
 		//List potential members to invite
-		var suggestedPeaple = findPeopletoInvite();
-		for (var i = 0; i < suggestedPeaple.length; i++) {
+		var suggestedPeople = findPeopletoInvite();
+		for (var i = 0; i < suggestedPeople.length; i++) {
 
 			var divInviteBlock = document.createElement('div');
 			divInviteBlock.setAttribute('class', 'procid-invite-block');
 
 			var divAuthorName = document.createElement('div');
 			divAuthorName.setAttribute('class', 'procid-author-name-unselected');
-			divAuthorName.textContent = suggestedPeaple[i].author;
-			
+			//divAuthorName.textContent = suggestedPeople[i].author;
+
+			var divAuthorNameLink = document.createElement('a');
+			divAuthorNameLink.setAttribute('href', suggestedPeople[i].authorLink);
+			divAuthorNameLink.textContent = suggestedPeople[i].author;
+			divAuthorName.appendChild(divAuthorNameLink);			
+
 			divInviteBlock.appendChild(divAuthorName);
 
 			var divAuthorDescription = document.createElement('div');
 			divAuthorDescription.setAttribute('class', 'procid-author-description-unselected');
-			divAuthorDescription.textContent = suggestedPeaple[i].description;
+			divAuthorDescription.textContent = suggestedPeople[i].description;
 			divInviteBlock.appendChild(divAuthorDescription);
 
 			var divInviteLink = document.createElement('a');
