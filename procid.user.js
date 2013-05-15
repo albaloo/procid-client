@@ -998,12 +998,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						//create and add idea
 						removeIdeaBlocks();
 						createIdeaBlocks();
-	
+						var newSummary = "";
 						$.post(serverURL+"addNewIdea", {
 						"issueLink" : issue.link, "commentTitle" : commentInfo.title, "userName" : currentUser
-						}, function() {
+						}, function(data) {
 							console.log("addNewIdea success");
+							newSummary = data.summary;
+							commentInfo.summary = newSummary;
 							});
+
+						//update the sumamry
+						$("#procid-comment"+commentInfo.title.substr(1) +" a[id='procid-comment-link']").text(commentInfo.title + "\t" + commentInfo.author + commentInfo.summary);
 					}
 				});
 
@@ -1029,11 +1034,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					if(name === "idea"){
 						//delete idea
 						$('#procid-idea-block-'+commentInfo.title.substr(1)).remove();
+						var newSummary = "";
 						$.post(serverURL+"deleteIdea", {
 						"issueLink" : issue.link, "commentTitle" : commentInfo.title, "userName" : currentUser
-						}, function() {
+						}, function(data) {
 							console.log("deleteIdea success");
+							newSummary = data.summary;
+							commentInfo.summary = newSummary;
 							});
+
+						//update the sumamry
+						//id : 'procid-comment-link',
+						$("#procid-comment"+commentInfo.title.substr(1) +" a[id='procid-comment-link']").text(commentInfo.title + "\t" + commentInfo.author + commentInfo.summary);
 					}
 
 
@@ -1080,7 +1092,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var removeIdeaBlocks = function(){
 		allCriteriaStatuses = [];
-		$("#procid-idea-page-wrapper").remove('.procid-idea-block');	
+		$('.procid-idea-block').remove();	
 	}
 
 	var createEachIdeaBlock =function (commentInfo){
