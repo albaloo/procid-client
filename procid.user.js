@@ -993,6 +993,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "tag" : name}, function() {
 						console.log("addTag success");
 					});
+
+					if(name === "idea"){
+						//create and add idea
+						removeIdeaBlocks();
+						createIdeaBlocks();
+	
+						$.post(serverURL+"addNewIdea", {
+						"issueLink" : issue.link, "commentTitle" : commentInfo.title, "userName" : currentUser
+						}, function() {
+							console.log("addNewIdea success");
+							});
+					}
 				});
 
 			} else {
@@ -1014,6 +1026,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						console.log("removeTag success");
 					});
 
+					if(name === "idea"){
+						//delete idea
+						$('#procid-idea-block-'+commentInfo.title.substr(1)).remove();
+						$.post(serverURL+"deleteIdea", {
+						"issueLink" : issue.link, "commentTitle" : commentInfo.title, "userName" : currentUser
+						}, function() {
+							console.log("deleteIdea success");
+							});
+					}
+
+
 				});
 			}
 			return false;
@@ -1034,60 +1057,72 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createLabel('Status', "");
 		createLabel('Criteria ', "(edit)");
 		createLabel('Comments ', "");
-		//<hr/>
-		/*var hr2 = document.createElement('hr');
-		hr2.style.background = "url(" + ABSOLUTEPATH + "/images/sidebar_divider.png) repeat-x";
-		$("#procid-idea-page-wrapper").append(hr2);*/
-
+		
 		console.log("numComments:" + commentInfos.length);
 
 		//Body
+		createIdeaBlocks();		
+	}
+
+	var createIdeaBlocks = function(){
 		for (var i = 0; i < commentInfos.length; i++) {
 
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
-				var divIdeaBlock = document.createElement('div');
-				divIdeaBlock.setAttribute('id', 'procid-idea-block-'+commentInfos[i].title.substr(1));
-				divIdeaBlock.setAttribute('class', 'procid-idea-block');
-
-				var closeButtonLink = document.createElement('a');
-				closeButtonLink.setAttribute("href", "#");
-				closeButtonLink.setAttribute('rel', "tooltip");
-				closeButtonLink.setAttribute('id', "procid-idea-close-" + commentInfos[i].title.substr(1));
-				closeButtonLink.setAttribute('title', "Not an idea? Delete it.");
-				closeButtonLink.onclick = function(e){
-					var currentLink = this;
-					confirmationDialogPopup("Are you sure this is not an idea and you want to delete it?", "Delete", function(){
-						$(currentLink).parent().remove();
-						var buttonId = currentLink.id;
-						var commentNumber = parseInt(buttonId.match(/\d+/)[0], 10);
-						var commentTitle = "#"+commentNumber;
-						$.post(serverURL+"deleteIdea", {
-					"issueLink" : issue.link, "commentTitle" : commentTitle, "userName" : currentUser
-					}, function() {
-						console.log("deleteIdea success");
-						});
-						
-					});
-					return false;
-				}
-				divIdeaBlock.appendChild(closeButtonLink);
-
-				var closeButton = document.createElement('img');
-				closeButton.setAttribute("class", "procid-idea-block-close");
-				closeButton.setAttribute("src", ABSOLUTEPATH + "/images/delete.png");
-				closeButtonLink.appendChild(closeButton);
-				
-				createIdeaImage(divIdeaBlock, commentInfos[i]);
-				createIdeaStatus(divIdeaBlock, commentInfos[i]);
-				createIdeaCriteria(divIdeaBlock, commentInfos[i], "");
-				createIdeaComments(divIdeaBlock, commentInfos[i]);
-
+				var divIdeaBlock = createEachIdeaBlock(commentInfos[i]);
+				$("#procid-idea-page-wrapper").append(divIdeaBlock);	
 			}
-			$("#procid-idea-page-wrapper").append(divIdeaBlock);		
 		}
 
 		createCriteriaStatusTracks();
 		createCriterionSelectors();
+
+	}
+
+	var removeIdeaBlocks = function(){
+		allCriteriaStatuses = [];
+		$("#procid-idea-page-wrapper").remove('.procid-idea-block');	
+	}
+
+	var createEachIdeaBlock =function (commentInfo){
+		var divIdeaBlock = document.createElement('div');
+		divIdeaBlock.setAttribute('id', 'procid-idea-block-'+commentInfo.title.substr(1));
+		divIdeaBlock.setAttribute('class', 'procid-idea-block');
+
+		var closeButtonLink = document.createElement('a');
+		closeButtonLink.setAttribute("href", "#");
+		closeButtonLink.setAttribute('rel', "tooltip");
+		closeButtonLink.setAttribute('id', "procid-idea-close-" + commentInfo.title.substr(1));
+		closeButtonLink.setAttribute('title', "Not an idea? Delete it.");
+		closeButtonLink.onclick = function(e){
+			var currentLink = this;
+			confirmationDialogPopup("Are you sure this is not an idea and you want to delete it?", "Delete", function(){
+				$(currentLink).parent().remove();
+				var buttonId = currentLink.id;
+				var commentNumber = parseInt(buttonId.match(/\d+/)[0], 10);
+				var commentTitle = "#"+commentNumber;
+				$.post(serverURL+"deleteIdea", {
+			"issueLink" : issue.link, "commentTitle" : commentTitle, "userName" : currentUser
+			}, function() {
+				console.log("deleteIdea success");
+			});
+			
+			});
+			return false;
+		}
+
+		divIdeaBlock.appendChild(closeButtonLink);
+
+		var closeButton = document.createElement('img');
+		closeButton.setAttribute("class", "procid-idea-block-close");
+		closeButton.setAttribute("src", ABSOLUTEPATH + "/images/delete.png");
+		closeButtonLink.appendChild(closeButton);
+				
+		createIdeaImage(divIdeaBlock, commentInfo);
+		createIdeaStatus(divIdeaBlock, commentInfo);
+		createIdeaCriteria(divIdeaBlock, commentInfo, "");
+		createIdeaComments(divIdeaBlock, commentInfo);
+
+		return divIdeaBlock;
 	}
 
 	var createLabel = function(name, link) {
