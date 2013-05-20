@@ -712,6 +712,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
 				chosenLens = "";
 			}
+			$.post(serverURL+"lensClicked", {
+				"issueLink" : issue.link, "userName" : currentUser, "tagName" : name}, function() {
+					console.log("tag logged success");
+				});
 			return false;
 
 		});
@@ -1146,9 +1150,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(".procid-ideaPage-header").append(label);
 		
 		if (name === "Ideas"){
-			label.onclick = function(e) { 
+			label.onclick = function(e) { 		
+				$("div[class=procid-idea-block]").sortElements(function(a, b){
+					var strA=$(a).find(".procid-idea-block-image a[class='ideaPage-link']")[0].innerHTML.toLowerCase();
+    					var strB=$(b).find(".procid-idea-block-image a[class='ideaPage-link']")[0].innerHTML.toLowerCase();
+					return sortIdeasOnTime(strA, strB);
+				});
 				return false;
 			};
+		}
+
+		if(name === "Status"){
+			label.onclick = function(e){
+				$("div[class=procid-idea-block]").sortElements(function(a, b){
+					var strA=$(a).find(".wrapper-dropdown span")[0].innerHTML.toLowerCase();
+    					var strB=$(b).find(".wrapper-dropdown span")[0].innerHTML.toLowerCase();
+					return sortIdeasOnStatus(strA, strB);
+				});
+				return false;
+			}
 		}
 
 		if (link === "(edit)"){		
@@ -1169,6 +1189,42 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
 			link1.appendChild(img1);
 		}
+	}
+
+	var sortIdeasOnStatus = function(strA, strB){
+		var numA = 0;
+		var numB = 0;
+		if(strA === "ongoing")
+			numA = 1;
+		else if(strA === "implemented")
+			numA = 2;
+
+		if(strB === "ongoing")
+			numB = 1;
+		else if(strB === "implemented")
+			numB = 2;
+
+		return numA > numB ? -1 : 1;
+	}
+
+	var sortIdeasOnTime = function(strA, strB){
+		var aStrings = strA.split(" ");
+		var bStrings = strB.split(" ");
+
+		var dateStringA = commentInfos[findCommentInfoIndex(aStrings[0])].commented_at;//.getTime();
+
+		var dateStringB = commentInfos[findCommentInfoIndex(bStrings[0])].commented_at;//.getTime();
+
+		dateStringA = dateStringA.replace(" at", "");
+		dateStringA = dateStringA.replace("pm", " pm");
+		dateStringA = dateStringA.replace("am", " am");
+		dateStringB = dateStringB.replace(" at", "");
+		dateStringB = dateStringB.replace("pm", " pm");
+		dateStringB = dateStringB.replace("am", " am");
+
+		var numA = new Date(dateStringA);
+		var numB = new Date(dateStringB);
+		return numA > numB ? 1 : -1;
 	}
 
 /**********IdeaPage-Criteria Edit Box**********/
@@ -2298,7 +2354,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 			
 		}).append("svg:title")
-	          .text("Decrease Criteria Ranting");	
+	          .text("Decrease Criteria Rating");	
 
 
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
@@ -2849,6 +2905,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
 				//selectedInviteLens = "";
 			}
+
+			$.post(serverURL+"lensClicked", {
+				"issueLink" : issue.link, "userName" : currentUser, "tagName" : name}, function() {
+					console.log("tag logged success");
+				});
 			return false;
 
 			});
