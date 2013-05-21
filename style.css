@@ -700,14 +700,14 @@ height: 16px;
 {
 float: left; 
 margin: 0px 1px 0px 0;
-width: 38px; 
+width: 32px; 
 height: auto;
 }
 
 .procid-idea-comment-row-header{
   display: inline-block;
   vertical-align: bottom;
-  max-width: 25%;
+  max-width: 15%;
   margin-bottom: 15px;
 }
 
@@ -727,12 +727,12 @@ height: auto;
 .procid-idea-comment-row-body{
   display: inline-block;
   vertical-align: top;
-  max-width: 75%;
+  max-width: 85%;
 }
 
 .procid-idea-comment-rows{
   display: block;
-  margin: 12px 0 0 15px;
+  margin: 12px 0 0 1px;
   max-width: 100%;
 }
 
