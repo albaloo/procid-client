@@ -30,7 +30,7 @@
 function addJQuery(callback) {
 	//Jquery Script
 	var script = document.createElement("script");
-	script.setAttribute("src", "//headjs.com/media/libs/headjs/0.99/head.min.js");
+	script.setAttribute("src", "//raw.github.com/headjs/headjs/v0.99/dist/head.min.js");
 	script.addEventListener('load', function() {
 		var script = document.createElement("script");
 		script.textContent = "window.jQ=jQuery.noConflict(true);(" + callback.toString() + ")();";
