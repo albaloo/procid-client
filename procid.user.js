@@ -622,6 +622,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					});
 					commentInfos[i].status = comment.status;
 					commentInfos[i].summary = comment.summary;
+					if(commentInfos[i].content === "" && comment.content != ""){
+						commentInfos[i].content = comment.content;
+						commentInfos[i].image = comment.image;
+					}
 					applyTags(commentInfos[i]);
 				}
 			});
