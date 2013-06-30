@@ -49,7 +49,7 @@ function main() {
 head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js", function() {
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
-	var CSSSERVERPATH = 'http://web.engr.illinois.edu/~rzilouc2/procid';
+	var CSSSERVERPATH = 'https://web.engr.illinois.edu/~rzilouc2/procid';
 	//var serverURL='http://0.0.0.0:3000/';
 	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
