@@ -699,22 +699,35 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		else
 			$("#procid-"+name+"-link").click(function highlightComments(evt) {
 			if ($("div[id='procid-comment-" + name + "'] a").hasClass('procid-lens-unselected')) {
+				//free the previous lens
 				if($(".procid-lens-selected").length>0 && chosenLens != ""){
 					$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
 					$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
 					$("img[id='procid-"+chosenLens+"-image']").attr('src', ABSOLUTEPATH + '/images/' + chosenLens + '-1.png');
 					chosenLens = "";
+					$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function(){				
+						$(this).parents(".procid-comment").css("display","block");
+					});
 				}
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
 				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
 				chosenLens = name;
+
+				$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function() {				
+					$(this).parents(".procid-comment").css("display","none");
+				});
+
 			} else {
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
 				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
 				chosenLens = "";
+
+				$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function() {				
+					$(this).parents(".procid-comment").css("display","block");
+				});
 			}
 			$.post(serverURL+"lensClicked", {
 				"issueLink" : issue.link, "userName" : currentUser, "tagName" : name}, function() {
