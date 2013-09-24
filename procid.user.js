@@ -1970,9 +1970,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
-				$("#edit-comment").val(divNewCommentBoxInput.value);
-				$.post('https://drupal.org/'+issue.link, $("#comment-form").serialize());
-				return false;
+
+				saveCommentToDrupal(divNewCommentBoxInput.value, issue.link);
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
@@ -1980,6 +1979,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			});
 		
 		return divNewComment;
+	}
+
+	var saveCommentToDrupal = function(commentText, issueLink){
+		$("#edit-comment").val(commentText + "\n\n\n <i>Powered by Procid</i>");
+		$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize());
 	}
 
 	var addNewComment = function(title_, link_, author_, content_, tone_, time_, summary_){
@@ -2674,6 +2678,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}	
 
 				d.currentCriteriaStatus = newCriteriaStatus;
+
+				saveCommentToDrupal(divNewCommentBoxInput.value, issue.link);
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
