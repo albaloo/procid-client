@@ -1970,12 +1970,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 				//close the comment Input box
 				currentElement.removeChild(divNewComment);
+				$("#edit-comment").val(divNewCommentBoxInput.value);
+				$.post('https://drupal.org/'+issue.link, $("#comment-form").serialize());
+				return false;
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
 				currentElement.removeChild(divNewComment);
 			});
-
+		
 		return divNewComment;
 	}
 
