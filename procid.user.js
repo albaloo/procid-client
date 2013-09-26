@@ -1399,6 +1399,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					console.log("add criteria success");
 					changed = true;
 				});
+					saveCommentToDrupal("We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".", issue.link);
+
 				}
 				
 			});
