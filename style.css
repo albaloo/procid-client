@@ -401,7 +401,7 @@ img.procid-lens-image-unselected {
 }
 
 .ideaPage-header-label {
-	color: white;
+	color: black;
 	font-size: 15px;
 	font-weight: regular;
 	margin: 8px 0 8px 6px;
@@ -410,24 +410,26 @@ img.procid-lens-image-unselected {
 }
 
 .ideaPage-header-label a {
-	color:white;
+	color:black;
 }
 
 a[id='procid-Ideas-label'] {
-	color:white;
-	margin: 0 220px 0 5px;
+	color:black;
+	margin: 0 210px 0 15px;
 }
 
 .procid-ideaPage-header{
-	padding-left: 16%;
-	border-bottom: 1px solid #aaa;
+	margin-left: 16%;
 	position: relative;
 	padding-bottom: 10px;
-	background-color: #117ebc;
+	background-color: #e5e5e5;
+	width: 1020px;
+	margin-top: 10px;
+	box-shadow: 0px 1px 2px rgba(50,50,50,0.3);
 }
 
 .procid-ideaPage-header a{
-	color:white;
+	color: black;
 }
 
 .procid-new-comment-box a{
@@ -442,12 +444,12 @@ a[id='procid-Ideas-label'] {
 }
 
 #procid-Idea-label a{
-	color:white;
+	color:black;
 	
 }
 
 #procid-Status-label {
-	color:white;
+	color:black;
 	margin: 0 163px 0 5px;
 }
 
@@ -459,17 +461,19 @@ a[id='procid-Ideas-label'] {
 
 a[id='procid-Criteria -label'] {
 	margin: 0 173px 0 5px;
-	color:white;
+	color:black;
 }
 
 .procid-idea-block {
-	background: #F0F0F0;
+	background: #fbfbf8;
 	height: 200px;
 	width: 1020px;
 	margin: 20px 0 20px 16%;
-	-webkit-border-radius: 3px;
+	/*border-bottom: 1px solid #ccc;*/
+	box-shadow: 0px 2px 4px rgba(50,50,50,0.1)
+	/*-webkit-border-radius: 3px;
     -moz-border-radius: 3px;
-     border-radius: 3px;
+     border-radius: 3px;*/
 }
 
 .procid-idea-block-expanded{
@@ -557,7 +561,7 @@ a.ideaPage-link {
 	padding: 10px;
 	margin: 10px 5px 10px 5px;
 	/*vertical-align: middle;*/
-	background: #E6E6e6;
+	background: #F0F0F0;
 	text-overflow: ellipsis;
 	overflow: auto;
 	overflow-x: hidden;
@@ -649,7 +653,7 @@ a.ideaPage-link {
 /* Hover state */
  
 .wrapper-dropdown .dropdown li:hover a {
-    background: #B3B3B3;
+    background: #ddd;
 }
 
 .wrapper-dropdown .dropdown:after {
@@ -746,6 +750,7 @@ height: auto;
 .procid-idea-comment-divider{
 width: 200px; 
 height:5px;
+opacity: 0.5;
 }
 
 .procid-idea-comment-div-icon{
@@ -1067,8 +1072,8 @@ height:5px;
 	float:right;
 	cursor: pointer;
 	position: relative;
-	right: -10px;
-	top: -10px;
+	right: 5px;
+	top: 10px;
 }
 
 /*Invitation Page Styling*/
