@@ -487,10 +487,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		$("#procid-menus").css("border-image", "url(" + ABSOLUTEPATH + "/images/top-line.png) 13 2 round");
 		//Procid Label
-		$('<img />').attr({
+		/*$('<img />').attr({
 			id : 'procid-label',
 			src: ABSOLUTEPATH + '/images/procid-label.png',
 		}).appendTo("#procid-menus");
+*/
+		var procidLabel = document.createElement('img');
+		procidLabel.setAttribute('id', 'procid-label');
+		procidLabel.setAttribute('src', ABSOLUTEPATH + '/images/procid-label.png');
+		$("#procid-menus").append(procidLabel);
 
 		//Setting
 		$('<a />').attr({
