@@ -180,14 +180,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createProcidHeader();
 
 		createHomePageBody();
-		createIdeaPageBody();
-		createInvitePageBody();
+		//createIdeaPageBody();
+		//createInvitePageBody();
 	}
 
 	var addCSSToHeader = function() {
 		var header = document.getElementsByTagName('head')[0];
 		var csslink = document.createElement('link');
-		csslink.setAttribute('href', CSSSERVERPATH + '/style.css');
+		csslink.setAttribute('href', CSSSERVERPATH + '/style-min.css');
 		csslink.setAttribute('rel', 'stylesheet');
 		csslink.setAttribute('type', 'text/css');
 		header.appendChild(csslink);
@@ -465,6 +465,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var destionationDivIds = map[destination];
 		$.each(destionationDivIds, function() {
+			if(destination == "idea" && $("#" + this).children("div.procid-ideaPage-header").length == 0)
+				createIdeaPageBody();
+			else if(destination == "invite" && $("#" + this).children("#procid-invite-title").length == 0)
+				createInvitePageBody();
 			$("#" + this).toggle();
 		});
 		setStatusVar(destination);
