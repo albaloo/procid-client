@@ -180,14 +180,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createProcidHeader();
 
 		createHomePageBody();
-		//createIdeaPageBody();
-		//createInvitePageBody();
 	}
 
 	var addCSSToHeader = function() {
 		var header = document.getElementsByTagName('head')[0];
 		var csslink = document.createElement('link');
-		csslink.setAttribute('href', CSSSERVERPATH + '/style-min.css');
+		csslink.setAttribute('href', CSSSERVERPATH + '/style.css');
 		csslink.setAttribute('rel', 'stylesheet');
 		csslink.setAttribute('type', 'text/css');
 		header.appendChild(csslink);
@@ -1225,9 +1223,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		divIdeaBlock.appendChild(closeButtonLink);
 
-		var closeButton = document.createElement('img');
+		var closeButton = document.createElement('div');
 		closeButton.setAttribute("class", "procid-idea-block-close");
-		closeButton.setAttribute("src", ABSOLUTEPATH + "/images/delete.png");
+		$(closeButton).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+		//closeButton.setAttribute("src", ABSOLUTEPATH + "/images/delete.png");
 		closeButtonLink.appendChild(closeButton);
 				
 		createIdeaImage(divIdeaBlock, commentInfo);
@@ -1281,9 +1280,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			};
 			label.appendChild(link1);
 
-			var img1 = document.createElement('img');
+			var img1 = document.createElement('div');
 			img1.setAttribute('id', 'procid-edit-img');
-			img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
+			//img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
+			$(img1).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			link1.appendChild(img1);
 		}
 	}
@@ -1326,7 +1326,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 /**********IdeaPage-Criteria Edit Box**********/
 	var createEditCriteriaBox = function(currentElement) {
-		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save Your Changes", "", "", "400px", "20px", "", "");
+		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save Your Changes", "", "", "400px", "20px", "", "", false);
 		var tempCriteria = [];
 		var index = 0;
 
@@ -1385,71 +1385,20 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			index ++;
 
 		}
+		
+		var numCriteria = {num: criteria.length};
 
 		$.each(criteria, function() {
-			createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, index);
+			createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, index, numCriteria);
 			index++;
 		});
-
-		var addCriteria = document.createElement('a');
-		addCriteria.setAttribute('href', "#");
-		addCriteria.setAttribute('rel', "tooltip");
-		addCriteria.setAttribute('id', "procid-addcriteria-link");
-		addCriteria.setAttribute('title', "Add a new criteria");
-		addCriteria.innerHTML = "Add Criteria +";
-		addCriteria.onclick = function(e) {
-			var tempNewCriteria = {
-				title: "Title...",
-				description: "Description...",
-				id: createNewCriteriaId(tempCriteria.length),
-				action: "add"
-			};
-
-			tempCriteria.push(tempNewCriteria);
-			var currentIndex = index;
-			var tableR = document.createElement("tr");
-			$("#procid-editCriteriaBox-table tbody").append(tableR);
-
-			var tableC1 = document.createElement("td");
-			tableR.appendChild(tableC1);
-
-			var titleInput = document.createElement('input');
-			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
-			titleInput.setAttribute('class', 'titleInput');
-			titleInput.setAttribute('type', 'text');
-			titleInput.setAttribute('name', 'labelInput');
-			titleInput.placeholder = tempNewCriteria.title;
-			tableC1.appendChild(titleInput);
-			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
-				tempCriteria[currentIndex].title = this.value; 
-			});
 		
-			var tableC2 = document.createElement("td");
-			tableR.appendChild(tableC2);
+		//They shouldn't be able to add more than 4 criteria
+		if(numCriteria.num < 4){
+			var addCriteria = createAddCriteriaLink(tempCriteria, index, numCriteria);
+			$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
+		}
 
-			var description = document.createElement('input');
-			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + tempNewCriteria.id);
-			description.setAttribute('class', 'descriptionInput');
-			description.setAttribute('type', 'text');
-			description.setAttribute('name', 'description');
-			description.placeholder = tempNewCriteria.description;
-			$(description).keyup(function() {
-				tempCriteria[currentIndex].description = this.value;
-			});
-			tableC2.appendChild(description);
-
-			var tableC3 = document.createElement("td");
-			tableC3.innerHTML = "";
-			tableR.appendChild(tableC3);
-
-			var tableC4 = document.createElement("td");
-			tableC4.innerHTML = "";
-			tableR.appendChild(tableC4);
-			index++;	
-			return false;
-		};
-		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
-		
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 			var criteriaToBeDeleted = [];
 			var changed = false;
@@ -1540,7 +1489,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 
 
-	var createCriteriaEditBoxBlock = function(divNewCriteriaEditBox, tempCriteria, currentCriteria, index){
+	var createCriteriaEditBoxBlock = function(divNewCriteriaEditBox, tempCriteria, currentCriteria, index, numCriteria){
 
 		tempCurrentCriteria = {
 			title: currentCriteria.title,
@@ -1608,9 +1557,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		};
 		tableC3.appendChild(editCriteria);
 
-		var editImage = document.createElement('img');
-		editImage.setAttribute('class', "procid-edit-criteria-icons");
-		editImage.setAttribute('src', ABSOLUTEPATH + "/images/edit-criteria.png");
+		var editImage = document.createElement('div');
+		editImage.setAttribute('class', "procid-edit-criteria-icons-edit");
+		//editImage.setAttribute('src', ABSOLUTEPATH + "/images/edit-criteria.png");
+		$(editImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 		editCriteria.appendChild(editImage);
 
 
@@ -1628,14 +1578,87 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
                             $(this).parents('tr:first').remove();                    
                         });    
 			tempCriteria[currentIndex].action = "delete";
+			numCriteria.num = numCriteria.num-1;
+			if(numCriteria.num < 4 && !($(divNewCriteriaEditBox).find("#procid-addcriteria-link").length > 0)){
+				var addCriteria = createAddCriteriaLink(tempCriteria, index, numCriteria);
+				$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
+			}
+
                     return false;
 		};
 		tableC4.appendChild(deleteCriteriaLink);
 
-		var deleteImage = document.createElement('img');
-		deleteImage.setAttribute('class', "procid-edit-criteria-icons");
-		deleteImage.setAttribute('src', ABSOLUTEPATH + "/images/delete-criteria.png");
+		var deleteImage = document.createElement('div');
+		deleteImage.setAttribute('class', "procid-edit-criteria-icons-delete");
+		//deleteImage.setAttribute('src', ABSOLUTEPATH + "/images/delete-criteria.png");
+		$(deleteImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 		deleteCriteriaLink.appendChild(deleteImage);
+	}
+
+	var createAddCriteriaLink = function(tempCriteria, index, numCriteria){
+		var addCriteria = document.createElement('a');
+		addCriteria.setAttribute('href', "#");
+		addCriteria.setAttribute('rel', "tooltip");
+		addCriteria.setAttribute('id', "procid-addcriteria-link");
+		addCriteria.setAttribute('title', "Add a new criteria");
+		addCriteria.innerHTML = "Add Criteria +";
+		addCriteria.onclick = function(e) {
+			var tempNewCriteria = {
+				title: "Title...",
+				description: "Description...",
+				id: createNewCriteriaId(tempCriteria.length),
+				action: "add"
+			};
+	
+			tempCriteria.push(tempNewCriteria);
+			var currentIndex = index;
+			var tableR = document.createElement("tr");
+			$("#procid-editCriteriaBox-table tbody").append(tableR);
+
+			var tableC1 = document.createElement("td");
+			tableR.appendChild(tableC1);
+
+			var titleInput = document.createElement('input');
+			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
+			titleInput.setAttribute('class', 'titleInput');
+			titleInput.setAttribute('type', 'text');
+			titleInput.setAttribute('name', 'labelInput');
+			titleInput.placeholder = tempNewCriteria.title;
+			tableC1.appendChild(titleInput);
+			$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
+				tempCriteria[currentIndex].title = this.value; 
+			});
+		
+			var tableC2 = document.createElement("td");
+			tableR.appendChild(tableC2);
+
+			var description = document.createElement('input');
+			description.setAttribute('id', 'procid-editCriteriaBox-description-input' + tempNewCriteria.id);
+			description.setAttribute('class', 'descriptionInput');
+			description.setAttribute('type', 'text');
+			description.setAttribute('name', 'description');
+			description.placeholder = tempNewCriteria.description;
+			$(description).keyup(function() {
+				tempCriteria[currentIndex].description = this.value;
+			});
+			tableC2.appendChild(description);
+	
+			var tableC3 = document.createElement("td");
+			tableC3.innerHTML = "";
+			tableR.appendChild(tableC3);
+
+			var tableC4 = document.createElement("td");
+			tableC4.innerHTML = "";
+			tableR.appendChild(tableC4);
+			index++;	
+			numCriteria.num = numCriteria.num+1;
+			if(numCriteria.num >= 4){
+				addCriteria.parentNode.removeChild(addCriteria);
+			}
+			return false;
+		};
+
+		return addCriteria;
 	}
 
 
@@ -1772,7 +1795,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divProsRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
 		divProsRow.appendChild(divProsRowHeader);
 		
-		addIcon(divProsRowHeader, ABSOLUTEPATH + "/images/pros.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Supportive Comments");
+		addIcon(divProsRowHeader, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon-pros", "Supportive Comments");
 
 		var divProsRowBody = document.createElement('div');
 		divProsRowBody.setAttribute('class', 'procid-idea-comment-row-body');
@@ -1791,7 +1814,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divNeutralRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
 		divNeutralRow.appendChild(divNeutralRowHeader);
 		
-		addIcon(divNeutralRowHeader, ABSOLUTEPATH + "/images/neutral.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Neutral Comments");
+		addIcon(divNeutralRowHeader, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon-neutral", "Neutral Comments");
 
 		var divNeutralRowBody = document.createElement('div');
 		divNeutralRowBody.setAttribute('class', 'procid-idea-comment-row-body');
@@ -1810,7 +1833,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divConsRowHeader.setAttribute('class', 'procid-idea-comment-row-header');
 		divConsRow.appendChild(divConsRowHeader);
 		
-		addIcon(divConsRowHeader, ABSOLUTEPATH + "/images/cons.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon", "Constructive Comments");
+		addIcon(divConsRowHeader, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-icon', "procid-idea-comment-icon-cons", "Constructive Comments");
 		var divConsRowBody = document.createElement('div');
 		divConsRowBody.setAttribute('class', 'procid-idea-comment-row-body');
 		divConsRow.appendChild(divConsRowBody);
@@ -1819,7 +1842,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divConsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
 		divConsRowBody.appendChild(divConsRowContent);
 		
-		var srcPath = ABSOLUTEPATH + "/images/comment.png";
+		var srcPath = ABSOLUTEPATH + "/images/sprites-idea-page.png";
 		$.each(commentInfo.comments, function() {
 			var contentString = "<strong style='color: #29abe2;'>" + this.title + "</strong> <small><i>Posted by " + this.author + "</i></small> <br/>" + this.content;
 			//var comment = findComment(string);
@@ -1831,11 +1854,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				authorName = authorName.substr(0, ind+1);
 								
 			createCommentAuthorBox(divEachComment, authorName, "20px", "1px");
+			var sentimentTuning = false;
+			if(this.tone == "neutral")
+				sentimentTuning = true;
+
 			//Size of the string comments are larger
 			if(this.tone.indexOf("strong") > 0)
-				addImage(divEachComment, srcPath, 'procid-idea-comment-img-strong', contentString);
+				addImage(divEachComment, srcPath, 'procid-idea-comment-img-strong', contentString, sentimentTuning);
 			else
-				addImage(divEachComment, srcPath, 'procid-idea-comment-img', contentString);
+				addImage(divEachComment, srcPath, 'procid-idea-comment-img', contentString, sentimentTuning);
 			if(this.tone.indexOf("positive") >= 0){
 				divProsRowContent.appendChild(divEachComment);
 			}else if(this.tone == "neutral"){
@@ -1867,7 +1894,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divAddProsComment.style.top="16px";
 
 		//Adding the divider
-		addIcon(divProsRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divProsRowBody, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 
 		var divAddNeutralComment = document.createElement('div');
 		divAddNeutralComment.setAttribute('class', 'procid-addcomment-link-div');
@@ -1889,7 +1916,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divAddNeutralComment.style.top="16px";
 
 		//Adding the divider
-		addIcon(divNeutralRowBody, ABSOLUTEPATH + "/images/sidebar_divider.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divNeutralRowBody, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
 
 		var divAddConsComment = document.createElement('div');
 		divAddConsComment.setAttribute('class', 'procid-addcomment-link-div');
@@ -1909,7 +1936,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divAddConsComment.appendChild(addConsComment);		
 		if($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddConsComment.style.top="16px";
-		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sidebar_divider_end.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider", "");
+		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider-end", "");
 	}
 
 	var addIcon = function(divParent, iconPath, divClass, iconClass, tooltipText) {		
@@ -1920,7 +1947,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		divParent.appendChild(divIcon);
 		
-		addImage(divIcon, iconPath, iconClass, "");
+		addImage(divIcon, iconPath, iconClass, "", false);
 	}
 
 	var getOffset = function( el ) {
@@ -1934,10 +1961,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		return { top: _y, left: _x };
 	}
 
-	var addImage = function(divParent, iconPath, iconClass, content) {
-		var icon = document.createElement('img');
+	var addImage = function(divParent, iconPath, iconClass, content, sentimentTuning) {
+		var icon = document.createElement('div');
 		icon.setAttribute('class', iconClass);
-		icon.setAttribute('src', iconPath);
+		$(icon).css("background-image", "url("+ iconPath +")");
 		divParent.appendChild(icon);
 		var currentBox = "";
 		var clicked = false;
@@ -1960,7 +1987,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					if(currentBox === ""){
 						if(!clicked){
 							var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
-							currentBox = addCommentContentBox(this, content, x+"px", "50px", ""); 	
+							currentBox = addCommentContentBox(this, content, x+"px", "50px", "", sentimentTuning); 	
 						}
 						clicked = false;
 					}
@@ -1972,9 +1999,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 	}
 
-	var addCommentContentBox = function(image, content, arrowPosition, topPosition, positionStyle){
+	var addCommentContentBox = function(image, content, arrowPosition, topPosition, positionStyle, sentimentTuning){
 		var parent = image.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "250px", arrowPosition, "1px", "");
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "250px", arrowPosition, "1px", "", sentimentTuning);
 		divNewComment.style.top=topPosition;
 		if(positionStyle != "")
 			divNewComment.style.position=positionStyle;
@@ -2040,7 +2067,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			registerString = "";
 		}
 		
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", arrowPosition, "1px", registerString);
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", arrowPosition, "1px", registerString, false);
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewCommentBoxInput).focus(function(){
 			setCaretPosition(divNewCommentBoxInput, divNewCommentBoxInput.value.length);
@@ -2076,7 +2103,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var saveCommentToDrupal = function(commentText, issueLink){
-		$("#edit-comment").val(commentText + "\n\n\n <i>Powered by Procid</i>");
+		$("#edit-comment").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
 		$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize());
 		$("#edit-comment").val("");
 	}
@@ -2113,7 +2140,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		commentInfo.comments.push(relatedComment);
 	}
 
-	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft, registerString){
+	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft, registerString, sentimentTuning){
 		var divNewComment = document.createElement('div');
 		divNewComment.setAttribute('class', className);
 		divNewComment.style.width = width;
@@ -2155,6 +2182,28 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
 			divNewCommentBoxInput.innerHTML = placeHolderString;
 			divNewCommentBox.appendChild(divNewCommentBoxInput);
+			
+			if(sentimentTuning){
+				var divNewSentimentTuner = document.createElement('div');
+				divNewSentimentTuner.setAttribute('class', 'procid-sentiment-tuner');
+				divNewCommentBox.appendChild(divNewSentimentTuner);
+				
+				var sentimentTunerImage = document.createElement('div');
+				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-pos');
+				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImage);
+				
+				var sentimentTunerImage = document.createElement('div');
+				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-neutral');
+				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImage);
+				
+				var sentimentTunerImage = document.createElement('div');
+				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-cons');
+				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImage);
+			}
+
 		}
 
 		var divArrow = document.createElement('div');
@@ -2716,7 +2765,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			satisfaction = " doesn't satisfy"				
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
 
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px", "");
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px", "", false);
 		
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewCommentBoxInput).focus(function(){
@@ -2890,7 +2939,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
 
 		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
-		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px", "");
+		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px", "", false);
 
 		return divNewComment;
 	}
