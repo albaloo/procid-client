@@ -308,8 +308,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		dialogHighlightedComment.innerHTML = currentComment;
 		dialogContent.appendChild(dialogHighlightedComment);
 
-		var dialogImage = document.createElement('img');
-        	dialogImage.setAttribute('src', ABSOLUTEPATH +"/images/quote.png");
+		var dialogImage = document.createElement('div');
+		$(dialogImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
 		dialogImage.setAttribute('class', 'procid-dialog-content-image');
 		dialogContent.appendChild(dialogImage);
 
@@ -463,6 +463,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var destionationDivIds = map[destination];
 		$.each(destionationDivIds, function() {
+		console.log("loglog: " + $("#" + this).children("#procid-invite-title").length);
 			if(destination == "idea" && $("#" + this).children("div.procid-ideaPage-header").length == 0)
 				createIdeaPageBody();
 			else if(destination == "invite" && $("#" + this).children("#procid-invite-title").length == 0)
@@ -474,29 +475,24 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var createProcidHeader = function() {
 		//Ruler
-		$('<span />').attr({
-			id : 'procid-ruler',
-		}).appendTo("#procid-left-panel-header");
+		var procidRuler = document.createElement('span');
+		procidRuler.setAttribute('id', 'procid-ruler');
+		$("#procid-left-panel-header").append(procidRuler);
 
 		//Menu
-		$('<ul />').attr({
-			id : 'procid-menus',
-		}).appendTo("#procid-left-panel-header");
-
+		var procidMenu = document.createElement('ul');
+		procidMenu.setAttribute('id', 'procid-menus');
+		$("#procid-left-panel-header").append(procidMenu);
 		$("#procid-menus").css("border-image", "url(" + ABSOLUTEPATH + "/images/top-line.png) 13 2 round");
+
 		//Procid Label
-		/*$('<img />').attr({
-			id : 'procid-label',
-			src: ABSOLUTEPATH + '/images/procid-label.png',
-		}).appendTo("#procid-menus");
-*/
-		var procidLabel = document.createElement('img');
+		var procidLabel = document.createElement('div');
 		procidLabel.setAttribute('id', 'procid-label');
-		procidLabel.setAttribute('src', ABSOLUTEPATH + '/images/procid-label.png');
+		$(procidLabel).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
 		$("#procid-menus").append(procidLabel);
 
 		//Setting
-		$('<a />').attr({
+		/*$('<a />').attr({
 			id : 'procid-setting-link',
 			href : '#',
 			rel : 'tooltip',
@@ -505,10 +501,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		}).appendTo("#procid-menus");
 
-		$('<img />').attr({
-			id : 'procid-setting-image',
-			src : ABSOLUTEPATH + '/images/settings-1.jpg',
-		}).appendTo("#procid-setting-link");
+		var divSettingImage = document.createElement('div');
+		divSettingImage.setAttribute('id', 'procid-setting-image');
+		$(divSettingImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
+		$("#procid-setting-link").append(divSettingImage);*/
 
 		$('<div />').attr({
 			id : 'procid-menus-navigation-panel',
@@ -528,10 +524,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			changePage('home');
 		}).appendTo("#procid-home");
 
-		$('<img />').attr({
-			id : 'procid-home-image',
-			src : ABSOLUTEPATH + '/images/home-1.jpg',
-		}).appendTo("#procid-home-link");
+		var divHomeImage = document.createElement('div');
+		divHomeImage.setAttribute('id', 'procid-home-image');
+		$(divHomeImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
+		$("#procid-home-link").append(divHomeImage);
 
 		//Idea-based
 		$('<li />').attr({
@@ -547,10 +543,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			changePage('idea');
 		}).appendTo("#procid-ideaBased");
 
-		$('<img />').attr({
-			id : 'procid-ideaBased-image',
-			src : ABSOLUTEPATH + '/images/dashboard-1.jpg',
-		}).appendTo("#procid-ideaBased-link");
+		var divIdeaBasedImage = document.createElement('div');
+		divIdeaBasedImage.setAttribute('id', 'procid-ideaBased-image');
+		$(divIdeaBasedImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
+		$("#procid-ideaBased-link").append(divIdeaBasedImage);
 
 		//Invite
 		$('<li />').attr({
@@ -565,13 +561,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			rel : 'tooltip',
 			title : 'Invite New Participants'
 		}).click(function goInvite(evt) {
+			console.log("invite clicked");
 			changePage('invite');
 		}).appendTo("#procid-invite");
 
-		$('<img />').attr({
-			id : 'procid-invite-image',
-			src : ABSOLUTEPATH + '/images/invite-1.jpg',
-		}).appendTo("#procid-invite-link");
+		var divInviteImage = document.createElement('div');
+		divInviteImage.setAttribute('id', 'procid-invite-image');
+		$(divInviteImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
+		$("#procid-invite-link").append(divInviteImage);
 
 		$("#procid-menus li").css("border-image", "url("+ ABSOLUTEPATH +"/images/icon-border-left.png) 2 5 round");
 	}
@@ -678,9 +675,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			rel : 'tooltip',
 			title : tooltipText, 
 			class : 'unselected'
-		})/*.hover(function highlightLensIcon(evt) {
-			$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-2.png')
-		})*/.appendTo("#procid-" + name);
+		}).appendTo("#procid-" + name);
 
 		if(name == "search")
 			$("#procid-"+name+"-link").click(function addthePanel(evt) {
@@ -688,17 +683,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					if($(".procid-lens-selected").length>0 && chosenLens != ""){
 						$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
 						$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
-						$("img[id='procid-"+chosenLens+"-image']").attr('src', ABSOLUTEPATH + '/images/' + chosenLens + '-1.png');
+						$("div[id='procid-"+chosenLens+"-image']").attr('class', 'procid-' + chosenLens + '-image-unselected');
 						chosenLens = "";
 					}
 					$("#procid-"+name+"-link").attr('class', 'selected');
 					$("#procid-search-panel").css("display", "block");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
+					$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-selected');
 				}
 				else{
 					$("#procid-"+name+"-link").attr('class', 'unselected');
 					$("#procid-search-panel").css("display", "none");
-					$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+					$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-unselected');
 
 					$("div[class='procid-comment'] a").map(function() {
 						$(this).parents(".procid-comment").css("display","block");
@@ -715,7 +710,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				if($(".procid-lens-selected").length>0 && chosenLens != ""){
 					$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
 					$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
-					$("img[id='procid-"+chosenLens+"-image']").attr('src', ABSOLUTEPATH + '/images/' + chosenLens + '-1.png');
+					$("div[id='procid-"+chosenLens+"-image']").attr('class', 'procid-' + chosenLens + '-image-unselected');
 					chosenLens = "";
 					$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function(){				
 						$(this).parents(".procid-comment").css("display","block");
@@ -724,7 +719,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-selected');
 				$("div[id='procid-comment-" + name + "'] img").attr('src', ABSOLUTEPATH + '/images/' + name + '-tiny.png');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-3.png');
+				$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-selected');
 				chosenLens = name;
 
 				$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function() {				
@@ -742,7 +737,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
 				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
-				$("img[id='procid-"+name+"-image']").attr('src', ABSOLUTEPATH + '/images/' + name + '-1.png');
+				$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-unselected');
 				chosenLens = "";
 
 				$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function() {				
@@ -757,10 +752,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		});
 
-		$('<img />').attr({
-			id : 'procid-' + name + '-image',
-			src : ABSOLUTEPATH + '/images/' + name + '-1.png',
-		}).appendTo("#procid-" + name + '-link');
+		var divLensImage = document.createElement('div');
+		divLensImage.setAttribute('id', 'procid-' + name + '-image');
+		$(divLensImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
+		divLensImage.setAttribute('class', 'procid-' + name + '-image-unselected');
+		$("#procid-" + name + '-link').append(divLensImage);
 
 	}
 
@@ -1166,8 +1162,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		createLabel('Ideas', "");
 		createLabel('Status', "");
-		createLabel('Criteria ', "(edit)");
-		createLabel('Comments ', "");
+		createLabel('Criteria', "(edit)");
+		createLabel('Comments', "");
 		
 		console.log("numComments:" + commentInfos.length);
 
@@ -1270,6 +1266,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		if (link === "(edit)"){		
 			var link1 = document.createElement('a');
 			link1.setAttribute('id', 'procid-edit-link');
+			$(link1).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			link1.setAttribute('href', "#");
 			link1.onclick = function(e) { 
 				if($(".procid-ideaPage-header .procid-edit-criteria").length == 0)
@@ -1278,13 +1275,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					$(".procid-ideaPage-header")[0].removeChild($('.procid-edit-criteria')[0]);
 				return false;
 			};
-			label.appendChild(link1);
+			//label.appendChild(link1);
+			$(".procid-ideaPage-header").append(link1);
 
-			var img1 = document.createElement('div');
+			/*var img1 = document.createElement('div');
 			img1.setAttribute('id', 'procid-edit-img');
 			//img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
 			$(img1).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-			link1.appendChild(img1);
+			link1.appendChild(img1);*/
 		}
 	}
 
@@ -1423,12 +1421,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					
 				}else if(this.action == "add"){
 					var newCriteria = createNewCritera(this.title, this.description, this.id);
+					var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
+					titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+
 					$.post(serverURL+"addCriteria", {
-				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id}, function() {
+				"issueLink" : issue.link, "userName" : currentUser, "title" : newCriteria.title, "description" : newCriteria.description, "id" : newCriteria.id, "newCommentTitle" : titleAndLink[0], "newCommentLink" : titleAndLink[1], "newCommentContent": newCommentContent}, function(data) {
 					console.log("add criteria success");
 					changed = true;
+					addNewComment(titleAndLink[0], titleAndLink[1], currentUser, newCommentContent, "neutral", data.commented_at, data.summary);
 				});
-					saveCommentToDrupal("We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".", issue.link);
 
 				}
 				
@@ -1522,7 +1523,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		editCriteria.setAttribute('class', "procid-addcomment-link");
 		editCriteria.setAttribute('title', "Edit this criteria");
 		editCriteria.onclick = function(e) {
-		if($(editImage).attr('src') === ABSOLUTEPATH + "/images/edit-criteria.png"){
+		if($(editImage).attr('class') === "procid-edit-criteria-icons-edit"){
 			var par = $(this).parent().parent(); //tr
 			var tdTitle = par.children("td:nth-child(1)");
 			var tdDescription = par.children("td:nth-child(2)");
@@ -1538,7 +1539,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				tempCriteria[currentIndex].description = this.value; 
 			});
 
-			$(editImage).attr('src', ABSOLUTEPATH + "/images/undo.png");
+			$(editImage).attr('class', "procid-edit-criteria-icons-undo");
 			editCriteria.setAttribute('title', "Undo your edit");
 			tempCriteria[currentIndex].action = "edit";
 		}else{
@@ -1549,7 +1550,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			tdTitle.html(currentCriteria.title);
 			tdDescription.html(currentCriteria.description);
 
-			$(editImage).attr('src', ABSOLUTEPATH + "/images/edit-criteria.png");
+			$(editImage).attr('class', "procid-edit-criteria-icons-edit");
 			editCriteria.setAttribute('title', "Edit this criteria");
 			tempCriteria[currentIndex].action = "";
 		}
@@ -1559,10 +1560,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var editImage = document.createElement('div');
 		editImage.setAttribute('class', "procid-edit-criteria-icons-edit");
-		//editImage.setAttribute('src', ABSOLUTEPATH + "/images/edit-criteria.png");
 		$(editImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 		editCriteria.appendChild(editImage);
-
 
 		var tableC4 = document.createElement('td');
 		tableR.appendChild(tableC4);
@@ -1590,7 +1589,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var deleteImage = document.createElement('div');
 		deleteImage.setAttribute('class', "procid-edit-criteria-icons-delete");
-		//deleteImage.setAttribute('src', ABSOLUTEPATH + "/images/delete-criteria.png");
 		$(deleteImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 		deleteCriteriaLink.appendChild(deleteImage);
 	}
@@ -2078,13 +2076,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			if ($(divNewComment).find(".procid-new-comment-box .procid-checkbox input").first().prop("checked")){
 				tone = tone+"-strong";
 			}
+
+			var newCommentContent = divNewCommentBoxInput.value;
+			var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+
 			$.post(serverURL+"addNewComment", {
-			"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "content" : divNewCommentBoxInput.value, "tone" : tone}, function(data) {
+			"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : commentInfo.title, "newCommentTitle" : titleAndLink[0], "newCommentLink": titleAndLink[1] , "content" : newCommentContent, "tone" : tone}, function(data) {
 				console.log("addNewComment success");
 
 				//add the comment to the current commentInfo list
-				addNewComment(data.title, data.link, currentUser, divNewCommentBoxInput.value, tone, data.commented_at, data.summary);
-				addCommentToIdea(commentInfo, data.title, data.link, divNewCommentBoxInput.value, tone, currentUser);
+				addNewComment(titleAndLink[0], titleAndLink[1], currentUser, newCommentContent, tone, data.commented_at, data.summary);
+				addCommentToIdea(commentInfo, titleAndLink[0], titleAndLink[1], newCommentContent, tone, currentUser);
 
 			});
 				
@@ -2092,7 +2094,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			//close the comment Input box
 			currentElement.removeChild(divNewComment);
-			saveCommentToDrupal(divNewCommentBoxInput.value, issue.link);
 		});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
@@ -2103,9 +2104,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var saveCommentToDrupal = function(commentText, issueLink){
-		$("#edit-comment").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
-		$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize());
-		$("#edit-comment").val("");
+		var title = "";
+        	var link = "";
+        	$("#edit-comment").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
+        	$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize(),function( data ) {
+        	    var result = $(data).find(".comment-heading").last();
+        	    title = $(result).find(".active").text();
+        	    link = $(result).find(".active").attr("href");
+        	});
+        	$("#edit-comment").val("");
+        	return [title,link]
 	}
 
 	var addNewComment = function(title_, link_, author_, content_, tone_, time_, summary_){
@@ -2779,12 +2787,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				var newCommentTime = "";
 				var newCommentTone = "";
 				var newCommentSummary = "";
+				var newCommentContent = divNewCommentBoxInput.value;
+				var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+
 				$.post(serverURL+"updateCriteriaStatus", {
-				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value,"content" : divNewCommentBoxInput.value, "id" : criterion_track.id}, function(data) {
-					newCommentTitle=data.newCommentTitle;
+				"issueLink" : issue.link, "userName" : currentUser, "commentTitle" : criterion_track.title, "value" : criterion_track.value, "newCommentTitle": titleAndLink[0], "newCommentLink": titleAndLink[1], "content" : newCommentContent, "id" : criterion_track.id}, function(data) {
+					newCommentTitle= titleAndLink[0];
 					newCommentTime=data.newCommentTime;
 					newCommentTone=data.newCommentTone;
-					newCommentLink=data.newCommentLink;
+					newCommentLink=titleAndLink[1];
 					newCommentSummary=data.newCommentSummary;
 					console.log("updateCriteriaStatus success");
 				});
@@ -2794,10 +2805,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 				//update the commentbar
 				var commentInfoIndex = findCommentInfoIndex(criterion_track.title);
-				addNewComment(newCommentTitle, newCommentLink, currentUser, divNewCommentBoxInput.value, newCommentTone, newCommentTime, newCommentSummary);
-				addCommentToIdea(commentInfos[commentInfoIndex], newCommentTitle, newCommentLink, divNewCommentBoxInput.value, newCommentTone, currentUser);//if exists replace it
+				addNewComment(newCommentTitle, newCommentLink, currentUser, newCommentContent, newCommentTone, newCommentTime, newCommentSummary);
+				addCommentToIdea(commentInfos[commentInfoIndex], newCommentTitle, newCommentLink, newCommentContent, newCommentTone, currentUser);//if exists replace it
 
-				addCriteriaStatus(commentInfos[commentInfoIndex], criterion_track.value, divNewCommentBoxInput.value, criterion_track.id, currentUser, newCommentTitle);
+				addCriteriaStatus(commentInfos[commentInfoIndex], criterion_track.value, newCommentContent, criterion_track.id, currentUser, newCommentTitle);
 
 				updateCommentsList(commentInfos[commentInfoIndex]);
 				//remove the ideas when deleting
@@ -2805,7 +2816,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				//update the status bar
 				var newCriteriaStatus = {
 							value : criterion_track.value,
-							comment : divNewCommentBoxInput.value,
+							comment : newCommentContent,
 							id : criterion_track.id,
 							title : criterion_track.title,
 							author: currentUser,
@@ -2841,8 +2852,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}	
 
 				d.currentCriteriaStatus = newCriteriaStatus;
-
-				saveCommentToDrupal(divNewCommentBoxInput.value, issue.link);
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
@@ -2952,6 +2961,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 /***********************INVITE PAGE********************/
 	var createInvitePageBody = function() {
 		//Procid Invite Page Body
+		console.log("invite page");
 		var divInviteTitle = document.createElement('h2');
 		divInviteTitle.setAttribute('id', 'procid-invite-title');
 		divInviteTitle.innerHTML = "Suggested Users to Invite to the Discussion";
@@ -2962,12 +2972,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divInviteFilter.setAttribute('id', 'procid-invite-filter');
 		$("#procid-invite-page-wrapper").append(divInviteFilter);
 
-		createInviteLense("experience", "procid-invite-filter", "View experienced participants", ABSOLUTEPATH + "/images/experience");
-		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches", ABSOLUTEPATH + "/images/patches");
-		createInviteLense("recency", "procid-invite-filter", "View recent participants", ABSOLUTEPATH + "/images/recency");
-		createInviteLense("consensus", "procid-invite-filter", "View participants in closed threads", ABSOLUTEPATH + "/images/consensus");
-		createInviteLense("connections", "procid-invite-filter", "View participants with most connections", ABSOLUTEPATH + "/images/connections");
-		createInviteLense("search", "procid-invite-filter", "Search Participants", ABSOLUTEPATH + "/images/search-invite");
+		createInviteLense("experience", "procid-invite-filter", "View experienced participants");
+		createInviteLense("patches", "procid-invite-filter", "View participants who submitted patches");
+		createInviteLense("recency", "procid-invite-filter", "View recent participants");
+		createInviteLense("consensus", "procid-invite-filter", "View participants in closed threads");
+		createInviteLense("connections", "procid-invite-filter", "View participants with most connections");
+
+		createInviteLense("search", "procid-invite-filter", "Search Participants");
 		
 		//Search
 		addSearchPanel('procid-invite-search', 'procid-invite-page-wrapper');
@@ -3006,9 +3017,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				return false;
 			};
 
-			var divInviteLinkImage = document.createElement('img');
+			var divInviteLinkImage = document.createElement('div');
 			divInviteLinkImage.setAttribute('class', 'procid-invite-invitationlink-image');
-			divInviteLinkImage.setAttribute('src', ABSOLUTEPATH + "/images/invite.png");
+			$(divInviteLinkImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-invite-page.png)");
 			divInviteLink.appendChild(divInviteLinkImage);
 
 			divInviteBlock.appendChild(divInviteLink);
@@ -3020,7 +3031,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var selectedInviteLens = "";
 	var selectedImagePath = "";
 
-	var createInviteLense = function(name, parent, tooltipText, imagePath){
+	var createInviteLense = function(name, parent, tooltipText){
 		$('<a />').attr({
 			id : 'procid-invite-' + name + '-link',
 			href : '#',
@@ -3034,19 +3045,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				if($("#procid-invite-"+name+"-link").hasClass('procid-invite-lens-unselected')){
 					$("#procid-invite-"+name+"-link").attr('class', 'procid-invite-lens-selected');
 					$("#procid-invite-search-panel").css("display", "block");
-					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png')
+					$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-selected");
 				}
 				else{
 					$("#procid-invite-"+name+"-link").attr('class', 'procid-invite-lens-unselected');
 					$("#procid-invite-search-panel").css("display", "none");
-					$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png')
+					$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-unselected");
 				}
 			return false;
 		});
 		else{
-
 			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
-			if ($("img[id='procid-invite-"+name+"-image']").attr('src') === imagePath + '-1.png') {
+			console.log("selectedInviteLens:here-here: " + $("div[id='procid-invite-"+name+"-image']").attr('class'));
+			if ($("div[id='procid-invite-"+name+"-image']").attr('class') === "procid-invite-"+name+"-image-unselected") {
 
 				if($(".procid-author-description-selected").length>0){
 					//empty the previous selection
@@ -3056,7 +3067,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					});
 					$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
 					console.log("selectedInviteLens: " + selectedInviteLens);
-					$("img[id='procid-invite-"+selectedInviteLens+"-image']").attr('src', selectedImagePath + '-1.png');
+					$("div[id='procid-invite-"+selectedInviteLens+"-image']").attr('class', "procid-invite-"+selectedInviteLens+"-image-unselected");
 				}
 
 				$("div[id=procid-invite-page-wrapper] .procid-invite-block").sortElements(function(a, b){
@@ -3081,9 +3092,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					}					
 				});
 				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-3.png');
+				$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-selected");
 				selectedInviteLens = name;
-				selectedImagePath = imagePath;
+				console.log("selectedInviteLens:here-here: " + selectedInviteLens);
 
 			} else {
 				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
@@ -3091,7 +3102,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					$(this).html($(this).text());
 				});
 				$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
-				$("img[id='procid-invite-"+name+"-image']").attr('src', imagePath + '-1.png');
+				$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-unselected");
 				//selectedInviteLens = "";
 			}
 
@@ -3104,10 +3115,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			});
 		}
 
-		$('<img />').attr({
-			id : 'procid-invite-' + name + '-image',
-			src : imagePath + '-1.png',
-		}).appendTo("#procid-invite-" + name + '-link');
+		var divInviteLensImage = document.createElement('div');
+		divInviteLensImage.setAttribute('id', 'procid-invite-' + name + '-image');
+		$(divInviteLensImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-invite-page.png)");
+		divInviteLensImage.setAttribute('class', 'procid-invite-' + name + '-image-unselected');
+		$("#procid-invite-" + name + '-link').append(divInviteLensImage);
 
 	}
 	var findPeopletoInvite = function() {
