@@ -730,7 +730,7 @@ img.procid-lens-image-unselected {
 	height: 166px;
 	vertical-align: top;
 	width: 275px;
-	overflow: auto;
+	/*overflow: auto;*/
 }
 
 .procid-idea-block-image {

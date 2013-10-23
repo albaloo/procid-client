@@ -1624,6 +1624,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var titleInput = document.createElement('input');
 			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
 			titleInput.setAttribute('class', 'titleInput');
+			titleInput.setAttribute('maxlength', '20');
 			titleInput.setAttribute('type', 'text');
 			titleInput.setAttribute('name', 'labelInput');
 			titleInput.placeholder = tempNewCriteria.title;
@@ -2602,8 +2603,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	      	.attr("class", "procid-criteria-title")
       		.attr("dx", function(d) {
 				var tempTitle = findCriteriaTitle(d.currentCriteriaStatus.id);
-				var length = tempTitle.length*4;
-				return (x(6)-x(0))/2+x(0)-length/2;
+				var length = tempTitle.length*6;
+				return (x(6)-x(0))/2+x(0)-length/2-10;
 			})
 		.attr("dy", "17")
 		.text(function(d) {
