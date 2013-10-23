@@ -1235,13 +1235,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var createLabel = function(name, link) {
 		var label = document.createElement('a');
+		label.setAttribute('class', 'ideaPage-header-label-inactive');
 		label.setAttribute('id', 'procid-' + name + '-label');
-		label.setAttribute('class', 'ideaPage-header-label');
 		label.setAttribute('href', "#");
 		label.innerHTML = name;
+		label.setAttribute('rel', "tooltip");
+		label.setAttribute('title', "Sort By " + name);
+		
 		$(".procid-ideaPage-header").append(label);
 		
 		if (name === "Ideas"){
+			label.setAttribute('class', 'ideaPage-header-label');		
 			label.onclick = function(e) { 		
 				$("div[class=procid-idea-block]").sortElements(function(a, b){
 					var strA=$(a).find(".procid-idea-block-image a[class='ideaPage-link']")[0].innerHTML.toLowerCase();
@@ -1253,6 +1257,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 
 		if(name === "Status"){
+			label.setAttribute('class', 'ideaPage-header-label');
 			label.onclick = function(e){
 				$("div[class=procid-idea-block]").sortElements(function(a, b){
 					var strA=$(a).find(".wrapper-dropdown span")[0].innerHTML.toLowerCase();
@@ -1268,6 +1273,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			link1.setAttribute('id', 'procid-edit-link');
 			$(link1).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			link1.setAttribute('href', "#");
+			link1.setAttribute('rel', "tooltip");
+			link1.setAttribute('title', "Edit Criteria List");
 			link1.onclick = function(e) { 
 				if($(".procid-ideaPage-header .procid-edit-criteria").length == 0)
 					createEditCriteriaBox($(".procid-ideaPage-header")[0]);
@@ -1299,7 +1306,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		else if(strB === "implemented")
 			numB = 2;
 
-		return numA > numB ? -1 : 1;
+		return numA >= numB ? -1 : 1;
 	}
 
 	var sortIdeasOnTime = function(strA, strB){
@@ -1352,6 +1359,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			titleInput.setAttribute('id', 'procid-editCriteriaBox-title-input' + tempNewCriteria.id);
 			titleInput.setAttribute('class', 'titleInput');
 			titleInput.setAttribute('type', 'text');
+			titleInput.setAttribute('maxlength', '20');
 			titleInput.setAttribute('name', 'labelInput');
 			titleInput.placeholder = tempNewCriteria.title;
 			tableC1.appendChild(titleInput);
@@ -1674,9 +1682,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		link1.innerHTML = commentInfo.title + " " +commentInfo.author;
 		link1.onclick = function(e){
 			changePage('home');
+			window.location = commentInfo.link;
+			return false;
 		}
 
-		var contentString = "<strong style='color: #29abe2;'>" + commentInfo.title + "</strong> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
+		var contentString = "<a style='color: #29abe2; font-size: 1.023em; font-weight: bold; padding-left:0px;' href='"+commentInfo.link+"' onClick='window.open(\""+commentInfo.link+"\");'>" + commentInfo.title + "</a> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
 		var clicked = false;
 		var currentBox = "";
 		var divIdeaImage = document.createElement('div');
@@ -1842,7 +1852,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		var srcPath = ABSOLUTEPATH + "/images/sprites-idea-page.png";
 		$.each(commentInfo.comments, function() {
-			var contentString = "<strong style='color: #29abe2;'>" + this.title + "</strong> <small><i>Posted by " + this.author + "</i></small> <br/>" + this.content;
+			var contentString = "<a style='color: #29abe2; font-size: 1.023em; font-weight: bold; padding-left:0px;' href='"+this.link+"' onClick='window.open(\""+this.link+"\");'>" + this.title + "</a> <small><i>Posted by " + this.author + "</i></small> <br/>" + this.content;
 			//var comment = findComment(string);
 			var divEachComment = document.createElement('div');
 			divEachComment.setAttribute('class', "procid-idea-comment-img-div");
@@ -2454,6 +2464,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 
 	var createCriteriaStatusTracks = function() {
+		var recId = 0;
 		for (var i = 0; i < commentInfos.length; i++) {
 			if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
 				if(commentInfos[i].criteriaStatuses.length > 0){
@@ -2492,9 +2503,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				
 					currentCriteriaStatusRecord = {
 						currentCriteriaStatus: criterion_track,
-						previousCriteriaStatuses: prevStatusArray
+						previousCriteriaStatuses: prevStatusArray,
+						recordId: recId
 					};
 					allCriteriaStatuses.push(currentCriteriaStatusRecord);
+					recId++;
 					});
 				}
 			}
@@ -2514,13 +2527,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
     		.attr("xlink:href", ABSOLUTEPATH + "/images/slider.png")
     		.attr("width", "240")
     		.attr("x", "5")
-    		.attr('y', "15")
+    		.attr('y', "17")
     		.attr("height", "30");	
 
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-minus.png")
     		.attr("width", "30")
-    		.attr("x", "0")
+    		.attr("x", "3")
     		.attr('y', "15")
     		.attr("height", "30")
 		.on("click",function(d){
@@ -2555,7 +2568,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-plus.png")
     		.attr("width", "30")
-    		.attr("x", "220")
+    		.attr("x", "217")
     		.attr('y', "15")
     		.attr("height", "30")
 		.on("click",function(d){
@@ -2582,7 +2595,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value)-30), d);
 				}
 		}).append("svg:title")
-	          .text("Increase Criteria Ranting");	
+	          .text("Increase Criteria Rating");	
 
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:text")
 		.attr("id", function(d) {
@@ -2602,32 +2615,39 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
           	.text(function(d) { return "" + findCriteriaDescription(d.currentCriteriaStatus.id); });
 
 
-		d3.selectAll(".selector").append("image")
+		d3.selectAll(".selector").data(allCriteriaStatuses).append("image")
     		.attr("xlink:href", ABSOLUTEPATH + "/images/history-1.png")
     		.attr("width", "20")
+    		.attr("style", function(d){
+				if(d.previousCriteriaStatuses.length > 0)
+					return "";
+				else
+					return "display:none;";			
+			})
     		.attr("x", x(6)-10)
     		.attr('y', "0")
     		.attr("height", "20")
-		.on("click",function(){
-			if(!d3.select(".selector .procid-selector-circle-history").empty()){
-				d3.selectAll(".selector .procid-selector-circle-history").attr("style", "cursor: pointer");
-				d3.selectAll(".selector .procid-selector-circle-history").attr("class", "procid-selector-circle-shown");
+		.on("click",function(d){
+			d.recordId
+			if(!d3.select(".selector .procid-selector-circle-history-"+d.recordId).empty()){
+				d3.selectAll(".selector .procid-selector-circle-history-"+d.recordId).attr("style", "cursor: pointer");
+				d3.selectAll(".selector .procid-selector-circle-history-"+d.recordId).attr("class", "procid-selector-circle-shown-"+d.recordId);
 				d3.select(this).attr("xlink:href", ABSOLUTEPATH + "/images/history-2.png");
-				d3.selectAll(".selector .procid-criteria-line").attr("style", "display:none;");
+				d3.selectAll(".selector .procid-criteria-line-"+d.recordId).attr("style", "display:none;");
 		
 			}
 			else{
-				d3.selectAll(".selector .procid-selector-circle-shown").attr("style", "cursor: pointer; display:none;");
-				d3.selectAll(".selector .procid-selector-circle-shown").attr("class", "procid-selector-circle-history");
+				d3.selectAll(".selector .procid-selector-circle-shown-"+d.recordId).attr("style", "cursor: pointer; display:none;");
+				d3.selectAll(".selector .procid-selector-circle-shown-"+d.recordId).attr("class", "procid-selector-circle-history-"+d.recordId);
 				d3.select(this).attr("xlink:href", ABSOLUTEPATH + "/images/history-1.png");
-				d3.selectAll(".selector .procid-criteria-line").attr("style", "");
+				d3.selectAll(".selector .procid-criteria-line-"+d.recordId).attr("style", "");
 			}
 		}).append("svg:title")
-	          .text("View Criteria Ranting History");
+	          .text("View Criteria Rating History");
 
 		
 		d3.selectAll(".selector").data(allCriteriaStatuses).append("svg:line")
-	      	.attr("class", "procid-criteria-line")
+	      	.attr("class", function(d) {return "procid-criteria-line-"+d.recordId;})
 	      	.attr("id", function(d) {
 				var tempTitle = d.currentCriteriaStatus.title.substr(1);
 				return "procid-cline-"+tempTitle+"-"+d.currentCriteriaStatus.id;
@@ -2667,7 +2687,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			})
 			.attr("stroke", function(d){
 				if(d.currentCriteriaStatus.comment=="")
-					return "white";
+					return "#999999";//"white";
 				else if(d.currentCriteriaStatus.value ==3)
 					return "#999999";
 				else
@@ -2679,7 +2699,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					else
 						return "0.25";})
 			.attr("style", "cursor: pointer")
-			.attr("cy", "30")
+			.attr("cy", "28")
 			.attr("cx", function(d) {
 				return x(d.currentCriteriaStatus.value);
 			}).attr("r", "7")
@@ -2692,7 +2712,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
-				this.__origin__ = [x(d.currentCriteriaStatus.value), 30];
+				this.__origin__ = [x(d.currentCriteriaStatus.value), 28];
 				if(d.currentCriteriaStatus.originX == -1){
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
@@ -2724,11 +2744,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//for (var i = 0; i < currentSelectors.length; i++){
 			if(index >= allCriteriaStatuses.length) return;
 			if(allCriteriaStatuses[index].previousCriteriaStatuses.length > 0){
-				d3.select(this).selectAll(".procid-selector-circle-history").data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
-				.attr("class", "procid-selector-circle-history")
+				var recordId = allCriteriaStatuses[index].recordId;
+				d3.select(this).selectAll(".procid-selector-circle-history-"+recordId).data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle")
+				.attr("class", "procid-selector-circle-history-"+recordId)
 				.attr("fill", function(d){
 					if(d.value == 3)
-						return "#F0F0F0";
+						return "#999999";//"#F0F0F0";
 					else if(d.value < 3)
 						return "#29abe2";
 					else
@@ -2742,11 +2763,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						return color;	
 				}).attr("stroke-width", function(d){
 					if(d.value ==3)
-						return "1.5";
+						return "0.25";//"1.5";
 					else
 						return "0.25";})
 				.attr("style", "cursor: pointer; display: none;")
-				.attr("filter", "url(#procid-circle-filter)")
+				//.attr("filter", "url(#procid-circle-filter)")
 				.attr("cy", "30")
 				.attr("cx", function(d) {
 					return x(d.value);
@@ -2898,7 +2919,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				return "#8dc53c";	
 			})
 			.attr("stroke", function(){
-				if(value ==3)
+				if(value ==3 || (value == 0 && d.author == ""))
 					return "#999999";
 				else
 					return "white";})

@@ -596,9 +596,19 @@ img.procid-lens-image-unselected {
 	font-size: 15px;
 	font-weight: regular;
 	margin: 8px 0 8px 6px;
-	/*background:#f8f8f8;*/
 	text-align: left;
 	display: inline;
+}
+
+.ideaPage-header-label-inactive {
+	color: black;
+	font-size: 15px;
+	font-weight: regular;
+	margin: 8px 0 8px 6px;
+	text-align: left;
+	display: inline;
+	pointer-events: none;
+	cursor: default;
 }
 
 .ideaPage-header-label-img {
@@ -720,6 +730,7 @@ img.procid-lens-image-unselected {
 	height: 166px;
 	vertical-align: top;
 	width: 275px;
+	overflow: auto;
 }
 
 .procid-idea-block-image {
