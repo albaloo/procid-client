@@ -650,9 +650,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var index = -1;
 		$.each($("ul[class=links]"), function(){	
 			if(index > -1){
-				//createLensSelectorForIndividualComments(this, 'patch', commentInfos[index], 'Tag this comment as Patch');
-				//createLensSelectorForIndividualComments(this, 'expert', commentInfos[index], 'Tag this comment as Posted by Experienced');
-				//createLensSelectorForIndividualComments(this, 'conversation', commentInfos[index], 'Tag this comment as part of a Conversation');
 				createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
 				createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
 			}
@@ -663,7 +660,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var chosenLens = "";
 
 	var createLens = function(name, parent, tooltipText) {
-	//TODO: use CSS sprite
 		//Lenses
 		$('<li />').attr({
 			id : "procid-" + name,
@@ -734,15 +730,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						instruction = "You can identify "+name+"s by toggling the icon in the bottom right of each comment."
 					var x = getOffset(this).left - getOffset($("#procid-"+name).parentNode).left + 5;
 					currentBox = addWarningBox($("#procid-"+name)[0], message, instruction, x+"px", "40px", ""); 
-				}
-				$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
-				$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
-				$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-unselected');
-				chosenLens = "";
+				}else{
+					$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
+					$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
+					$("div[id='procid-"+name+"-image']").attr('class', 'procid-' + name + '-image-unselected');
+					chosenLens = "";
 
-				$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function() {				
-					$(this).parents(".procid-comment").css("display","block");
-				});
+					$("div[class='procid-comment'] a[class='procid-lens-unselected']").map(function(){
+						$(this).parents(".procid-comment").css("display","block");
+					});
+				}
 			}
 			$.post(serverURL+"lensClicked", {
 				"issueLink" : issue.link, "userName" : currentUser, "tagName" : name}, function() {
