@@ -3032,11 +3032,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			var divInviteLink = document.createElement('a');
 			divInviteLink.setAttribute('class', 'procid-invite-invitationlink');
-			divInviteLink.setAttribute('href', '#');
+			divInviteLink.setAttribute('href', '#'+i);
 			divInviteLink.setAttribute('rel', 'tooltip')
 			divInviteLink.setAttribute('title', 'Invite this person');
 			divInviteLink.onclick = function invitePerson(evt) {
-				//TODO: invite this person
+				var currentI = parseInt($(this).attr('href').substr(1), 10);
+				var personContactUrl = suggestedPeople[currentI].authorLink + "/contact"
+				var popup = window.open(personContactUrl);
+				 popup.onload = function() {
+        				setTimeout(function(){ 
+						if(!(popup.document.getElementById("page-title").innerHTML === "Access denied")){
+							popup.document.getElementById("edit-subject").value = "Invite to a discussion";
+							popup.document.getElementById("edit-message").innerHTML = "I would like to invite you to this discussion: <a href='" + issue.link+ "'>" + issue.title +"</a> .";	
+						} 
+					}, 2000);
+    				 }  
+				/*if(!($("#page-title").text() === "Access denied")){
+					$("#edit-subject").text("Invite to a discussion");
+					$("#edit-message").text("I would like to invite you to a discussion about ...");	
+				}*/					
 				return false;
 			};
 
