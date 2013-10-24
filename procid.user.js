@@ -1435,7 +1435,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					changed = true;
 					addNewComment(titleAndLink[0], titleAndLink[1], currentUser, newCommentContent, "neutral", data.commented_at, data.summary);
 				});
-
 				}
 				
 			});
@@ -1453,6 +1452,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
 				currentElement.removeChild(divNewCriteriaEditBox);
 			});
+
+		if(criteria.length > 3)
+			$('.procid-idea-block-criteria').css('overflow-y','auto');
+		else if (criteria.length <= 3)
+			$('.procid-idea-block-criteria').css('overflow-y','visible');
 
 		return divNewCriteriaEditBox;
 	}
@@ -2073,7 +2077,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			registerString = "";
 		}
 		
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", toneString, "200px", arrowPosition, "1px", registerString, false);
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Save", "textarea", toneString, "200px", arrowPosition, "1px", registerString, false);
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewCommentBoxInput).focus(function(){
 			setCaretPosition(divNewCommentBoxInput, divNewCommentBoxInput.value.length);
@@ -2369,7 +2373,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		if(criteria.length > 3)
 			$('.procid-idea-block-criteria').css('overflow-y','auto');
 		else if (criteria.length <= 3)
-			$('.procid-idea-block-criteria').css('overflow-y','');
+			$('.procid-idea-block-criteria').css('overflow-y','visible');
 
 	
 		createCriteriaStatusTracks();
@@ -2792,7 +2796,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			satisfaction = " doesn't satisfy"				
 		var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction+' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
 
-		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Comment", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px", "", false);
+		var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Save", "textarea", placeHolderStr, "200px", currentPosition+"px", "30px", "", false);
 		
 		var divNewCommentBoxInput = $(divNewComment).children(".procid-new-comment-box").first().children("textarea")[0];
 		$(divNewCommentBoxInput).focus(function(){
