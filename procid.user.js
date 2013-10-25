@@ -1328,7 +1328,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 /**********IdeaPage-Criteria Edit Box**********/
 	var createEditCriteriaBox = function(currentElement) {
-		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save Your Changes", "", "", "400px", "20px", "", "", false);
+		var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save", "", "", "400px", "20px", "", "", false);
 		var tempCriteria = [];
 		var index = 0;
 
@@ -1452,11 +1452,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
 				currentElement.removeChild(divNewCriteriaEditBox);
 			});
-
-		if(criteria.length > 3)
-			$('.procid-idea-block-criteria').css('overflow-y','auto');
-		else if (criteria.length <= 3)
-			$('.procid-idea-block-criteria').css('overflow-y','visible');
 
 		return divNewCriteriaEditBox;
 	}
@@ -1892,7 +1887,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addProsComment.setAttribute('href', "#");
 		addProsComment.setAttribute('rel', "tooltip");
 		addProsComment.setAttribute('class', "procid-addcomment-link");
-		addProsComment.setAttribute('title', "Add a new comment");
+		addProsComment.setAttribute('title', "Add a supportive comment");
 		addProsComment.innerHTML = "+";
 		addProsComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
@@ -1914,7 +1909,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addNeutralComment.setAttribute('href', "#");
 		addNeutralComment.setAttribute('rel', "tooltip");
 		addNeutralComment.setAttribute('class', "procid-addcomment-link");
-		addNeutralComment.setAttribute('title', "Add a new comment");
+		addNeutralComment.setAttribute('title', "Add a neutral comment");
 		addNeutralComment.innerHTML = "+";
 		addNeutralComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
@@ -1936,7 +1931,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		addConsComment.setAttribute('href', "#");
 		addConsComment.setAttribute('rel', "tooltip");
 		addConsComment.setAttribute('class', "procid-addcomment-link");
-		addConsComment.setAttribute('title', "Add a new comment");
+		addConsComment.setAttribute('title', "Add a constructive comment");
 		addConsComment.innerHTML = "+";
 		addConsComment.onclick = function(e) {
 			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
@@ -2406,6 +2401,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				//return false;
 			};				
 		}
+
+		if(criteria.length > 3)
+			$('.procid-idea-block-criteria').css('overflow-y','auto');
+		else if (criteria.length <= 3)
+			$('.procid-idea-block-criteria').css('overflow-y','visible');
 
 		$.each(criteria, function() {
 			var divCriteriaStatus = document.createElement('div');
