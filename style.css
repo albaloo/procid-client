@@ -652,7 +652,7 @@ img.procid-lens-image-unselected {
 
 .procid-checkbox {
 	/*width: 20px;*/	
-	margin: 10px;
+	margin-left: 15px;
 	position: relative;
 }
 
@@ -928,17 +928,17 @@ a.ideaPage-link {
 {
 	float: left; 
 	margin: 0px 10px 15px 0;
-	background-position: -216px -49px ;
-	width: 12px;
-	height: 10px;
+	background-position: -171px -19px ;
+	width: 9px;
+	height: 9px;
 }
 
 .procid-idea-comment-img-strong
 {
 	float: left; 
 	margin: 0px 10px 15px 0;
-	background-position: -214px -32px ;
-	width: 14px;
+	background-position: -169px -3px ;
+	width: 12px;
 	height: 12px;
 }
 
@@ -992,7 +992,7 @@ a.ideaPage-link {
 	width: 200px; 
 	height:2px;
 	opacity: 0.5;
-	background-position: 0 -57px ;
+	background-position: 0 -36px ;
 	margin-bottom: 7px;
 }
 
@@ -1000,7 +1000,7 @@ a.ideaPage-link {
 	width: 200px; 
 	height:2px;
 	opacity: 0.5;
-	background-position: 0 -52px ;
+	background-position: 0 -36px ;
 	margin-bottom: 7px;
 }
 
@@ -1028,18 +1028,17 @@ a.ideaPage-link {
 	
 .procid-new-comment-textarea {
 	background-color: white;
-	border: none;
-	border-color: Transparent; 
+	border: 1px solid #ccc;
 	resize: none;
-	width: 94%;
-	height:110px;
-	padding:3px 3px 3px;
-	margin: 4px 4px 1px 4px; 
+	width: 81%;
+	height:120px;
+	padding:7px 7px 7px;
+	margin: 15px 15px 1px 15px; 
 	font-size: 13px;
 	/* easy rounded corners for modern browsers */
-	-moz-border-radius: 6px;
+	/*-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
-	border-radius: 6px;
+	border-radius: 6px;*/
 }
 .procid-new-comment-textarea:focus{
 	outline: none;
@@ -1061,8 +1060,8 @@ a.ideaPage-link {
 	border-radius: 5px;
 	position: relative;
 	z-index: 10;
-	padding-bottom: 40px;
-	width: 100%;/*200px;*/
+	padding-bottom: 45px;
+	width: 120%;/*200px;*/
 	height: auto;/*100%;*/
 }
             
@@ -1087,31 +1086,55 @@ a.ideaPage-link {
 }
 
 .procid-sentiment-tuner-image-pos{
-	background-position: 0 0;
-	width: 16px;
-	height: 16px;
+	background-position: 0 -18px;
+	width: 15px;
+	height: 15px;
+	margin-left: 185px;
+	margin-right: 4px;
+	display: inline-block;
+}
+
+.procid-sentiment-tuner-image-pos:hover{
+	background-position: -17px -18px;
+	width: 15px;
+	height: 15px;
 	margin-left: 185px;
 	margin-right: 4px;
 	display: inline-block;
 }
 
 .procid-sentiment-tuner-image-neutral{
-	background-position: -15px 0;
-	background-size: 221px 55px;
-	width: 16px;
-	height: 16px;
+	background-position: -34px -18px;
+	width: 15px;
+	height: 15px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.procid-sentiment-tuner-image-neutral:hover{
+	background-position: -129px -19px;
+	width: 15px;
+	height: 15px;
 	margin-right: 5px;
 	display: inline-block;
 }
 
 .procid-sentiment-tuner-image-cons{
-	background-position: -34px 0;
-	width: 16px;
-	height: 16px;
+	background-position: -185px 0;
+	width: 15px;
+	height: 15px;
 	margin: 0;
 	display: inline-block;
 }
-            
+       
+.procid-sentiment-tuner-image-cons:hover{
+	background-position: -185px -18px;
+	width: 15px;
+	height: 15px;
+	margin: 0;
+	display: inline-block;
+}
+     
 .procid-new-comment .shadow {
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
 	z-index: 9;
@@ -1139,15 +1162,31 @@ a.ideaPage-link {
 }
 
 .procid-button-submit{
-	margin: 2px 7px 5px 10px;
+	margin: 6px 7px 5px 15px;
 	background:#8dc53c;
 	background-color:#8dc53c;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
 	background: -moz-linear-gradient(top,  #9fc848,  #96bc43);
 }
 
+.procid-button-tooltip {
+	width: 93%;
+	margin-top: 6px;
+	background-color: #aaa;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+	color: #fff;
+	padding: 6px 0px 6px 18px;
+	font-size: 11px;
+	line-height: 1.2em;
+	text-align: left;
+	float: left;
+}
+
 .procid-button-cancel{
-	margin: 2px 0px 5px 7px;
+	margin: 6px 0px 5px 7px;
 	background:#6e6e6e;
 	background-color:#6e6e6e;
 	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));

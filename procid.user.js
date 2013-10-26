@@ -2190,6 +2190,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				divCheckBoxLabel.setAttribute('for', 'procid-checkbox-input');
 				divCheckBoxLabel.innerHTML = registerString;
 				divCheckBox.appendChild(divCheckBoxLabel);
+			}else{
+				var divPlaceHolder = document.createElement('div');
+				divNewCommentBox.appendChild(divPlaceHolder);
 			}
 
 		}else if(midElement === "div"){
@@ -2245,6 +2248,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			divNewCommentBoxCancel.setAttribute('value', 'Cancel');
 			divNewCommentBoxCancel.setAttribute('name', 'cancel');
 			divNewCommentBox.appendChild(divNewCommentBoxCancel);
+
+			var divNewCommentBoxTooltip = document.createElement('div');
+			divNewCommentBoxTooltip.setAttribute('class', 'procid-button-tooltip');
+			divNewCommentBoxTooltip.innerHTML='This will post on Drupal.org';
+			divNewCommentBox.appendChild(divNewCommentBoxTooltip);
+			divNewCommentBoxTooltip.style.display = "none";
+
+			divNewCommentBoxSubmit.onmouseover = function (e){
+				divNewCommentBoxTooltip.style.display = "inline";
+			};
+			divNewCommentBoxSubmit.onmouseout = function (e){
+				divNewCommentBoxTooltip.style.display = "none";
+			};
 		}else{
 			divNewCommentBox.style.paddingBottom = "4px";
 		}
