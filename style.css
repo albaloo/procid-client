@@ -1466,13 +1466,13 @@ a.ideaPage-link {
 	color: #1885c8;
 	font-size: 14px;
 	font-weight: bold;
-	width: 19%;
+	width: 17%;
 	text-align: left;
 }
 
 .procid-author-description-unselected {
 	margin: 5px 0 5px 6px;
-	width: 55%;
+	width: 65%;
 	text-align: left;
 	font-style: italic;
 	float: left;
@@ -1485,13 +1485,13 @@ a.ideaPage-link {
 	color: #1885c8;
 	font-size: 14px;
 	font-weight: bold;
-	width: 19%;
+	width: 17%;
 	text-align: left;
 }
 
 .procid-author-description-selected {
 	margin: 5px 0 5px 6px;
-	width: 55%;
+	width: 65%;
 	text-align: left;
 	font-style: italic;
 	float: left;

@@ -3135,13 +3135,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					var strings = $(this).text().split(",");
 
 					if(name === "experience"){
-						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3]);
+						$(this).html("<b>"+strings[0]+"</b>, "+strings[1]+ ", " + strings[2] +", " +strings[3] + ", " +strings[4]);
 					}else if(name === "patches"){//usability patches
-						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]);
+						$(this).html(strings[0]+", <b>"+strings[1]+ "</b>, " + strings[2] +", " +strings[3]+ ", " +strings[4]);
 					}else if(name === "consensus"){//closed threads
-						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]);
+						$(this).html(strings[0]+", "+strings[1]+ ", <b>" + strings[2] +"</b>, " +strings[3]+ ", " +strings[4]);
 					}else if(name == "recency"){//recency
-						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>");
+						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", <b>" +strings[3] + "</b>"+ ", " +strings[4]);
+					}else if(name == "connections"){ //connections
+						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", " +strings[3] + ", <b>" +strings[4] + "</b>");
 					}					
 				});
 				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
@@ -3209,11 +3211,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i,'$1'), 10);
 			return  numA > numB ? -1 : 1;				    
+		}else if(name === "connections"){//triads
+			if(aStrings[4].indexOf("no previous interactions with current participants")>0)
+				return 1;
+			else if(bStrings[4].indexOf("no previous interactions with current participants")>0)
+				return -1;
+
+			var numA = parseInt(aStrings[4].match(/\d+/)[0], 10);
+			if(isNaN(numA))
+				numA = 0;
+			var numB = parseInt(bStrings[4].match(/\d+/)[0], 10);
+			if(isNaN(numB))
+				numB = 0;
+
+			return  numA > numB ? -1 : 1;				    
 		}else{//recency
 
-			if(aStrings[3].indexOf("not recently in a usability thread")>0)
+			if(aStrings[3].indexOf("not recently commented on a usability thread")>0)
 				return 1;
-			else if(bStrings[3].indexOf("not recently in a usability thread")>0)
+			else if(bStrings[3].indexOf("not recently commented on a usability thread")>0)
 				return -1;
 
 			var numA = parseInt(aStrings[3].match(/\d+/)[0], 10);
