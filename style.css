@@ -39,7 +39,7 @@
     
     background:#fff;
     /* styling of the dialog box, i have a fixed dimension for this demo */ 
-    width:328px; 
+    width:348px; 
     height:110px;
     
     /* make sure it has the highest z-index */
@@ -1056,6 +1056,7 @@ a.ideaPage-link {
 	position:absolute;
 	width: 200px;
 	height: 170px;
+	z-index: 5000;
 	/*margin: 0 auto;*/
 	/*margin: 0px 0px 0px 30px; */
 }
@@ -1289,6 +1290,7 @@ a.ideaPage-link {
 	width: 400px;
 	height: auto;
 	margin: 15px auto 0 540px;
+	z-index:5000;
 }
 
 #procid-editCriteriaBox-table {

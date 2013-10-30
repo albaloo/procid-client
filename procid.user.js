@@ -1443,15 +1443,28 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				deleteCriteria(this);
 				//TODO: delete the related comments
 			});
-				if(changed)
-					updateCriteriaStatusList();
+			if(changed)
+				updateCriteriaStatusList();
 				
-				currentElement.removeChild(divNewCriteriaEditBox);
-			});
+			currentElement.removeChild(divNewCriteriaEditBox);
+			$('#procid-dialog-overlay').hide();        
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+
+		});
 		
 		$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
 				currentElement.removeChild(divNewCriteriaEditBox);
-			});
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
+
+		$("#procid-dialog-overlay").click(function () {        
+				currentElement.removeChild(divNewCriteriaEditBox);
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
 
 		return divNewCriteriaEditBox;
 	}
@@ -1684,25 +1697,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 
 		var contentString = "<a style='color: #29abe2; font-size: 1.023em; font-weight: bold; padding-left:0px;' href='"+commentInfo.link+"' onClick='window.open(\""+commentInfo.link+"\");'>" + commentInfo.title + "</a> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
-		var clicked = false;
-		var currentBox = "";
+
 		var divIdeaImage = document.createElement('div');
 		divIdeaImage.setAttribute('id', 'procid-idea-div-image');
 		divIdeaImage.onclick = function(e){
-			if(!clicked){
-				clicked = true;
-				if(currentBox == ""){
-					var x = getOffset(this).left - getOffset(this.parentNode).left + 60;
-					currentBox = addCommentContentBox(this, contentString, x+"px", "-65px", "relative"); 			
-				}
-			}else{
-				clicked = false;
-				if(currentBox != ""){
-					removeCommentContentBox(this, currentBox);
-					currentBox = "";
-				}
-			}
-
+			var x = getOffset(this).left - getOffset(this.parentNode).left + 60;
+			addCommentContentBox(this, contentString, x+"px", "-65px", "relative"); 			
 		};
 
 		if (commentInfo.image != " ") {//image attachment
@@ -1985,35 +1985,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		icon.setAttribute('class', iconClass);
 		$(icon).css("background-image", "url("+ iconPath +")");
 		divParent.appendChild(icon);
-		var currentBox = "";
-		var clicked = false;
-		$(document).mouseup(function (e){
-		    var container = $(icon);
-		    //if (icon != e.target){// container.has(e.target).length === 0){
-		        if(currentBox != "" && $(currentBox).find("div.procid-prev-comment-text")[0] != e.target){
-				removeCommentContentBox(icon, currentBox);
-				currentBox = "";
-				clicked = true;
-			}
-    		    //}
-		});
+
 		if(content != "") {
-			icon.onmouseout = function(e){
-				if(currentBox != "" && !clicked){
-				}
-			};
 			icon.onclick = function(e){
-					if(currentBox === ""){
-						if(!clicked){
-							var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
-							currentBox = addCommentContentBox(this, content, x+"px", "50px", "", sentimentTuning); 	
-						}
-						clicked = false;
-					}
-					else {//if(currentBox != ""){
-						removeCommentContentBox(this, currentBox);
-						currentBox = "";
-					}
+				var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
+				addCommentContentBox(this, content, x+"px", "50px", "", sentimentTuning); 	
 			};
 		}
 	}
@@ -2021,6 +1997,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var addCommentContentBox = function(image, content, arrowPosition, topPosition, positionStyle, sentimentTuning){
 		var parent = image.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "250px", arrowPosition, "1px", "", sentimentTuning);
+		$("#procid-dialog-overlay").click(function () {        
+				parent.removeChild(divNewComment);
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
+
 		divNewComment.style.top=topPosition;
 		if(positionStyle != "")
 			divNewComment.style.position=positionStyle;
@@ -2115,11 +2098,24 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 			//close the comment Input box
 			currentElement.removeChild(divNewComment);
+		        $('#procid-dialog-overlay').hide();        
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+			return false;
 		});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
 				currentElement.removeChild(divNewComment);
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
 			});
+
+		$("#procid-dialog-overlay").click(function () {        
+				currentElement.removeChild(divNewComment);
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
 
 		return divNewComment;
 	}
@@ -2170,6 +2166,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft, registerString, sentimentTuning){
+		var divProcidOverlay = document.createElement('div');
+		divProcidOverlay.setAttribute('id', 'procid-dialog-overlay');
+		$('body').prepend(divProcidOverlay);
+
+		var maskHeight = $(document).height();  
+		var maskWidth = $(window).width();
+
+		$('#procid-dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
+		 
 		var divNewComment = document.createElement('div');
 		divNewComment.setAttribute('class', className);
 		divNewComment.style.width = width;
@@ -2903,8 +2908,9 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					};
 					d.previousCriteriaStatuses.push(prevCriteriaStatus);
 				}	
-
 				d.currentCriteriaStatus = newCriteriaStatus;
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));	
 			});
 		
 		$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
@@ -2915,7 +2921,23 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				d.currentCriteriaStatus.originX = -1;
 				d.currentCriteriaStatus.originValue = -1;
 				d.currentCriteriaStatus.commentBox = "";
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
 			});
+
+		$("#procid-dialog-overlay").click(function () {        
+				//go back to the original Location
+				updateCriteriaCircleLocation(criterion_track, originalValue, originalPosition, circle);
+				//close the comment Input box
+				currentElement.removeChild(divNewComment);
+				d.currentCriteriaStatus.originX = -1;
+				d.currentCriteriaStatus.originValue = -1;
+				d.currentCriteriaStatus.commentBox = "";
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
 
 		return divNewComment;
 	}	
@@ -3002,6 +3024,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var parent = circle.parentNode.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px", "", false);
+
+		$("#procid-dialog-overlay").click(function () {        
+				parent.removeChild(divNewComment);
+			        $('#procid-dialog-overlay').hide();        
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				return false;
+		});
 
 		return divNewComment;
 	}
