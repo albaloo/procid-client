@@ -673,7 +673,7 @@ img.procid-lens-image-unselected {
 
 #procid-Comments-label {
 	color:black;
-	margin: 0 13px 0 5px;
+	margin: 0 13px 0 40px;
 }
 
 #procid-edit-img {
@@ -970,6 +970,11 @@ a.ideaPage-link {
 	vertical-align: bottom;
 	position: relative;
 	padding-bottom: 11px;
+}
+
+.procid-addcomment-link-deactive{
+	cursor: default;
+	color: #B3B3B3;
 }
 
 .procid-idea-comment-row-body{

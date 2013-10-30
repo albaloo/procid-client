@@ -1847,6 +1847,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divConsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
 		divConsRowBody.appendChild(divConsRowContent);
 		
+		var numPositiveOrNeutralComments = 0;
 		var srcPath = ABSOLUTEPATH + "/images/sprites-idea-page.png";
 		$.each(commentInfo.comments, function() {
 			var contentString = "<a style='color: #29abe2; font-size: 1.023em; font-weight: bold; padding-left:0px;' href='"+this.link+"' onClick='window.open(\""+this.link+"\");'>" + this.title + "</a> <small><i>Posted by " + this.author + "</i></small> <br/>" + this.content;
@@ -1870,9 +1871,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				addImage(divEachComment, srcPath, 'procid-idea-comment-img', contentString, sentimentTuning);
 			if(this.tone.indexOf("positive") >= 0){
 				divProsRowContent.appendChild(divEachComment);
+				numPositiveOrNeutralComments++;
 			}else if(this.tone == "neutral"){
 				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
 				divNeutralRowContent.appendChild(divEachComment);
+				numPositiveOrNeutralComments++;
 			}else if(this.tone.indexOf("negative") >= 0){
 				//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
 				divConsRowContent.appendChild(divEachComment);
@@ -1930,14 +1933,25 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var addConsComment = document.createElement('a');
 		addConsComment.setAttribute('href', "#");
 		addConsComment.setAttribute('rel', "tooltip");
-		addConsComment.setAttribute('class', "procid-addcomment-link");
-		addConsComment.setAttribute('title', "Add a constructive comment");
+		if(numPositiveOrNeutralComments > 0){
+			addConsComment.setAttribute('class', "procid-addcomment-link");
+			addConsComment.setAttribute('title', "Add a constructive comment");
+			addConsComment.onclick = function(e) {
+				var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
+				createNewCommentBox(divConsRow, "negative", commentInfo, x+"px");
+				return false;
+			};
+		}else{
+			addConsComment.setAttribute('class', "procid-addcomment-link-deactive");
+			addConsComment.setAttribute('title', "Consider adding a Neutral or Supportive comment first.");
+			addConsComment.style.color = "#B3B3B3";
+			addConsComment.style.textDecoration = "none";
+			addConsComment.onclick = function(e) {
+				return false;
+			};
+		}
 		addConsComment.innerHTML = "+";
-		addConsComment.onclick = function(e) {
-			var x = getOffset(this).left - getOffset(this.parentNode).left + 6;
-			createNewCommentBox(divConsRow, "negative", commentInfo, x+"px");
-			return false;
-		};
+		
 		divAddConsComment.appendChild(addConsComment);		
 		if($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddConsComment.style.top="16px";
