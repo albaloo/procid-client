@@ -145,9 +145,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//password=prompt("Enter password");
 
 		//HomePage
-		var page = document.getElementsByClassName('container-12 clear-block')[1];
-		page.setAttribute('class', 'clear-block');
-
 		createStatusVar();
 
 		//Add the left panel
@@ -647,12 +644,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 
 		//update individual comments
-		var index = -1;
-		$.each($("ul[class=links]"), function(){	
-			if(index > -1){
+		var index = 0;
+		$.each($("ul[class='links inline']"), function(){	
 				createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
 				createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
-			}
 			index++;
 		});
 	}
@@ -867,20 +862,19 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var initializeIssueInfo = function(){
 		var issueAuthor = $("#content-inner div[class='submitted'] a").first().text();
 		var issueAuthorLink = $("#content-inner div[class='submitted'] a").first().attr('href');
-		var issueCreationDate = $("#content-inner div[class='submitted'] em").first().text;		
+		var issueCreationDate = $("#content-inner div[class='submitted'] time").first().text;		
 
-		var issueStatus = $("#project-issue-summary-table tr:contains('Status:') td").last().text();
+		var issueStatus = $("#block-project-issue-issue-metadata div[class='field-item even']").first().text();
 		
 		var issueTitle = $("#page-subtitle").first().text();
 		
 
 		var path = window.location.pathname;
+		var issueLink;
 		if(path.indexOf("node") >= 0)
-			var issueLink = window.location.pathname;
+			 issueLink = window.location.pathname;
 		else{
-			var link = $("h3[class='comment-title'] a").first().attr('href');
-			var index = link.indexOf("#")
-			issueLink = link.substring(0, index);
+			issueLink = $("link[rel='shortlink']").attr('href');
 		}
 		
 		issue.title = issueTitle;
@@ -893,15 +887,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var initializeCommentInfo = function() {
-		var array_title = $("h3[class='comment-title']").map(function() {
+		var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
 			return $(this).text();
 		});
 
-		var array_links = $("h3[class='comment-title'] a").map(function() {
+		var array_links = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
 			return $(this).attr('href');
 		});
 
-		var array_author = $("#comments div[class='submitted']").map(function() {
+		var array_author = $("section[class='comments comment-wrapper'] div[class='submitted']").map(function() {
 			var authors=$(this).find("a");
 			if(authors.length > 0)
 				return $(this).find("a").text();
@@ -909,7 +903,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				return "Anonymous";
 		});
 
-		var array_author_hrefs = $("#comments div[class='submitted']").map(function() {
+		var array_author_hrefs = $("section[class='comments comment-wrapper'] div[class='submitted']").map(function() {
 			var authors=$(this).find("a");
 			if(authors.length > 0)
 				return $(this).find("a").attr("href");
@@ -917,14 +911,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				return "#";
 		});
 
-		var array_dateTimes = $("#comments div[class='submitted'] em").map(function(){
+		var array_dateTimes = $("section[class='comments comment-wrapper'] div[class='submitted'] time").map(function(){
 			return $(this).text();			
 		});
 
-		var array_contents = $("div[class='content'] div[class='clear-block']").map(function() {
-			var contents = $(this).children("p");
+		var array_contents = $("section[class='comments comment-wrapper'] div[class='content'] div[class^='field field-name-comment-body']").map(function() {
+			var contents = $(this).find("p");
 			var ulContents = $(this).find("li");
-			var h3Contents = $(this).children("h3");
+			var h3Contents = $(this).find("h3");
 			var returnValue = "";
 		
 			$.each(contents, function() {
@@ -939,12 +933,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			return returnValue;
 		});
 
-		var array_patches =  $("div[class='content'] div[class='clear-block']").map(function() {
+		var array_patches =  $("section[class='comments comment-wrapper'] div[class='content']").map(function() {
 			var returnValue = 0;
-			var patches=$(this).find("tr[class^='pift-pass'],tr[class^='pift-fail']");
+			var patches=$(this).find("tr[class*='pift-pass'],tr[class*='pift-fail']");
 			if(patches.length > 0)
 				returnValue = 1;
-			var otherAttachments=$(this).find("tr[class=' odd'] a,tr[class=' even'] a");
+			var otherAttachments=$(this).find("a");
 			$.each(otherAttachments, function() {
 				var link = $(this).attr("href");
 				if ( (typeof link !== 'undefined' && link !== false)  && (link.indexOf(".patch") > 0)) {
@@ -955,7 +949,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			return returnValue;			
 		});
 
-		var array_images = $("div[class='content'] div[class='clear-block']").map(function() {
+		var array_images = $("section[class='comments comment-wrapper'] div[class='content']").map(function() {
 			var returnValue = " ";
 			var contents = $(this).find("a");
 			$.each(contents, function() {
@@ -965,13 +959,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				}
 			});
 
-			var imgs = $(this).find("img");
-			$.each(imgs, function() {
-				var link = $(this).attr("src");
-				if (link.match(/png$/) || link.match(/jpg$/)) {
-					returnValue = link;
-				}
-			});
+			if(returnValue == " "){
+				var imgs = $(this).find("img [class!='file-icon']");
+				$.each(imgs, function() {
+					var link = $(this).attr("src");
+					if (link.match(/png$/) || link.match(/jpg$/)) {
+						returnValue = link;
+					}
+				});
+			}
+
 			return returnValue;
 		});
 
@@ -998,6 +995,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				summary: ""
 			};
 			
+			console.log("comment: " + comment.title + ", " + comment.image + ", " + comment.tags.length + ", " + comment.content);
 			commentInfos.push(comment);
 			}
 		}

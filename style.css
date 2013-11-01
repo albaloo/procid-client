@@ -148,7 +148,7 @@
 
 
 #procid-left-panel-body {
-	width: 15.6%;
+	width: 19.1%;
 	position: absolute;
 	margin: 0px 0px 0px 0px;
 	background-color: #f6f6f2;
@@ -210,8 +210,8 @@
 #procid-menus li {
 	float: left;
 	width: 25px;
-	height: 33px;
-	padding: 5px 12px 0 15px;
+	height: 36px;
+	padding: 5px 30px 0 8px;
 	border-left: 2px solid transparent;
 	/*border-image:url(./images/icon-border-left.png) 2 5 round;*/
 }
@@ -222,7 +222,7 @@
 }
 
 #procid-menus-navigation-panel {
-	margin-left: 16%;
+	margin-left: 19%;
 }
 
 #procid-menus li a {
@@ -747,7 +747,7 @@ img.procid-lens-image-unselected {
 	text-align: left;
 	height: 160px;
 	vertical-align: top;
-	width: 250px;
+	width: 249px;
 }
 
 .procid-criteria-block-cell {
