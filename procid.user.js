@@ -193,9 +193,27 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var commentForm = document.getElementById('comment-form');
 		var commentInput = document.getElementById('edit-comment');
 		var commentWrapper = document.getElementById('edit-comment-wrapper');
-		
-		var divRadioButtonHolder = document.createElement('div');
-		divRadioButtonHolder.setAttribute('class', 'procid-radio-button-holder');
+
+/*
+var divCheckBox = document.createElement('div');
+				divCheckBox.setAttribute('class', 'procid-checkbox');
+				divNewCommentBox.appendChild(divCheckBox);
+	
+				var divCheckBoxInput = document.createElement('input');
+				divCheckBoxInput.setAttribute('type', 'checkbox');
+				divCheckBoxInput.setAttribute('value', 'none');
+				divCheckBoxInput.setAttribute('id', 'procid-checkbox-input');
+				divCheckBoxInput.setAttribute('name', 'check');
+				divCheckBox.appendChild(divCheckBoxInput);
+
+				var divCheckBoxLabel = document.createElement('label');
+				divCheckBoxLabel.setAttribute('for', 'procid-checkbox-input');
+				divCheckBoxLabel.innerHTML = registerString;
+				divCheckBox.appendChild(divCheckBoxLabel);
+*/		
+
+/*		var divCommentOptionHolder = document.createElement('div');
+		divCommentOptionHolder.setAttribute('class', 'procid-comment-composition-holder');
 
 		var divRadioButtonDivider1 = document.createElement('div');
 		divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
@@ -205,12 +223,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		radio1.setAttribute('class', 'procid-radio-button');
 		radio1.setAttribute('type', 'radio');
 		radio1.setAttribute('name', 'radio-1-set');
-		radio1.setAttribute('value', 'This message proposes an idea.');
+		radio1.setAttribute('value', 'This comment proposes an idea.');
 		divRadioButtonDivider1.appendChild(radio1);
 
 		var radioLabel1 = document.createElement('label');
 		radioLabel1.setAttribute('class', 'procid-radio-button-label');
-		radioLabel1.innerHTML='This message proposes an idea.';
+		radioLabel1.innerHTML='This comment proposes an idea.';
 		divRadioButtonDivider1.appendChild(radioLabel1);
 
 		var divRadioButtonDivider2 = document.createElement('div');
@@ -221,12 +239,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		radio2.setAttribute('class', 'procid-radio-button');
 		radio2.setAttribute('type', 'radio');
 		radio2.setAttribute('name', 'radio-1-set');
-		radio2.setAttribute('value', 'This message referes to an idea.');
+		radio2.setAttribute('value', 'This comment referes to an idea.');
 		divRadioButtonDivider2.appendChild(radio2);
 
 		var radioLabel2 = document.createElement('label');
 		radioLabel2.setAttribute('class', 'procid-radio-button-label');
-		radioLabel2.innerHTML='This message referes to an idea.';
+		radioLabel2.innerHTML='This comment referes to an idea.';
 		divRadioButtonDivider2.appendChild(radioLabel2);
 
 		$(commentWrapper).after(divRadioButtonHolder);
@@ -255,6 +273,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var saveComment = document.getElementById('edit-submit');
 		$(saveComment).before(checkTone);
+*/
 	}
 
 	var sentimentDialogPopup = function (message, highlightedWords, comment) {
@@ -2121,13 +2140,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var saveCommentToDrupal = function(commentText, issueLink){
 		var title = "";
         	var link = "";
-        	$("#edit-comment").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
+        	$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
         	$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize(),function( data ) {
-        	    var result = $(data).find(".comment-heading").last();
-        	    title = $(result).find(".active").text();
-        	    link = $(result).find(".active").attr("href");
+        	    var result = $(data).find("div[class^='comment comment-new']").last();
+        	    title = $(result).find(".permalink").text();
+        	    link = $(result).find(".permalink").attr("href");
         	});
-        	$("#edit-comment").val("");
+        	$("#edit-comment-body-und-0-value").val("");
         	return [title,link]
 	}
 
@@ -3171,8 +3190,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				});
 				
 		
-				$(".procid-author-name-unselected").slice(0,10).attr('class', 'procid-author-name-selected');
-				$(".procid-author-description-unselected").slice(0,10).map(function(){
+				$(".procid-author-name-unselected")./*slice(0,10).*/attr('class', 'procid-author-name-selected');
+				$(".procid-author-description-unselected")./*slice(0,10).*/map(function(){
 					var strings = $(this).text().split(",");
 
 					if(name === "experience"){
@@ -3187,7 +3206,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						$(this).html(strings[0]+", "+strings[1]+ ", " + strings[2] +", " +strings[3] + ", <b>" +strings[4] + "</b>");
 					}					
 				});
-				$(".procid-author-description-unselected").slice(0,10).attr('class', 'procid-author-description-selected');
+				$(".procid-author-description-unselected")./*slice(0,10).*/attr('class', 'procid-author-description-selected');
 				$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-selected");
 				selectedInviteLens = name;
 				console.log("selectedInviteLens:here-here: " + selectedInviteLens);
