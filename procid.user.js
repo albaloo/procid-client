@@ -261,10 +261,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						console.log("findNegativeWords success");
 					});
 				sentimentDialogPopup(message, highlightedWords, commentContent);
+			}else{
+				sentimentDialogPopup("Your comment was empty. Please enter a valid comment.", [], "");
 			}
 			return false;
 		};
-
+ 
 		var saveComment = document.getElementById('edit-submit');
 		$(saveComment).before(checkTone);
 	}
@@ -442,11 +444,20 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$('#procid-dialog-box').css({top:dialogTop, left:dialogLeft, height:"auto"}).show();
 
 		$('.procid-dialog-content .procid-button-ok').click(function () {        
+			saveCurrentCommentToDrupal(issue.link);
+
 		        $('#procid-dialog-overlay, #procid-dialog-box').hide();        
 			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 			document.body.removeChild(document.getElementById("procid-dialog-box"));
 			return false;
 		});				
+
+		$('.procid-dialog-content .procid-button-cancel').click(function () {        
+		        $('#procid-dialog-overlay, #procid-dialog-box').hide();        
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+			document.body.removeChild(document.getElementById("procid-dialog-box"));
+			return false;
+		});
 
 		// display the message
 		$('#procid-dialog-message').html(message);          
@@ -484,15 +495,22 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		dialogContent.appendChild(dialogMessage);
 
 		var divButtons = document.createElement('div');
-		divButtons.setAttribute('id', 'procid-dialog-div-ok-button');
+		divButtons.setAttribute('id', 'procid-dialog-div-buttons');
 		dialogContent.appendChild(divButtons);
 
 		var dialogSubmit = document.createElement('input');
 		dialogSubmit.setAttribute('class', 'procid-button-ok');
 		dialogSubmit.setAttribute('type', 'submit');
-		dialogSubmit.setAttribute('value', 'OK');
+		dialogSubmit.setAttribute('value', 'Publish as is');
 		dialogSubmit.setAttribute('name', 'submit');
 		divButtons.appendChild(dialogSubmit);
+
+		var dialogCancel = document.createElement('input');
+		dialogCancel.setAttribute('class', 'procid-button-cancel');
+		dialogCancel.setAttribute('type', 'submit');
+		dialogCancel.setAttribute('value', 'Cancel');
+		dialogCancel.setAttribute('name', 'cancel');
+		divButtons.appendChild(dialogCancel);
 
 		$('body').prepend(dialogOverlay);
 		$('body').prepend(dialogBox);
@@ -892,8 +910,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					var instruction = "";
 					if(name == "idea" || name == "mustread")
 						instruction = "You can identify "+name+"s by toggling the icon in the bottom right of each comment."
+					else
+						instruction = "We didn't identify any "+name+" comments in this thread.";
 					var x = getOffset(this).left - getOffset($("#procid-"+name).parentNode).left + 5;
 					currentBox = addWarningBox($("#procid-"+name)[0], message, instruction, x+"px", "40px", ""); 
+					$("#procid-dialog-overlay").click(function () {        
+						$("#procid-"+name)[0].parentNode.removeChild(currentBox);
+					        $('#procid-dialog-overlay').hide();        
+						document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+						return false;
+					});
+
 				}else{
 					$("div[id='procid-comment-" + name + "'] a").attr('class', 'procid-lens-unselected');
 					$("div[id='procid-comment-" + name + "'] img").attr('class', 'procid-lens-image-unselected');
@@ -922,6 +949,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	}
 
 	var addWarningBox = function(icon, message, instruction, arrowPosition, topPosition, positionStyle){
+		var dialogOverlay = document.createElement('div');
+		dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
+
+		$('body').prepend(dialogOverlay);
+
+		var maskHeight = $(document).height();  
+		var maskWidth = $(window).width();
+	
+		// assign values to the overlay and dialog box
+		$('#procid-dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
+		
+
 		var parent = icon.parentNode;//currentElement, className, submitText, midElement, placeHolderString
 		var divNewWarning = document.createElement('div');
 		divNewWarning.setAttribute('class', 'procid-new-comment');
@@ -963,6 +1002,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divButtons.appendChild(dialogSubmit);
 		dialogSubmit.onclick = function(e){
 			parent.removeChild(divNewWarning);
+			$('#procid-dialog-overlay').hide();        
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));						
 			return false;
 		};
 
@@ -1507,7 +1548,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				title: "Title...",
 				description: "Description...",
 				id: createNewCriteriaId(tempCriteria.length),
-				action: "add"
+				action: "add",
+				author: currentUser
 			};
 
 			var currentIndex = index;
@@ -1544,6 +1586,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				tempCriteria[currentIndex].description = this.value;
 			});
 			tableC2.appendChild(description);
+
+			var tableC5 = document.createElement("td");
+			tableC5.innerHTML = "";
+			tableR.appendChild(tableC5);
 
 			var tableC3 = document.createElement("td");
 			tableC3.innerHTML = "";
@@ -1592,7 +1638,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					});
 					
 				}else if(this.action == "add"){
-					var newCriteria = createNewCritera(this.title, this.description, this.id);
+					var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
 					var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
 					titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
 
@@ -1659,12 +1705,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			tableR.appendChild(tableC2);
 		
 			var tableC3 = document.createElement("th");
-			tableC3.innerHTML = "";
+			tableC3.innerHTML = "Posted By";
 			tableR.appendChild(tableC3);
 
 			var tableC4 = document.createElement("th");
 			tableC4.innerHTML = "";
 			tableR.appendChild(tableC4);
+
+			var tableC5 = document.createElement("th");
+			tableC5.innerHTML = "";
+			tableR.appendChild(tableC5);
 
 			var tableBody = document.createElement("tbody");
 			tableBody.setAttribute('id', 'procid-editCriteriaBox-table-body');
@@ -1680,7 +1730,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			title: currentCriteria.title,
 			description: currentCriteria.description,
 			id: currentCriteria.id,
-			action: ""
+			action: "",
+			author: currentCriteria.author
 		};
 		tempCriteria.push(tempCurrentCriteria);
 
@@ -1697,6 +1748,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		tableC2.innerHTML = currentCriteria.description;
 		tableC2.setAttribute('style', 'width:120px');
 		tableR.appendChild(tableC2);
+
+		var tableC5 = document.createElement('td');
+		tableC5.innerHTML = currentCriteria.author;
+		tableC5.setAttribute('style', 'width:100px');
+		tableR.appendChild(tableC5);
 
 		var tableC3 = document.createElement('td');
 		tableR.appendChild(tableC3);
@@ -1789,7 +1845,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				title: "Title...",
 				description: "Description...",
 				id: createNewCriteriaId(tempCriteria.length),
-				action: "add"
+				action: "add",
+				author: currentUser
 			};
 	
 			tempCriteria.push(tempNewCriteria);
@@ -1826,6 +1883,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			});
 			tableC2.appendChild(description);
 	
+			var tableC5 = document.createElement("td");
+			tableC5.innerHTML = "";
+			tableR.appendChild(tableC5);
+
 			var tableC3 = document.createElement("td");
 			tableC3.innerHTML = "";
 			tableR.appendChild(tableC3);
@@ -2108,9 +2169,26 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				createNewCommentBox(divConsRow, "negative", commentInfo, x+"px");
 				return false;
 			};
+			divAddConsComment.appendChild(addConsComment);
 		}else{
+			divAddConsComment.appendChild(addConsComment);
+			var divNewCommentBoxTooltip = document.createElement('div');
+			divNewCommentBoxTooltip.setAttribute('class', 'procid-button-tooltip');
+			divNewCommentBoxTooltip.innerHTML='Consider adding a Neutral or Supportive comment first.';
+			divAddConsComment.appendChild(divNewCommentBoxTooltip);
+			divNewCommentBoxTooltip.style.display = "none";
+			divNewCommentBoxTooltip.style.width = "200px";
+			divNewCommentBoxTooltip.style.position = "absolute";
+			divNewCommentBoxTooltip.style.zIndex = "1000";
+
+			addConsComment.onmouseover = function (e){
+				divNewCommentBoxTooltip.style.display = "inline";
+			};
+			addConsComment.onmouseout = function (e){
+				divNewCommentBoxTooltip.style.display = "none";
+			};
 			addConsComment.setAttribute('class', "procid-addcomment-link-deactive");
-			addConsComment.setAttribute('title', "Consider adding a Neutral or Supportive comment first.");
+			addConsComment.setAttribute('title', "");
 			addConsComment.style.color = "#B3B3B3";
 			addConsComment.style.textDecoration = "none";
 			addConsComment.onclick = function(e) {
@@ -2119,7 +2197,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		}
 		addConsComment.innerHTML = "+";
 		
-		divAddConsComment.appendChild(addConsComment);		
+		
 		if($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
 			divAddConsComment.style.top="16px";
 		addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider-end", "");
@@ -2300,6 +2378,18 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
         	return [title,link]
 	}
 
+	var saveCurrentCommentToDrupal = function(issueLink){
+		var title = "";
+        	var link = "";
+        	$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize(),function( data ) {
+        	    var result = $(data).find("div[class^='comment comment-new']").last();
+        	    title = $(result).find(".permalink").text();
+        	    link = $(result).find(".permalink").attr("href");
+        	});
+        	$("#edit-comment-body-und-0-value").val("");
+        	return [title,link]
+	}
+
 	var addNewComment = function(title_, link_, author_, content_, tone_, time_, summary_){
 		var comment = {
 				title : title_,
@@ -2463,11 +2553,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 /*******IdeaPage-Criteria List Manipulation*********/
 
-	var createNewCritera = function(title_, description_, id_) {
+	var createNewCritera = function(title_, description_, id_, author_) {
 		var newCriteria = {
 			id : id_,
 			title : title_,
-			description : description_
+			description : description_,
+			author: author_
 		}
 
 		criteria.push(newCriteria);
