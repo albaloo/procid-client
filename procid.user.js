@@ -50,8 +50,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	console.log("begin");
 	var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 	var CSSSERVERPATH = 'https://web.engr.illinois.edu/~rzilouc2/procid';
-	//var serverURL='http://0.0.0.0:3000/';
-	var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
+	var serverURL='http://0.0.0.0:3000/';
+	//var serverURL='http://procid-server.herokuapp.com/';//'http://protected-dawn-3784.herokuapp.com/';	
 	var commentInfos = [];
 	var criteria = [];
 	var allCriteriaStatuses = [];
@@ -191,64 +191,58 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	//find and change the add comment box
 	var updateAddCommentBox = function() {
 		var commentForm = document.getElementById('comment-form');
-		var commentInput = document.getElementById('edit-comment');
-		var commentWrapper = document.getElementById('edit-comment-wrapper');
+		var commentWrapper = document.getElementById('edit-comment-body');
+		
+		var commentInput = $(commentWrapper).find("textarea[id^='edit-comment-body']")[0];
 
-/*
-var divCheckBox = document.createElement('div');
-				divCheckBox.setAttribute('class', 'procid-checkbox');
-				divNewCommentBox.appendChild(divCheckBox);
-	
-				var divCheckBoxInput = document.createElement('input');
-				divCheckBoxInput.setAttribute('type', 'checkbox');
-				divCheckBoxInput.setAttribute('value', 'none');
-				divCheckBoxInput.setAttribute('id', 'procid-checkbox-input');
-				divCheckBoxInput.setAttribute('name', 'check');
-				divCheckBox.appendChild(divCheckBoxInput);
-
-				var divCheckBoxLabel = document.createElement('label');
-				divCheckBoxLabel.setAttribute('for', 'procid-checkbox-input');
-				divCheckBoxLabel.innerHTML = registerString;
-				divCheckBox.appendChild(divCheckBoxLabel);
-*/		
-
-/*		var divCommentOptionHolder = document.createElement('div');
+		var divCommentOptionHolder = document.createElement('div');
 		divCommentOptionHolder.setAttribute('class', 'procid-comment-composition-holder');
 
-		var divRadioButtonDivider1 = document.createElement('div');
-		divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
-		divRadioButtonHolder.appendChild(divRadioButtonDivider1);
+		var divIdeaCheckBox = document.createElement('div');
+		divIdeaCheckBox.setAttribute('class', 'procid-comment-composition-checkbox');
+		divCommentOptionHolder.appendChild(divIdeaCheckBox);
 
-		var radio1 = document.createElement('input');
-		radio1.setAttribute('class', 'procid-radio-button');
-		radio1.setAttribute('type', 'radio');
-		radio1.setAttribute('name', 'radio-1-set');
-		radio1.setAttribute('value', 'This comment proposes an idea.');
-		divRadioButtonDivider1.appendChild(radio1);
+		var divIdeaCheckBoxInput = document.createElement('input');
+		divIdeaCheckBoxInput.setAttribute('type', 'checkbox');
+		divIdeaCheckBoxInput.setAttribute('value', 'none');
+		divIdeaCheckBoxInput.setAttribute('id', 'procid-comment-composition-checkbox-input1');
+		divIdeaCheckBoxInput.setAttribute('class', 'procid-comment-composition-checkbox-input');
+		divIdeaCheckBoxInput.setAttribute('name', 'check');
+		divIdeaCheckBox.appendChild(divIdeaCheckBoxInput);
 
-		var radioLabel1 = document.createElement('label');
-		radioLabel1.setAttribute('class', 'procid-radio-button-label');
-		radioLabel1.innerHTML='This comment proposes an idea.';
-		divRadioButtonDivider1.appendChild(radioLabel1);
+		var divIdeaCheckBoxLabel = document.createElement('label');
+		divIdeaCheckBoxLabel.setAttribute('for', 'procid-comment-composition-checkbox-input1');
+		divIdeaCheckBoxLabel.innerHTML = "This comment proposes an idea.";
+		divIdeaCheckBox.appendChild(divIdeaCheckBoxLabel);
 
-		var divRadioButtonDivider2 = document.createElement('div');
-		divRadioButtonDivider2.setAttribute('class', 'procid-radio-button-divider');
-		divRadioButtonHolder.appendChild(divRadioButtonDivider2);
+		var divReferalHolder = document.createElement('div');
+		divReferalHolder.setAttribute('class', 'procid-referal-holder');
+		divCommentOptionHolder.appendChild(divReferalHolder);
 
-		var radio2 = document.createElement('input');
-		radio2.setAttribute('class', 'procid-radio-button');
-		radio2.setAttribute('type', 'radio');
-		radio2.setAttribute('name', 'radio-1-set');
-		radio2.setAttribute('value', 'This comment referes to an idea.');
-		divRadioButtonDivider2.appendChild(radio2);
+		var divReferalCheckBox = document.createElement('div');
+		divReferalCheckBox.setAttribute('class', 'procid-comment-composition-checkbox');
+		divReferalHolder.appendChild(divReferalCheckBox);
 
-		var radioLabel2 = document.createElement('label');
-		radioLabel2.setAttribute('class', 'procid-radio-button-label');
-		radioLabel2.innerHTML='This comment referes to an idea.';
-		divRadioButtonDivider2.appendChild(radioLabel2);
+		var divReferalCheckBoxInput = document.createElement('input');
+		divReferalCheckBoxInput.setAttribute('type', 'checkbox');
+		divReferalCheckBoxInput.setAttribute('value', 'none');
+		divReferalCheckBoxInput.setAttribute('id', 'procid-comment-composition-checkbox-input2');
+		divReferalCheckBoxInput.setAttribute('class', 'procid-comment-composition-checkbox-input');
+		divReferalCheckBoxInput.setAttribute('name', 'check');
+		divReferalCheckBox.appendChild(divReferalCheckBoxInput);
 
-		$(commentWrapper).after(divRadioButtonHolder);
-		
+		var divReferalCheckBoxLabel = document.createElement('label');
+		divReferalCheckBoxLabel.setAttribute('for', 'procid-comment-composition-checkbox-input2');
+		divReferalCheckBoxLabel.innerHTML = "This comment refers to an idea proposed in comment";
+		divReferalCheckBox.appendChild(divReferalCheckBoxLabel);
+
+		var dropDownIdeaNumbers = createListOfIdeaNumbers();
+		divReferalCheckBox.appendChild(dropDownIdeaNumbers);
+
+		createRadioButtonsForCommentReferal(divReferalHolder);
+
+		$(commentWrapper).before(divCommentOptionHolder);
+
 		var checkTone = document.createElement('input');
 		checkTone.setAttribute('class', 'form-submit');
 		checkTone.setAttribute('type', 'submit');
@@ -273,7 +267,163 @@ var divCheckBox = document.createElement('div');
 
 		var saveComment = document.getElementById('edit-submit');
 		$(saveComment).before(checkTone);
-*/
+	}
+
+	var createListOfIdeaNumbers = function(){
+
+		var divIdeaNumbers = document.createElement('div');
+		divIdeaNumbers.setAttribute('class', 'procid-list-of-idea-numbers');
+
+		var wrapperDropdown = document.createElement('div');
+		wrapperDropdown.setAttribute('id', 'procid-comment-composition-inner-div');
+		wrapperDropdown.setAttribute('class', 'procid-comment-composition-wrapper-dropdown');
+		wrapperDropdown.setAttribute('tabindex', '1');
+		wrapperDropdown.onclick = function(event) {
+			$(this).toggleClass('active');
+			return false;
+		};
+		divIdeaNumbers.appendChild(wrapperDropdown);
+
+		var wrapperDropdownText = document.createElement('span');
+		wrapperDropdownText.setAttribute('id', 'procid-drop-down-text');
+		wrapperDropdownText.innerHTML = "#1";
+		wrapperDropdownText.setAttribute('rel', "tooltip");
+		wrapperDropdownText.setAttribute('title', "Set the Idea's Status");			
+		wrapperDropdown.appendChild(wrapperDropdownText);
+
+		var wrapperDropdownList = document.createElement('ul');
+		wrapperDropdownList.setAttribute('class', 'dropdown');
+		wrapperDropdown.appendChild(wrapperDropdownList);
+
+		var obj = {
+			placeholder : "#1",
+			val : '',
+			index : -1
+		};
+
+		var statusArray = ["#1", "#7", "#13"];
+		$.each(statusArray, function() {
+			var wrapperDropdownListOption = document.createElement('li');
+			wrapperDropdownList.appendChild(wrapperDropdownListOption);
+			wrapperDropdownListOption.onclick = function() {
+				var opt = $(this);
+				obj.val = opt.text();
+				obj.index = opt.index();
+				wrapperDropdownText.innerHTML = obj.val;
+				/*$.post(serverURL+"setIdeaStatus", {
+				"issueLink" : issue.link, "commentTitle" : commentInfo.title, "status" : opt.text(), "userName" : currentUser
+				}, function() {
+					console.log("setIdeaStatus success");
+				});*/
+				return false;
+			};
+
+			var wrapperDropdownListOptionLink = document.createElement('a');
+			wrapperDropdownListOptionLink.setAttribute('href', '#');
+			wrapperDropdownListOptionLink.innerHTML = "" + this;
+			wrapperDropdownListOption.appendChild(wrapperDropdownListOptionLink);
+
+			var wrapperDropdownListOptionLinkIcon = document.createElement('i');
+			wrapperDropdownListOptionLinkIcon.setAttribute('class', this + " icon-large");
+			wrapperDropdownListOptionLink.appendChild(wrapperDropdownListOptionLinkIcon);
+
+		});
+
+		return divIdeaNumbers;
+
+	}
+
+	var createRadioButtonsForCommentReferal =function (divReferalHolder){
+		var divRadioButtonDivider1 = document.createElement('div');
+		divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
+		divReferalHolder.appendChild(divRadioButtonDivider1);
+
+		var radio1 = document.createElement('input');
+		radio1.setAttribute('class', 'procid-radio-button');
+		radio1.setAttribute('id', 'procid-radio-button-1');
+		radio1.setAttribute('type', 'radio');
+		radio1.setAttribute('name', 'radio-1-set');
+		radio1.setAttribute('value', 'Strongly Object');
+		divRadioButtonDivider1.appendChild(radio1);
+
+		var radioLabel1 = document.createElement('label');
+		radioLabel1.setAttribute('class', 'procid-radio-button-label');
+		radioLabel1.setAttribute('for', 'procid-radio-button-1');
+		radioLabel1.innerHTML='Strongly Object';
+		divRadioButtonDivider1.appendChild(radioLabel1);
+
+		var divRadioButtonDivider2 = document.createElement('div');
+		divRadioButtonDivider2.setAttribute('class', 'procid-radio-button-divider');
+		divReferalHolder.appendChild(divRadioButtonDivider2);
+
+		var radio2 = document.createElement('input');
+		radio2.setAttribute('class', 'procid-radio-button');
+		radio2.setAttribute('id', 'procid-radio-button-2');
+		radio2.setAttribute('type', 'radio');
+		radio2.setAttribute('name', 'radio-1-set');
+		radio2.setAttribute('value', 'Object');
+		divRadioButtonDivider2.appendChild(radio2);
+
+		var radioLabel2 = document.createElement('label');
+		radioLabel2.setAttribute('class', 'procid-radio-button-label');
+		radioLabel2.setAttribute('for', 'procid-radio-button-2');
+		radioLabel2.innerHTML='Object';
+		divRadioButtonDivider2.appendChild(radioLabel2);
+
+		var divRadioButtonDivider3 = document.createElement('div');
+		divRadioButtonDivider3.setAttribute('class', 'procid-radio-button-divider');
+		divReferalHolder.appendChild(divRadioButtonDivider3);
+
+		var radio3 = document.createElement('input');
+		radio3.setAttribute('class', 'procid-radio-button');
+		radio3.setAttribute('id', 'procid-radio-button-3');
+		radio3.setAttribute('type', 'radio');
+		radio3.setAttribute('name', 'radio-1-set');
+		radio3.setAttribute('value', 'Neutral');
+		divRadioButtonDivider3.appendChild(radio3);
+
+		var radioLabel3 = document.createElement('label');
+		radioLabel3.setAttribute('class', 'procid-radio-button-label');
+		radioLabel3.setAttribute('for', 'procid-radio-button-3');
+		radioLabel3.innerHTML='Neutral';
+		divRadioButtonDivider3.appendChild(radioLabel3);
+
+		var divRadioButtonDivider4 = document.createElement('div');
+		divRadioButtonDivider4.setAttribute('class', 'procid-radio-button-divider');
+		divReferalHolder.appendChild(divRadioButtonDivider4);
+
+		var radio4 = document.createElement('input');
+		radio4.setAttribute('class', 'procid-radio-button');
+		radio4.setAttribute('id', 'procid-radio-button-4');
+		radio4.setAttribute('type', 'radio');
+		radio4.setAttribute('name', 'radio-1-set');
+		radio4.setAttribute('value', 'Support');
+		divRadioButtonDivider4.appendChild(radio4);
+
+		var radioLabel4 = document.createElement('label');
+		radioLabel4.setAttribute('class', 'procid-radio-button-label');
+		radioLabel4.setAttribute('for', 'procid-radio-button-4');
+		radioLabel4.innerHTML='Support';
+		divRadioButtonDivider4.appendChild(radioLabel4);
+
+		var divRadioButtonDivider5 = document.createElement('div');
+		divRadioButtonDivider5.setAttribute('class', 'procid-radio-button-divider');
+		divReferalHolder.appendChild(divRadioButtonDivider5);
+
+		var radio5 = document.createElement('input');
+		radio5.setAttribute('class', 'procid-radio-button');
+		radio5.setAttribute('id', 'procid-radio-button-5');
+		radio5.setAttribute('type', 'radio');
+		radio5.setAttribute('name', 'radio-1-set');
+		radio5.setAttribute('value', 'Strongly Support');
+		divRadioButtonDivider5.appendChild(radio5);
+
+		var radioLabel5 = document.createElement('label');
+		radioLabel5.setAttribute('class', 'procid-radio-button-label');
+		radioLabel5.setAttribute('for', 'procid-radio-button-5');
+		radioLabel5.innerHTML='Strongly Support';
+		divRadioButtonDivider5.appendChild(radioLabel5);
+		
 	}
 
 	var sentimentDialogPopup = function (message, highlightedWords, comment) {
