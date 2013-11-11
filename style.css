@@ -7,8 +7,8 @@
 }
 
 .procid-comment-composition-holder{
-    border: 1px solid rgba(0,0,0,0.45);
-    padding: 5px;
+    background: rgba(0,0,0,0.08);
+    padding: 10px;
     margin-bottom: 15px;
 }
 
@@ -22,10 +22,10 @@
 }
 
 .procid-list-of-idea-numbers{
-	display: inline;
-	margin: 10px 0 3px 6px;
-	text-align: center;
+	display: inline-block;
+	margin: 0;
 	height: 16px;
+	text-align:center;
 	vertical-align: top;
 	width: 21px;
 }
@@ -34,24 +34,53 @@
 	float: left;
 }
 
+.procid-comment-composition-checkbox{
+	display: inline-block;
+	width:90%;
+	margin: 5px 0;
+}
+
+.procid-referal-holder {
+	display: block;
+}
+
+.procid-radio-button-divider{
+	display: none;
+	padding-left: 16px;
+	font-size: .85em;
+}
+
+#procid-drop-down-text{
+	color: black;
+	padding-right: 5px;
+}
+
+.procid-radio-button-label{
+	float:left;
+	padding-left: 3px;
+}
+
+#procid-comment-composition-checkbox-label2{
+	width: 66%;
+	margin: 0;
+	display: inline-block;
+}
+
 .procid-comment-composition-wrapper-dropdown {
     /* Size and position */
     position: relative;
-    width: 80px;
-    padding: 5px;
+    width: 50px;
+    padding: 0px;
  
-    /* Styles */
-    background: #fff;
-    border-radius: 7px;
-    border: 1px solid rgba(0,0,0,0.15);
-    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    background: #ddd;
     cursor: pointer;
+    border-radius: 7px;
     outline: none;
+    border: 1px solid #eee;
  
     /* Font settings */
-    /*font-weight: bold;*/
-    /*color: #8AA8BD;*/
-     font-size: 1.023em;
+     font-size: .8em;
+     bottom: .1em;
 }
 
 .procid-comment-composition-wrapper-dropdown:after {
@@ -59,12 +88,18 @@
     width: 0;
     height: 0;
     position: absolute;
-    right: 15px;
+    right: 5px;
     top: 50%;
     margin-top: -3px;
     border-width: 6px 6px 0 6px;
     border-style: solid;
     border-color: #B3B3B3 transparent;
+}
+
+#procid-comment-composition-inner-div #dropdown-comment-composition{
+	list-style-type:none;
+	padding: 0;
+	border-radius: 7px;
 }
 
 .procid-comment-composition-wrapper-dropdown .dropdown {
@@ -78,7 +113,6 @@
     background: white;
     border-radius: inherit;
     border: 1px solid rgba(0,0,0,0.17);
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
     font-weight: normal;
     transition: all 0.5s ease-in;
     list-style: none;
@@ -90,7 +124,7 @@
  
 .procid-comment-composition-wrapper-dropdown .dropdown li a {
     display: block;
-    padding: 10px;
+    padding: 4px;
     text-decoration: none;
     color: black;/*#8aa8bd;*/
     border-bottom: 1px solid #e6e8ea;
@@ -111,8 +145,6 @@
     border-radius: 0 0 7px 7px;
     border: none;
 }
- 
-/* Hover state */
  
 .procid-comment-composition-wrapper-dropdown .dropdown li:hover a {
     background: #ddd;
@@ -165,6 +197,7 @@
     /* hide it by default */
     display:none;
 }
+
 #procid-dialog-box {
     /* css3 drop shadow */
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -185,6 +218,7 @@
     /* hide it by default */
     display:none;
 }
+
 #procid-dialog-box .procid-dialog-content {
     /* style the content */
     text-align:left; 
@@ -249,13 +283,16 @@
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(255,255,255,0.3);
 	cursor: pointer;
+	float:left;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
 	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
 	box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 2px rgba(0,0,0,0.05);
-	margin: 2px 10px 0px 45px;
+	/*margin: 2px 10px 0px 45px;*/
+	margin-top: 7px;
+	margin-bottom: 20px;
 	background:#8dc53c;
 	background-color:#8dc53c;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9fd848), to(#96bc43));
@@ -788,9 +825,12 @@ img.procid-lens-image-unselected {
 }
 
 .procid-checkbox {
-	/*width: 20px;*/	
 	margin-left: 15px;
 	position: relative;
+}
+
+label.procid-checkbox-label{
+	display:inline;	
 }
 
 #procid-Idea-label{
@@ -1330,7 +1370,7 @@ a.ideaPage-link {
 	float: left;
 }
 
-.procid-button-cancel{
+input.procid-button-cancel{
 	margin: 6px 0px 5px 7px;
 	background:#6e6e6e;
 	background-color:#6e6e6e;

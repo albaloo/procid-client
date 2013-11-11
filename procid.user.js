@@ -192,6 +192,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var updateAddCommentBox = function() {
 		var commentForm = document.getElementById('comment-form');
 		var commentWrapper = document.getElementById('edit-comment-body');
+		var stylingOptions = document.getElementById('edit-comment-body-und-0-format');
 		
 		var commentInput = $(commentWrapper).find("textarea[id^='edit-comment-body']")[0];
 
@@ -230,16 +231,26 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divReferalCheckBoxInput.setAttribute('class', 'procid-comment-composition-checkbox-input');
 		divReferalCheckBoxInput.setAttribute('name', 'check');
 		divReferalCheckBox.appendChild(divReferalCheckBoxInput);
+		divReferalCheckBox.onclick = function(cb){
+			if($('#procid-comment-composition-checkbox-input2').prop('checked')){
+				$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "inline-block");				
+				
+			}else{
+				$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "none");
+			}
+			
+		};
 
 		var divReferalCheckBoxLabel = document.createElement('label');
 		divReferalCheckBoxLabel.setAttribute('for', 'procid-comment-composition-checkbox-input2');
+		divReferalCheckBoxLabel.setAttribute('id', 'procid-comment-composition-checkbox-label2');
 		divReferalCheckBoxLabel.innerHTML = "This comment refers to an idea proposed in comment";
 		divReferalCheckBox.appendChild(divReferalCheckBoxLabel);
 
 		var dropDownIdeaNumbers = createListOfIdeaNumbers();
 		divReferalCheckBox.appendChild(dropDownIdeaNumbers);
 
-		createRadioButtonsForCommentReferal(divReferalHolder);
+		createRadioButtonsForCommentReferal(divReferalHolder);		
 
 		$(commentWrapper).before(divCommentOptionHolder);
 
@@ -268,6 +279,16 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		};
  
 		var saveComment = document.getElementById('edit-submit');
+		saveComment.onclick = function(e){
+			if($('#procid-comment-composition-checkbox-input1').prop('checked')){
+				//var titleAndLink = saveCurrentCommentToDrupal(issue.link);
+				//TODO:send it to server
+			}
+
+			if($('#procid-comment-composition-checkbox-input2').prop('checked')){
+				//var titleAndLink = saveCurrentCommentToDrupal(issue.link);
+			}
+		};
 		$(saveComment).before(checkTone);
 	}
 
@@ -295,6 +316,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var wrapperDropdownList = document.createElement('ul');
 		wrapperDropdownList.setAttribute('class', 'dropdown');
+		wrapperDropdownList.setAttribute('id', 'dropdown-comment-composition');
 		wrapperDropdown.appendChild(wrapperDropdownList);
 
 		var obj = {
@@ -326,7 +348,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			wrapperDropdownListOption.appendChild(wrapperDropdownListOptionLink);
 
 			var wrapperDropdownListOptionLinkIcon = document.createElement('i');
-			wrapperDropdownListOptionLinkIcon.setAttribute('class', this + " icon-large");
+			wrapperDropdownListOptionLinkIcon.setAttribute('class', this + "icon-large");
 			wrapperDropdownListOptionLink.appendChild(wrapperDropdownListOptionLinkIcon);
 
 		});
@@ -425,7 +447,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		radioLabel5.setAttribute('for', 'procid-radio-button-5');
 		radioLabel5.innerHTML='Strongly Support';
 		divRadioButtonDivider5.appendChild(radioLabel5);
-		
 	}
 
 	var sentimentDialogPopup = function (message, highlightedWords, comment) {
@@ -833,9 +854,13 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		//update individual comments
 		var index = 0;
 		$.each($("ul[class='links inline']"), function(){	
-				createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
-				createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
-			index++;
+				if($($(this.parentNode).find("h3[class='comment-title']")[0]).next().is("a") && $($(this.parentNode).find("h3[class='comment-title']")[0]).next()[0].innerHTML.indexOf(".") > 0){
+					console.log("here:" + $(this.parentNode).find("h3[class='comment-title']")[0]);
+				}else{
+					createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
+					createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
+					index++;
+			}
 		});
 	}
 
@@ -1098,11 +1123,20 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 	var initializeCommentInfo = function() {
 		var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-			return $(this).text();
+			if ($(this).is("a"))
+				return $(this).text();
+			else
+				return "NonIntTitle";
 		});
 
 		var array_links = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-			return $(this).attr('href');
+			if ($(this).is("a")){
+				var commentLink = $(this).attr('href');
+				var link = issue.link+"#"+commentLink.split("#")[1];
+				return link;
+			}
+			else
+				return "NonIntTitle";
 		});
 
 		var array_author = $("section[class='comments comment-wrapper'] div[class='submitted']").map(function() {
@@ -1185,28 +1219,36 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var len = array_title.length;
 		for (var i = 0; i < len; i++) {
 			initTags = [];
+			while(array_title[i] === "NonIntTitle"){
+				array_title.splice(i,1);
+				array_links.splice(i,1);
+				array_author.splice(i,1);
+				array_author_hrefs.splice(i,1);
+				len--;
+				console.log("NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle");
+			}
 			if(array_patches[i]>0)
 				initTags.push("patch");
 			if(!(array_title[i].indexOf(".") > 0)){
-			var comment = {
-				title : array_title[i],
-				link : array_links[i],
-				author : array_author[i],
-				authorLink : array_author_hrefs[i],
-				content : array_contents[i],
-				tags : initTags,
-				status : "Ongoing",
-				comments : [],
-				idea : "#1",
-				criteriaStatuses : [],
-				tone: "",
-				image : array_images[i],
-				commented_at: array_dateTimes[i],
-				summary: ""
-			};
+				var comment = {
+					title : array_title[i],
+					link : array_links[i],
+					author : array_author[i],
+					authorLink : array_author_hrefs[i],
+					content : array_contents[i],
+					tags : initTags,
+					status : "Ongoing",
+					comments : [],
+					idea : "#1",
+					criteriaStatuses : [],
+					tone: "",
+					image : array_images[i],
+					commented_at: array_dateTimes[i],
+					summary: ""
+				};
 			
 			console.log("comment: " + comment.title + ", " + comment.image + ", " + comment.tags.length + ", " + comment.content);
-			commentInfos.push(comment);
+				commentInfos.push(comment);
 			}
 		}
 		return commentInfos;
@@ -2368,13 +2410,15 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var saveCommentToDrupal = function(commentText, issueLink){
 		var title = "";
         	var link = "";
-        	$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
+        	/*$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
         	$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize(),function( data ) {
         	    var result = $(data).find("div[class^='comment comment-new']").last();
         	    title = $(result).find(".permalink").text();
         	    link = $(result).find(".permalink").attr("href");
         	});
-        	$("#edit-comment-body-und-0-value").val("");
+
+		link = issue.link+"#"+link.split("#")[1];
+        	$("#edit-comment-body-und-0-value").val("");*/
         	return [title,link]
 	}
 
@@ -2386,6 +2430,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
         	    title = $(result).find(".permalink").text();
         	    link = $(result).find(".permalink").attr("href");
         	});
+		link = issue.link+"#"+link.split("#")[1];
         	$("#edit-comment-body-und-0-value").val("");
         	return [title,link]
 	}
@@ -2437,7 +2482,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divNewComment.style.width = width;
 		if(marginLeft != "")
 			divNewComment.style.marginLeft = marginLeft;
-//		divNewComment.setAttribute('top', position);
+
 		currentElement.appendChild(divNewComment);
 	
 		var divNewCommentBox = document.createElement('div');
@@ -2464,6 +2509,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 				var divCheckBoxLabel = document.createElement('label');
 				divCheckBoxLabel.setAttribute('for', 'procid-checkbox-input');
+				divCheckBoxLabel.setAttribute('class', 'procid-checkbox-label');
 				divCheckBoxLabel.innerHTML = registerString;
 				divCheckBox.appendChild(divCheckBoxLabel);
 			}else{
