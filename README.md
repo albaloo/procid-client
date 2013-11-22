@@ -23,6 +23,7 @@ Instructions to Build and Contribute
 ====================================
 
 1. Clone the git repository
-1. Import the project in Eclipse
+1. Copy and paste procid.user.js and style.css from the main directoty to test
+1. Import the project files from the test directoty to Eclipse
 1. Run example.html
 1. If you don't have internet access you can change `ABSOLUTEPATH` and `CSSSERVERPATH` variable in [procid.user.js](https://github.com/albaloo/procid-client/raw/master/procid.user.js) to "./" and run locally.
