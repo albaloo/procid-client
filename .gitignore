@@ -2,3 +2,4 @@
 *.txt
 *-old.css
 *-old.png
+.DS_Store

@@ -120,14 +120,14 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var setUpProcid = function(){
 
 		//Check if the user has logged in Drupal
-		//if (!$("#page").find('#comment-form').length) {
-		//    return;
-		//  }
+		if (!$("#page").find('#comment-form').length) {
+		    return;
+        }
 
 		//Check if this is an issue page
 		if (!$("#page").find("div [class='breadcrumb']").length) {
 		    return;
-		  }
+        }
 
 		//find the currentUser
 		var currentUserInfo = $("#userinfo a").first().text();
@@ -138,8 +138,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		//Program Starts From here
 		addCSSToHeader();
-
-		updateAddCommentBox();
 
 		//username=prompt("Enter username");
 		//password=prompt("Enter password");
@@ -177,6 +175,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		createProcidHeader();
 
 		createHomePageBody();
+        
+        updateAddCommentBox();
 	}
 
 	var addCSSToHeader = function() {
@@ -233,10 +233,12 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divReferalCheckBox.appendChild(divReferalCheckBoxInput);
 		divReferalCheckBox.onclick = function(cb){
 			if($('#procid-comment-composition-checkbox-input2').prop('checked')){
-				$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "inline-block");				
+                createRadioButtonsForCommentReferal(divReferalHolder);
+				$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "inline-block");
 				
 			}else{
-				$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "none");
+                removeRadioButtonsForCommentReferal();
+				//$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "none");
 			}
 			
 		};
@@ -247,10 +249,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		divReferalCheckBoxLabel.innerHTML = "This comment refers to an idea proposed in comment";
 		divReferalCheckBox.appendChild(divReferalCheckBoxLabel);
 
-		var dropDownIdeaNumbers = createListOfIdeaNumbers();
-		divReferalCheckBox.appendChild(dropDownIdeaNumbers);
-
-		createRadioButtonsForCommentReferal(divReferalHolder);		
+		var result = createListOfIdeaNumbers();
+		divReferalCheckBox.appendChild(result.dropDownIdeaNumbers);
+        
+    //    if(result.ideaSize == 0)
+    //        divReferalCheckBoxInput.disabled = true;
 
 		$(commentWrapper).before(divCommentOptionHolder);
 
@@ -281,12 +284,34 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var saveComment = document.getElementById('edit-submit');
 		saveComment.onclick = function(e){
 			if($('#procid-comment-composition-checkbox-input1').prop('checked')){
-				//var titleAndLink = saveCurrentCommentToDrupal(issue.link);
-				//TODO:send it to server
+                $.post(serverURL+"newIdeaComment", {
+               "authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
+               "content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
+               "issueLink" : issue.link
+               });
 			}
 
 			if($('#procid-comment-composition-checkbox-input2').prop('checked')){
-				//var titleAndLink = saveCurrentCommentToDrupal(issue.link);
+                var type = "";
+                if($("#procid-radio-button-1").is(':checked')) {
+                    type = "negative-strong";
+                }else if($("#procid-radio-button-2").is(':checked')) {
+                    type = "negative";
+                }else if($("#procid-radio-button-3").is(':checked')) {
+                    type = "neutral";
+                }else if($("#procid-radio-button-4").is(':checked')) {
+                    type = "positive";
+                }else if($("#procid-radio-button-5").is(':checked')) {
+                    type = "positive-strong";
+                }
+        
+                $.post(serverURL+"newIdeaReference", {
+                       "authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
+                       "content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
+                       "issueLink" : issue.link,
+                       "ideaNum" : parseInt($($.find("#procid-drop-down-text")[0]).text().replace(/^\D+/, '')),
+                       "type" : type
+               });
 			}
 		};
 		$(saveComment).before(checkTone);
@@ -306,10 +331,17 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			return false;
 		};
 		divIdeaNumbers.appendChild(wrapperDropdown);
-
+        var statusArray = [];
+        
+        var statusArray = findAllProposedIdeas();
+        var firstIdea = "N/A";
+        
+        if(statusArray.length > 0)
+            firstIdea = statusArray[0];
+        
 		var wrapperDropdownText = document.createElement('span');
 		wrapperDropdownText.setAttribute('id', 'procid-drop-down-text');
-		wrapperDropdownText.innerHTML = "#1";
+		wrapperDropdownText.innerHTML = firstIdea;
 		wrapperDropdownText.setAttribute('rel', "tooltip");
 		wrapperDropdownText.setAttribute('title', "Set the Idea's Status");			
 		wrapperDropdown.appendChild(wrapperDropdownText);
@@ -320,12 +352,11 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		wrapperDropdown.appendChild(wrapperDropdownList);
 
 		var obj = {
-			placeholder : "#1",
+			placeholder : firstIdea,
 			val : '',
 			index : -1
 		};
 
-		var statusArray = ["#1", "#7", "#13"];
 		$.each(statusArray, function() {
 			var wrapperDropdownListOption = document.createElement('li');
 			wrapperDropdownList.appendChild(wrapperDropdownListOption);
@@ -334,11 +365,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				obj.val = opt.text();
 				obj.index = opt.index();
 				wrapperDropdownText.innerHTML = obj.val;
-				/*$.post(serverURL+"setIdeaStatus", {
-				"issueLink" : issue.link, "commentTitle" : commentInfo.title, "status" : opt.text(), "userName" : currentUser
-				}, function() {
-					console.log("setIdeaStatus success");
-				});*/
 				return false;
 			};
 
@@ -353,10 +379,21 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		});
 
-		return divIdeaNumbers;
+		return {dropDownIdeaNumbers: divIdeaNumbers, ideaSize: statusArray.length};
 
 	}
-
+        
+    var findAllProposedIdeas = function(){
+        var ideas = [];
+        for (var i = 0; i < commentInfos.length; i++) {
+            if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+                ideas.push(commentInfos[i].title);
+        
+            }
+        }
+        return ideas;
+    }
+        
 	var createRadioButtonsForCommentReferal =function (divReferalHolder){
 		var divRadioButtonDivider1 = document.createElement('div');
 		divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
@@ -448,6 +485,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		radioLabel5.innerHTML='Strongly Support';
 		divRadioButtonDivider5.appendChild(radioLabel5);
 	}
+        
+    var removeRadioButtonsForCommentReferal = function(){
+        $(".procid-radio-button-divider").remove();
+    }
 
 	var sentimentDialogPopup = function (message, highlightedWords, comment) {
 		addSentimentDialog(comment, highlightedWords);
@@ -464,10 +505,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		$('#procid-dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
 		$('#procid-dialog-box').css({top:dialogTop, left:dialogLeft, height:"auto"}).show();
 
-		$('.procid-dialog-content .procid-button-ok').click(function () {        
-			saveCurrentCommentToDrupal(issue.link);
-
-		        $('#procid-dialog-overlay, #procid-dialog-box').hide();        
+		$('.procid-dialog-content .procid-button-ok').click(function () {
+            document.getElementById('edit-submit').click();
+                                                            
+            $('#procid-dialog-overlay, #procid-dialog-box').hide();
 			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 			document.body.removeChild(document.getElementById("procid-dialog-box"));
 			return false;
@@ -668,7 +709,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var destionationDivIds = map[destination];
 		$.each(destionationDivIds, function() {
-		console.log("loglog: " + $("#" + this).children("#procid-invite-title").length);
 			if(destination == "idea" && $("#" + this).children("div.procid-ideaPage-header").length == 0)
 				createIdeaPageBody();
 			else if(destination == "invite" && $("#" + this).children("#procid-invite-title").length == 0)
@@ -766,7 +806,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 			rel : 'tooltip',
 			title : 'Invite New Participants'
 		}).click(function goInvite(evt) {
-			console.log("invite clicked");
 			changePage('invite');
 		}).appendTo("#procid-invite");
 
@@ -855,7 +894,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var index = 0;
 		$.each($("ul[class='links inline']"), function(){	
 				if($($(this.parentNode).find("h3[class='comment-title']")[0]).next().is("a") && $($(this.parentNode).find("h3[class='comment-title']")[0]).next()[0].innerHTML.indexOf(".") > 0){
-					console.log("here:" + $(this.parentNode).find("h3[class='comment-title']")[0]);
 				}else{
 					createLensSelectorForIndividualComments(this, 'idea', commentInfos[index], 'Tag this comment as Idea');				
 					createLensSelectorForIndividualComments(this, 'mustread', commentInfos[index], 'Tag this comment as Must Read');
@@ -1225,7 +1263,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				array_author.splice(i,1);
 				array_author_hrefs.splice(i,1);
 				len--;
-				console.log("NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle-NonIntTitle");
 			}
 			if(array_patches[i]>0)
 				initTags.push("patch");
@@ -1247,7 +1284,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					summary: ""
 				};
 			
-			console.log("comment: " + comment.title + ", " + comment.image + ", " + comment.tags.length + ", " + comment.content);
+                //console.log("comment: " + comment.title + ", " + comment.image + ", " + comment.tags.length + ", " + comment.content);
 				commentInfos.push(comment);
 			}
 		}
@@ -1339,7 +1376,10 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 					if(name === "idea"){
 						//create and add idea
 						removeIdeaBlocks();
-						createIdeaBlocks();
+                        if($("#procid-idea-page-wrapper").children("div.procid-ideaPage-header").length == 0)
+                                        createIdeaPageBody();
+						else
+                                        createIdeaBlocks();
 						var newSummary = "";
 						$.post(serverURL+"addNewIdea", {
 						"issueLink" : issue.link, "commentTitle" : commentInfo.title, "userName" : currentUser
@@ -2078,6 +2118,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var divProsRowContent = document.createElement('div');
 		divProsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+        divProsRowContent.setAttribute('id', 'pros-content');
 		divProsRowBody.appendChild(divProsRowContent);
 		
 		/******Setting UP the neutral row******/
@@ -2097,6 +2138,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 
 		var divNeutralRowContent = document.createElement('div');
 		divNeutralRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+        divNeutralRowContent.setAttribute('id', 'neutral-content');
 		divNeutralRowBody.appendChild(divNeutralRowContent);
 	
 		/******Setting UP the cons row******/
@@ -2115,6 +2157,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		
 		var divConsRowContent = document.createElement('div');
 		divConsRowContent.setAttribute('class', 'procid-idea-comment-row-content');
+        divConsRowContent.setAttribute('id', 'cons-content');
 		divConsRowBody.appendChild(divConsRowContent);
 		
 		var numPositiveOrNeutralComments = 0;
@@ -2410,7 +2453,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 	var saveCommentToDrupal = function(commentText, issueLink){
 		var title = "";
         	var link = "";
-        	/*$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
+        	$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
         	$.post('https://drupal.org/'+issueLink, $("#comment-form").serialize(),function( data ) {
         	    var result = $(data).find("div[class^='comment comment-new']").last();
         	    title = $(result).find(".permalink").text();
@@ -2418,7 +2461,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
         	});
 
 		link = issue.link+"#"+link.split("#")[1];
-        	$("#edit-comment-body-und-0-value").val("");*/
+        	$("#edit-comment-body-und-0-value").val("");
         	return [title,link]
 	}
 
@@ -2528,20 +2571,59 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				divNewSentimentTuner.setAttribute('class', 'procid-sentiment-tuner');
 				divNewCommentBox.appendChild(divNewSentimentTuner);
 				
-				var sentimentTunerImage = document.createElement('div');
-				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-pos');
-				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-				divNewSentimentTuner.appendChild(sentimentTunerImage);
+				var sentimentTunerImagePos = document.createElement('div');
+				sentimentTunerImagePos.setAttribute('class', 'procid-sentiment-tuner-image-pos');
+				$(sentimentTunerImagePos).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImagePos);
+        
+                sentimentTunerImagePos.onclick = function(cb){
+                    $.post(serverURL+"changeCommentTone", {
+                        "commentLink" : $(sentimentTunerImagePos).parent().prev().children("a").attr("href"),
+                        "tone" : "positive",
+                           }, function(data){
+                           var comment = $(sentimentTunerImagePos).parentsUntil(".procid-idea-comment-row-content").prev().prev();
+                           comment.remove()
+                           var divProsRowContent = $(sentimentTunerImagePos).closest(".procid-idea-comment-rows").children().first().children().last().children().first()
+                           divProsRowContent.append(comment);
+                           $(sentimentTunerImagePos).closest(".procid-new-comment").hide()
+                    });
+                }
+
+				var sentimentTunerImageNeutral = document.createElement('div');
+				sentimentTunerImageNeutral.setAttribute('class', 'procid-sentiment-tuner-image-neutral');
+				$(sentimentTunerImageNeutral).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImageNeutral);
+        
+                sentimentTunerImageNeutral.onclick = function(cb){
+                    $.post(serverURL+"changeCommentTone", {
+                           "commentLink" : $(sentimentTunerImageNeutral).parent().prev().children("a").attr("href"),
+                           "tone" : "neutral",
+                    }, function(data){
+                           var comment = $(sentimentTunerImageNeutral).parentsUntil(".procid-idea-comment-row-content").prev().prev();
+                           comment.remove()
+                           var divNeutralRowContent = $($(sentimentTunerImageNeutral).closest(".procid-idea-comment-rows").children()[1]).children().last().children().first()
+                           divNeutralRowContent.append(comment);
+                           $(sentimentTunerImageNeutral).closest(".procid-new-comment").hide()
+                    });
+                }
 				
-				var sentimentTunerImage = document.createElement('div');
-				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-neutral');
-				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-				divNewSentimentTuner.appendChild(sentimentTunerImage);
-				
-				var sentimentTunerImage = document.createElement('div');
-				sentimentTunerImage.setAttribute('class', 'procid-sentiment-tuner-image-cons');
-				$(sentimentTunerImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-				divNewSentimentTuner.appendChild(sentimentTunerImage);
+				var sentimentTunerImageCons = document.createElement('div');
+				sentimentTunerImageCons.setAttribute('class', 'procid-sentiment-tuner-image-cons');
+				$(sentimentTunerImageCons).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				divNewSentimentTuner.appendChild(sentimentTunerImageCons);
+        
+                sentimentTunerImageCons.onclick = function(cb){
+                    $.post(serverURL+"changeCommentTone", {
+                           "commentLink" : $(sentimentTunerImageCons).parent().prev().children("a") .attr("href"),
+                           "tone" : "negative",
+                    }, function(data){
+                           var comment = $(sentimentTunerImageCons).parentsUntil(".procid-idea-comment-row-content").prev().prev();
+                           comment.remove()
+                           var divConsRow = $(sentimentTunerImageCons).closest(".procid-idea-comment-rows").children().last().children().last().children().first()
+                           divConsRow.append(comment);
+                           $(sentimentTunerImageCons).closest(".procid-new-comment").hide()
+                    });
+                }
 			}
 
 		}
@@ -3347,7 +3429,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 /***********************INVITE PAGE********************/
 	var createInvitePageBody = function() {
 		//Procid Invite Page Body
-		console.log("invite page");
 		var divInviteTitle = document.createElement('h2');
 		divInviteTitle.setAttribute('id', 'procid-invite-title');
 		divInviteTitle.innerHTML = "Suggested Users to Invite to the Discussion";
@@ -3456,7 +3537,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		});
 		else{
 			$("#procid-invite-"+name+"-link").click(function highlightMembers(evt) {
-			console.log("selectedInviteLens:here-here: " + $("div[id='procid-invite-"+name+"-image']").attr('class'));
 			if ($("div[id='procid-invite-"+name+"-image']").attr('class') === "procid-invite-"+name+"-image-unselected") {
 
 				if($(".procid-author-description-selected").length>0){
@@ -3466,7 +3546,7 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 						$(this).html($(this).text());
 					});
 					$(".procid-author-description-selected").attr('class', 'procid-author-description-unselected');
-					console.log("selectedInviteLens: " + selectedInviteLens);
+                
 					$("div[id='procid-invite-"+selectedInviteLens+"-image']").attr('class', "procid-invite-"+selectedInviteLens+"-image-unselected");
 				}
 
@@ -3496,8 +3576,6 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 				$(".procid-author-description-unselected")./*slice(0,10).*/attr('class', 'procid-author-description-selected');
 				$("div[id='procid-invite-"+name+"-image']").attr('class', "procid-invite-"+name+"-image-selected");
 				selectedInviteLens = name;
-				console.log("selectedInviteLens:here-here: " + selectedInviteLens);
-
 			} else {
 				$(".procid-author-name-selected").attr('class', 'procid-author-name-unselected');
 				$(".procid-author-description-selected").map(function(){
