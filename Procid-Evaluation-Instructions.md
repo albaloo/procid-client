@@ -1,48 +1,70 @@
-Usage Scenarios
+What is Procid?
 ===============
+"Procid" is a user script for drupal.org. It offers multiple interactive features to make the Drupal issue queue a more effective medium for resolving issues. 
 
-Procid facilitates consensus building by supporting the participants in understanding the current content and status of the discussion, keeping track of the solution alternatives, evaluating the solution alternatives, maintaining a welcoming atmosphere, and inviting other members to join the discussion. To calrify how Procid supports these actions, we explain the interaction of three participants with Procid: Lisa, Ben, and Susan. They are using procid to resolve an issue that aims at improving description of Drupal’s install profile. Lisa is a UI designer who has participated in Drupal for 1.5 years, Ben is an experienced developer who has been in Drupal community for 7 years, and Lisa is a developer with 3 years of experience in Drupal community who is also interested in UI design. 
-
-Understanding the Current Content and Status
-============================================
-Susan was involved at the beginning of the discussion, but she got busy with other discussions and now that she is back she needs to understand the current state of the discussion. She starts by applying the must read lens in the Time-based view, to make sure that she read all the must read comments.
- 
-![Figure 1](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-Home-FirstPage.png)
-
-Ben is invited to the discussion to provide code review, he first reviews the must read comments to make sense of the discussion. He then applies the third lens to view all the patches and find out what needs to be improved in the next version. Finally, he clicks on the last patch to inspect that more closely and write his review.
-
-![Figure 2](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-Home-SecondPage.png)
-
-  
-Keeping Track of the Solution Alternatives
-==========================================
-
-Lisa has been actively participating in the discussion from the beginning. She knows that several solution alternatives have been proposed, however she doesn’t remember all of ideas and the reason that some ideas were dropped. She also worries that some ideas may have been lost in the midst of the discussion. She therefore opens the list of proposed alternative in the idea-based view. The list reminds her of the propose alternatives, their status, and the reason some of them were dropped and helps her to keep track of all proposed solutions.
-
-![Figure 3](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-IdeaBased-FirstPage.png)
- 
-Evaluating the Solution Alternatives
-====================================
-
-Susan opens the idea-based view to see how other participants evaluated different solution alternatives. She reads participants concerns regarding a couple of alternatives and reviews the list of criteria shown next to each alternative. The criteria list says that the new description for installation profile should be simple. Susan remembers that users were confused about the word “default” in the current description. She thinks that the new description should also be explanatory. Therefore, she decides to add another criterion to the list. She clicks on the edit link next to the criteria and opens the edit criteria window. Then she adds a criterion: “the new description should be explanatory”. 
-
-![Figure 4](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-IdeaBased-SecondPage.png)
-
-Then she rates the idea that includes the word default as not explanatory and explains her reasons in a comment. Her rating and an icon representing Susan's comment will be shown in the criteria column.
-
-![Figure 5](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-IdeaBased-ThirdPage.png) 
- 
-Maintaining a Welcoming Atmosphere
+What is the Purpose of this Study?
 ==================================
-Lisa loses her temper after involving in a heated argument around a solution alternative with another participant. She navigates to the commenting window and starts to write a reply. When she is done, she notices a message stating that her comment is more negative than average comments. She re-reads the comment and decides to edit her comment to sound friendlier.
+We are conducting this study to understand the effectiveness of our tool and gather Drupal community members' comments to improve the next version.
 
-![Figure 6](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-NewComment-FirstPage.png)
+How do I install Procid?
+========================
+"Procid" is a user script which will be installed in your browser, not in Drupal.
 
-To help participants in maintaining a welcoming and supportive atmosphere, Procid analyze the content of new comments as participants are writing them. It then compares the tone of the new comment with the median tone of all the comments and informs the user if his comment is more negative than average comments posted in the community.
+Please download the [procid.user.js](https://github.com/albaloo/procid-client/raw/master/procid.user.js) file (you may need to right click and then "Save link as..." to get the file). 
+
+- In Chrome, go to chrome://extensions/, and drag the newly downloaded file to the extensions page to install it ([visual instructions](https://raw.github.com/albaloo/procid-client/master/screenshots/procid-chrome-installation.jpg)).
+- In Opera, follow these [instructions](http://my.opera.com/Contrid/blog/2007/02/11/how-to-greasemonkey-in-opera).
+- In Firefox, update to the lastst version of FireFox, install the GreaseMonkey extension, and follow these [instructions](http://userscripts.org/about/installing). 
+- In Safari, install the NinjaKit extension, and follow these [instructions](http://wiki.greasespot.net/Cross-browser_userscripting#cite_note-2).
+
+To verify that procid was installed successfully, click on this link:http://drupal.org/node/331893. After a few moments, you should be able to see procid's header added to the discussion ([view screenshot](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-install-check.png)).
+
+Working with Procid's Main Page
+===============================
+Procid's Main Page adds a navigation panel on the left side of the discussion. The navigation panel provides five different lenses to explore different types of comments. The lenses will highlight must read comments, comments containing ideas, comments containing conversations, comments provided by experienced members, and comments that include patches.
+
+## What can I do in the Main Page? 
+1. If you are not in Procid's Main Page, click on the Main Page icon.
+1. Click on one of the lenses on the navigation panel.
+1. Scroll down to see the highlighted comments, if you find a comment that you want to read, simply click on the link.
+1. Click on the lens again to remove the highlights and try another lens.
+
+![Figure 1](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-homepage-idea.png)
+
+Working with Procid's Idea Page
+===============================
+The Idea Page summarizes all the ideas proposed by participants, shows the status of each idea, and organizes the comments related to each idea to supportive, neutral, and constructive comments.
+
+##What can I do in the Idea Page? 
+1. Click on the Idea Page icon. 
+1. Scroll down the page to see all the ideas.
+1. Check the status of each idea. The set of possible statuses for each idea are "Ongoing", "Implemented", and "Dropped". The default status is "Ongoing", but if you feel a particular idea has a lot of arguments against it, you can change the status to "Dropped". Or if an idea has a patch, you can change the status to "Implemented". 
+1. Check the comments that are related to each idea. You can add a new supportive, neutral, or constructive comment by clicking on the "+" button on the right hand side of the comments. 
+
+Don't worry about the criteria column at this point, we will come back to it in the next section.
+
+![Figure 2](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-ideapage.png)
+
+Working with the Criteria Column in Procid's Idea Page
+======================================================
+Under the criteria column in the Idea Page you can establish criteria for evaluating ideas. For example, if you want the final solution to have low implementation cost, you can add that as a criteria for evaluating ideas.
+
+##What can I do with the criteria column?
+1. If you are not in the Idea Page, click on the Idea Page icon. 
+1. If there are not any criteria listed under the "Criteria" section, add a new criteria for evaluation.
+1. You can rate the ideas based on the criteria and leave a comment explaining the reason behind your rating.
+1. Click on the history button to see participants previous ratings of the ideas.
+
+![Figure 3](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-ideapage-criteria.png)
  
-Inviting other Members to Join the Discussion
-=============================================
+Working with Procid's Invite Page
+=================================
+##The Invite Page shows a list of Drupal members that may be good candidates to invite to the discussion. Our system extracts this list from Drupal community members based on their experience, the number of patches they submitted, their recent participation, and the number of discussions that they have participated and reached consensus (i.e. the discussion was closed). 
 
-Ben notices that the discussion has get stalled due to a controversy over implementation. Being in the community for a while, he knows that they need to seek expert advice to move forward with the implementation. He therefore opens the invitation list to see a list of experience members or members with whom he had prior interactions. Using this list, Ben decides to invite Matt to join the discussion.
+1. What can I do in the Invite Page?
+1. Click on the Invite Page icon. 
+1. Click on one of the lenses to highlight participants.
+1. Scroll through the list of highlighted participants.
+1. Click on the lens again to remove the highlights and try another lens.
 
-![Figure 7](https://raw.github.com/albaloo/procid-client/master/screenshots/Demo-Invitation-FirstPage.png)
+![Figure 4](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-invitepage.png)
