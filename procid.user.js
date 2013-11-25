@@ -252,8 +252,8 @@ head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.c
 		var result = createListOfIdeaNumbers();
 		divReferalCheckBox.appendChild(result.dropDownIdeaNumbers);
         
-    //    if(result.ideaSize == 0)
-    //        divReferalCheckBoxInput.disabled = true;
+        if(result.ideaSize == 0)
+            divReferalCheckBoxInput.disabled = true;
 
 		$(commentWrapper).before(divCommentOptionHolder);
 
