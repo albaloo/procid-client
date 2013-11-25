@@ -59,9 +59,9 @@ Under the criteria column in the Idea Page you can establish criteria for evalua
  
 Working with Procid's Invite Page
 =================================
-##The Invite Page shows a list of Drupal members that may be good candidates to invite to the discussion. Our system extracts this list from Drupal community members based on their experience, the number of patches they submitted, their recent participation, and the number of discussions that they have participated and reached consensus (i.e. the discussion was closed). 
+The Invite Page shows a list of Drupal members that may be good candidates to invite to the discussion. Our system extracts this list from Drupal community members based on their experience, the number of patches they submitted, their recent participation, and the number of discussions that they have participated and reached consensus (i.e. the discussion was closed). 
 
-1. What can I do in the Invite Page?
+##What can I do in the Invite Page?
 1. Click on the Invite Page icon. 
 1. Click on one of the lenses to highlight participants.
 1. Scroll through the list of highlighted participants.
