@@ -9,6 +9,11 @@
 // @include        https://drupal.org/node/*
 // @include        http://*.drupal.org/node/*
 // @include        https://*.drupal.org/node/*
+// @include        http://drupal.org/comment/*
+// @include        https://drupal.org/comment/*
+// @include        http://*.drupal.org/comment/*
+// @include        https://*.drupal.org/comment/*
+                                             
 // @include        https://web.engr.illinois.edu/~rzilouc2/procid/example*
 // ==/UserScript==
 
@@ -152,8 +157,12 @@ function main() {
 			}, function(data) {
 				numIssueComments = data.result;
 				console.log("issue exists check success");
+				preSetupProcid(numIssueComments);
 			});
-console.log("result: " + numIssueComments);
+
+			console.log("username: " + currentUser);
+		}
+		var preSetupProcid = function(numIssueComments){
 			if (numIssueComments == 0) {
 				var startProcidButton = document.createElement('input');
 				startProcidButton.setAttribute('class', 'procid-button-start');
@@ -164,13 +173,24 @@ console.log("result: " + numIssueComments);
 				startProcidButton.onclick = function(cb) {
 					startProcid();
 					$(".procid-button-start").remove();
+					
+					$.ajaxSetup({
+				      'async' : true
+			        });
+			        
+					$.post(serverURL + "startProcid", {
+							"issueLink" : issue.link,
+						    "userName" : currentUser,
+						}, function(data) {
+							console.log("procid started.");
+						});
+					
 					return false;
 				};
 
 			} else {
 				startProcid();
 			}
-
 		}
 		var addCSSToHeader = function() {
 			var header = document.getElementsByTagName('head')[0];
@@ -297,8 +317,13 @@ console.log("result: " + numIssueComments);
 				var highlightedWords = [];
 				var commentContent = "";
 				if (commentInput.value != "") {
+				    $.ajaxSetup({
+					  'async' : false
+					});
 					$.post(serverURL + "findNegativeWords", {
-						"comment" : commentInput.value
+						"comment" : commentInput.value,
+						"issueLink" : issue.link,
+						"userName" : currentUser,
 					}, function(data) {
 						message = data.userMessage;
 						highlightedWords = data.highlightedWords;
@@ -315,6 +340,9 @@ console.log("result: " + numIssueComments);
 			var saveComment = document.getElementById('edit-submit');
 			saveComment.onclick = function(e) {
 				if ($('#procid-comment-composition-checkbox-input1').prop('checked')) {
+					$.ajaxSetup({
+						'async' : true
+					});
 					$.post(serverURL + "newIdeaComment", {
 						"authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
 						"content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
@@ -335,7 +363,9 @@ console.log("result: " + numIssueComments);
 					} else if ($("#procid-radio-button-5").is(':checked')) {
 						type = "positive-strong";
 					}
-
+					$.ajaxSetup({
+						'async' : true
+					});
 					$.post(serverURL + "newIdeaReference", {
 						"authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
 						"content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
@@ -1019,6 +1049,10 @@ console.log("result: " + numIssueComments);
 							});
 						}
 					}
+					
+					$.ajaxSetup({
+						'async' : true
+					});
 					$.post(serverURL + "lensClicked", {
 						"issueLink" : issue.link,
 						"userName" : currentUser,
@@ -1313,6 +1347,7 @@ console.log("result: " + numIssueComments);
 			}
 			return commentInfos;
 		}
+		
 		var applyTags = function(commentInfo) {
 			//update the left panel
 			var div1 = document.createElement('div');
@@ -1346,6 +1381,7 @@ console.log("result: " + numIssueComments);
 
 			$("#procid-left-panel-body").append(div1);
 		}
+		
 		var createLensSelectorForIndividualComments = function(parent, name, commentInfo, tooltipText) {
 			var className = 'procid-lens-tag-unselected';
 			var imgClassName = 'procid-lens-tag-image-unselected';
@@ -1387,7 +1423,11 @@ console.log("result: " + numIssueComments);
 						} else {
 							$("#procid-comment" + commentInfo.title.substr(1) + " div").wrap(divTag);
 						}
-
+						
+						$.ajaxSetup({
+							'async' : true
+						});
+						
 						$.post(serverURL + "addTag", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -1405,6 +1445,11 @@ console.log("result: " + numIssueComments);
 							else
 								createIdeaBlocks();
 							var newSummary = "";
+							
+							$.ajaxSetup({
+							'async' : false
+							});
+						
 							$.post(serverURL + "addNewIdea", {
 								"issueLink" : issue.link,
 								"commentTitle" : commentInfo.title,
@@ -1434,7 +1479,11 @@ console.log("result: " + numIssueComments);
 							commentInfo.tags.splice(index, 1);
 						var cnt = $("#procid-comment" + commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").contents();
 						$("#procid-comment" + commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").replaceWith($(cnt));
-
+						
+						$.ajaxSetup({
+							'async' : true
+						});
+						
 						$.post(serverURL + "removeTag", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -1448,6 +1497,10 @@ console.log("result: " + numIssueComments);
 							//delete idea
 							$('#procid-idea-block-' + commentInfo.title.substr(1)).remove();
 							var newSummary = "";
+							$.ajaxSetup({
+								'async' : false
+							});
+						
 							$.post(serverURL + "deleteIdea", {
 								"issueLink" : issue.link,
 								"commentTitle" : commentInfo.title,
@@ -1521,6 +1574,10 @@ console.log("result: " + numIssueComments);
 					var buttonId = currentLink.id;
 					var commentNumber = parseInt(buttonId.match(/\d+/)[0], 10);
 					var commentTitle = "#" + commentNumber;
+					$.ajaxSetup({
+						'async' : true
+					});
+						
 					$.post(serverURL + "deleteIdea", {
 						"issueLink" : issue.link,
 						"commentTitle" : commentTitle,
@@ -1731,6 +1788,10 @@ console.log("result: " + numIssueComments);
 				var changed = false;
 				$.each(tempCriteria, function() {
 					var currentCriteria = findCriteriaById(this.id);
+					$.ajaxSetup({
+						'async' : false
+					});
+						
 					console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
 					if (this.action === "delete") {
 						criteriaToBeDeleted.push(this.id);
@@ -2108,6 +2169,11 @@ console.log("result: " + numIssueComments);
 					obj.val = opt.text();
 					obj.index = opt.index();
 					wrapperDropdownText.innerHTML = obj.val;
+					
+					$.ajaxSetup({
+						'async' : true
+					});
+						
 					$.post(serverURL + "setIdeaStatus", {
 						"issueLink" : issue.link,
 						"commentTitle" : commentInfo.title,
@@ -2445,7 +2511,10 @@ console.log("result: " + numIssueComments);
 
 				var newCommentContent = divNewCommentBoxInput.value;
 				var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
-
+				$.ajaxSetup({
+					'async' : false
+				});
+						
 				$.post(serverURL + "addNewComment", {
 					"issueLink" : issue.link,
 					"userName" : currentUser,
@@ -2491,6 +2560,10 @@ console.log("result: " + numIssueComments);
 		var saveCommentToDrupal = function(commentText, issueLink) {
 			var title = "";
 			var link = "";
+			$.ajaxSetup({
+				'async' : false
+			});
+						
 			$("#edit-comment-body-und-0-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
 			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
 				var result = $(data).find("div[class^='comment comment-new']").last();
@@ -2505,6 +2578,9 @@ console.log("result: " + numIssueComments);
 		var saveCurrentCommentToDrupal = function(issueLink) {
 			var title = "";
 			var link = "";
+			$.ajaxSetup({
+				'async' : false
+			});
 			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
 				var result = $(data).find("div[class^='comment comment-new']").last();
 				title = $(result).find(".permalink").text();
@@ -2604,7 +2680,7 @@ console.log("result: " + numIssueComments);
 				divNewCommentBox.appendChild(divNewCommentBoxInput);
 
 				if (sentimentTuning) {
-					var divNewSentimentTuner = document.createElement('div');
+					/*var divNewSentimentTuner = document.createElement('div');
 					divNewSentimentTuner.setAttribute('class', 'procid-sentiment-tuner');
 					divNewCommentBox.appendChild(divNewSentimentTuner);
 
@@ -2614,16 +2690,18 @@ console.log("result: " + numIssueComments);
 					divNewSentimentTuner.appendChild(sentimentTunerImagePos);
 
 					sentimentTunerImagePos.onclick = function(cb) {
+						$.ajaxSetup({
+							'async' : false
+						});
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImagePos).parent().prev().children("a").attr("href"),
+							"issueLink" : issue.link,
+						    "userName" : currentUser,
 							"tone" : "positive",
 						}, function(data) {
-							var comment = $(sentimentTunerImagePos).parentsUntil(".procid-idea-comment-row-content").prev().prev();
-							comment.remove()
-							var divProsRowContent = $(sentimentTunerImagePos).closest(".procid-idea-comment-rows").children().first().children().last().children().first()
-							divProsRowContent.append(comment);
-							$(sentimentTunerImagePos).closest(".procid-new-comment").hide()
+							updateCommentsList();
 						});
+						return false;
 					}
 					var sentimentTunerImageNeutral = document.createElement('div');
 					sentimentTunerImageNeutral.setAttribute('class', 'procid-sentiment-tuner-image-neutral');
@@ -2631,16 +2709,19 @@ console.log("result: " + numIssueComments);
 					divNewSentimentTuner.appendChild(sentimentTunerImageNeutral);
 
 					sentimentTunerImageNeutral.onclick = function(cb) {
+						return false;
+						/$.ajaxSetup({
+							'async' : false
+						});
+		
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImageNeutral).parent().prev().children("a").attr("href"),
+							"issueLink" : issue.link,
+						    "userName" : currentUser,
 							"tone" : "neutral",
 						}, function(data) {
-							var comment = $(sentimentTunerImageNeutral).parentsUntil(".procid-idea-comment-row-content").prev().prev();
-							comment.remove()
-							var divNeutralRowContent = $($(sentimentTunerImageNeutral).closest(".procid-idea-comment-rows").children()[1]).children().last().children().first()
-							divNeutralRowContent.append(comment);
-							$(sentimentTunerImageNeutral).closest(".procid-new-comment").hide()
-						});
+
+						});/
 					}
 					var sentimentTunerImageCons = document.createElement('div');
 					sentimentTunerImageCons.setAttribute('class', 'procid-sentiment-tuner-image-cons');
@@ -2648,18 +2729,21 @@ console.log("result: " + numIssueComments);
 					divNewSentimentTuner.appendChild(sentimentTunerImageCons);
 
 					sentimentTunerImageCons.onclick = function(cb) {
+						$.ajaxSetup({
+							'async' : false
+						});
+
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImageCons).parent().prev().children("a").attr("href"),
+							"issueLink" : issue.link,
+						    "userName" : currentUser,
 							"tone" : "negative",
 						}, function(data) {
-							var comment = $(sentimentTunerImageCons).parentsUntil(".procid-idea-comment-row-content").prev().prev();
-							comment.remove()
-							var divConsRow = $(sentimentTunerImageCons).closest(".procid-idea-comment-rows").children().last().children().last().children().first()
-							divConsRow.append(comment);
-							$(sentimentTunerImageCons).closest(".procid-new-comment").hide()
+
 						});
+						return false;
 					}
-				}
+				}*/
 
 			}
 
@@ -3193,6 +3277,9 @@ console.log("result: " + numIssueComments);
 				var newCommentSummary = "";
 				var newCommentContent = divNewCommentBoxInput.value;
 				var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+				$.ajaxSetup({
+					'async' : false
+				});
 
 				$.post(serverURL + "updateCriteriaStatus", {
 					"issueLink" : issue.link,
@@ -3444,7 +3531,22 @@ console.log("result: " + numIssueComments);
 				divInviteLink.setAttribute('title', 'Invite this person');
 				divInviteLink.onclick = function invitePerson(evt) {
 					var currentI = parseInt($(this).attr('href').substr(1), 10);
-					var personContactUrl = suggestedPeople[currentI].authorLink + "/contact"
+					var personContactUrl = suggestedPeople[currentI].authorLink + "/contact";
+					var personUserName = suggestedPeople[currentI].author;
+					
+					$.ajaxSetup({
+						'async' : true
+					});
+					
+					$.post(serverURL + "invitedParticipant", {
+						"issueLink" : issue.link,
+						"userName" : currentUser,
+						"invitedUserName" : personUserName
+					}, function() {
+						console.log("invited person logged success");
+					});
+					
+					
 					var popup = window.open(personContactUrl);
 					popup.onload = function() {
 						setTimeout(function() {
@@ -3454,10 +3556,6 @@ console.log("result: " + numIssueComments);
 							}
 						}, 2000);
 					}
-					/*if(!($("#page-title").text() === "Access denied")){
-					 $("#edit-subject").text("Invite to a discussion");
-					 $("#edit-message").text("I would like to invite you to a discussion about ...");
-					 }*/
 					return false;
 				};
 
@@ -3545,8 +3643,11 @@ console.log("result: " + numIssueComments);
 						$("div[id='procid-invite-" + name + "-image']").attr('class', "procid-invite-" + name + "-image-unselected");
 						//selectedInviteLens = "";
 					}
+					$.ajaxSetup({
+						'async' : true
+					});
 
-					$.post(serverURL + "lensClicked", {
+					$.post(serverURL + "inviteLensClicked", {
 						"issueLink" : issue.link,
 						"userName" : currentUser,
 						"tagName" : name
@@ -3567,6 +3668,10 @@ console.log("result: " + numIssueComments);
 		}
 		var findPeopletoInvite = function() {
 			var suggestedMembers = [];
+			$.ajaxSetup({
+				'async' : false
+			});
+
 			$.post(serverURL + "findPotentialParticipants", {
 				"issueLink" : issue.link
 			}, function(data) {

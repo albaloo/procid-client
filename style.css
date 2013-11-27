@@ -1124,6 +1124,7 @@ a.ideaPage-link {
 	z-index:11;
 }
 .procid-sentiment-tuner {
+	margin-left: 50px;
 }
 .procid-sentiment-tuner-image-pos {
 	background-position:0 -18px;
@@ -1141,14 +1142,14 @@ a.ideaPage-link {
 	margin-right:4px;
 	display:inline-block;
 }
-.procid-sentiment-tuner-image-neutral {
+/*.procid-sentiment-tuner-image-neutral {
 	background-position:-34px -18px;
 	width:15px;
 	height:15px;
 	margin-right:5px;
 	display:inline-block;
-}
-.procid-sentiment-tuner-image-neutral:hover {
+}*/
+.procid-sentiment-tuner-image-neutral {
 	background-position:-129px -19px;
 	width:15px;
 	height:15px;
