@@ -13,7 +13,6 @@ Procid is a user script which will be installed in your browser, not in Drupal.
 Please download the [procid.user.js](https://github.com/albaloo/procid-client/raw/master/procid.user.js) file (you may need to right click and then "Save link as..." to get the file). 
 
 - In Chrome, go to chrome://extensions/, and drag the newly downloaded file to the extensions page to install it ([visual instructions](https://raw.github.com/albaloo/procid-client/master/screenshots/procid-chrome-installation.jpg)).
-- In Opera, follow these [instructions](http://my.opera.com/Contrid/blog/2007/02/11/how-to-greasemonkey-in-opera).
 - In Firefox, update to the lastst version of FireFox, install the [GreaseMonkey extension](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/), and follow these [instructions](http://userscripts.org/about/installing). 
 - In Safari, install the NinjaKit extension, and follow these [instructions](http://wiki.greasespot.net/Cross-browser_userscripting#cite_note-2).
 
@@ -33,6 +32,11 @@ How do I use Procid?
 ===================
 Please see below for a quick overview of Procid's features.
 You can also [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ).
+
+##Start Procid
+To minimize interference with evaluators' work process, Procid will not automatically start on new issues. To start Procid on these issues, you can click on the "Start Procid" button.
+
+![Figure 0](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-start-procid.png)
 
 ##Procid's Main Page
 Procid's Main Page adds a navigation panel on the left side of the discussion. The navigation panel provides five different lenses to explore different types of comments. The lenses will highlight must read comments, comments containing ideas, comments containing conversations, comments provided by experienced members, and comments that include patches.
