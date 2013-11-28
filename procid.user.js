@@ -117,17 +117,14 @@ function main() {
 		})();
 
 		var setUpProcid = function() {
-
 			//Check if the user has logged in Drupal
-			if (!$("#page").find('#comment-form').length) {
+			if (!$("#page").find('#comment-form').length)
 				return;
-			}
-
+			
 			//Check if this is an issue page
-			if (!$("#page").find("div [class='breadcrumb']").length) {
+			if (!$("#page").find("div [class='breadcrumb']").length)
 				return;
-			}
-
+			
 			//find the currentUser
 			var currentUserInfo = $("#userinfo a").first().text();
 			currentUser = currentUserInfo.substr(13);
@@ -137,15 +134,13 @@ function main() {
 
 			//Program Starts From here
 			addCSSToHeader();
-
-			
+	
 			var path = window.location.pathname;
 			var issueLink;
 			if (path.indexOf("node") >= 0)
 				issueLink = window.location.pathname;
-			else {
+			else
 				issueLink = $("link[rel='shortlink']").attr('href');
-			}
 
 			var numIssueComments=0;
 			$.ajaxSetup({
@@ -188,9 +183,8 @@ function main() {
 					return false;
 				};
 
-			} else {
+			}else 
 				startProcid();
-			}
 		}
 		var addCSSToHeader = function() {
 			var header = document.getElementsByTagName('head')[0];
@@ -2742,8 +2736,8 @@ function main() {
 
 						});
 						return false;
-					}
-				}*/
+					}*/
+				}
 
 			}
 
