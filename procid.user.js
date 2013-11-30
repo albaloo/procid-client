@@ -29,7 +29,7 @@
 //You should be able to store values in tab elements in order to avoid them being global to all tabs. I recommend you being with a tutorial like XUL School to get an idea of how JS is handled in Firefox and what you can do from extension code.
 
 // a function that loads head.js which then loads jQuery and d3
-function addJQuery(callback) {
+/*function addJQuery(callback) {
 	//Jquery Script
 	var script = document.createElement("script");
 	script.setAttribute("src", "//raw.github.com/headjs/headjs/v0.99/dist/head.min.js");
@@ -42,7 +42,40 @@ function addJQuery(callback) {
 
 	var body1 = document.getElementsByTagName('head')[0];
 	body1.appendChild(script);
-};
+};*/
+
+function load(url, onLoad, onError) {
+    e = document.createElement("script");
+    e.setAttribute("src", url);
+
+    if (onLoad != null) { e.addEventListener("load", onLoad); }
+    if (onError != null) { e.addEventListener("error", onError); }
+
+    var body = document.getElementsByTagName('head')[0];
+	body.appendChild(e);
+
+    return e;
+}
+
+function execute(functionOrCode) {
+    if (typeof functionOrCode === "function") {
+        code = "(" + functionOrCode + ")();";
+    } else {
+        code = functionOrCode;
+    }
+
+    e = document.createElement("script");
+    e.textContent = code;
+
+    var body = document.getElementsByTagName('head')[0];
+	body.appendChild(e);
+
+    return e;
+}
+
+function loadAndExecute(url, functionOrCode) {
+    load(url, function() { execute(functionOrCode); });
+}
 
 // the main function of this userscript
 function main() {
@@ -52,7 +85,7 @@ function main() {
 		var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 		var CSSSERVERPATH = 'https://web.engr.illinois.edu/~rzilouc2/procid';
 		//var serverURL='http://0.0.0.0:3000/';
-		var serverURL = 'http://procid-server.herokuapp.com/';
+		var serverURL = 'https://procid-server.herokuapp.com/';
 		//'http://protected-dawn-3784.herokuapp.com/';
 		var commentInfos = [];
 		var criteria = [];
@@ -1017,7 +1050,11 @@ function main() {
 
 					} else {
 						if ($("div[id='procid-comment-" + name + "'] a").length == 0) {
-							var message = "No " + name + "s to show."
+							var message;
+							if(name=="patch")
+								message = "No " + name + "es to show."
+							else
+								message = "No " + name + "s to show."
 							var instruction = "";
 							if (name == "idea" || name == "mustread")
 								instruction = "You can identify " + name + "s by toggling the icon in the bottom right of each comment."
@@ -3052,8 +3089,7 @@ function main() {
 				var value = d.currentCriteriaStatus.value - 1;
 				if (value >= 0) {
 					if (d.currentCriteriaStatus.commentBox != "") {
-						if ($(currentCircle.parentNode.parentNode).find(".procid-new-comment").length > 0)
-							currentCircle.parentNode.parentNode.removeChild(d.currentCriteriaStatus.commentBox);
+						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox)
 						d.currentCriteriaStatus.commentBox = "";
 					}
 					var cx = x(value);
@@ -3067,22 +3103,22 @@ function main() {
 			d3.selectAll(".selector").data(allCriteriaStatuses).append("image").attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-plus.png").attr("width", "30").attr("x", "217").attr('y', "15").attr("height", "30").on("click", function(d) {
 				var tempTitle = d.currentCriteriaStatus.title.substr(1);
 				var identifier = "#procid-criteria-circle-" + tempTitle + "-" + d.currentCriteriaStatus.id;
-
+console.log("clicked");
 				var currentCircle = d3.select(identifier).node();
 
 				if (d.currentCriteriaStatus.originX == -1) {
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
 				}
-
+console.log("d.currentCriteriaStatus.value: " + d.currentCriteriaStatus.value );
 				var value = d.currentCriteriaStatus.value + 1;
 				if (value <= 6) {
 					if (d.currentCriteriaStatus.commentBox != "") {
-						if ($(currentCircle.parentNode.parentNode).find(".procid-new-comment").length > 0)
-							currentCircle.parentNode.parentNode.removeChild(d.currentCriteriaStatus.commentBox);
+						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox)
 						d.currentCriteriaStatus.commentBox = "";
 					}
 					var cx = x(value);
+					console.log("value: " + value + " cx:" +  cx);
 					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
 					if (d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
 						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value) - 30), d);
@@ -3263,6 +3299,10 @@ function main() {
 			});
 			$(divNewCommentBoxInput).focus();
 
+			//$(currentElement).find("image").css("z-index", "5000");
+$(currentElement).css("z-index", "4000");
+console.log("images: " + $(currentElement).find("image").length);
+
 			$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				var newCommentTitle = "";
 				var newCommentLink = "";
@@ -3345,6 +3385,7 @@ function main() {
 					d.previousCriteriaStatuses.push(prevCriteriaStatus);
 				}
 				d.currentCriteriaStatus = newCriteriaStatus;
+				$(currentElement).css("z-index", "");
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 			});
@@ -3357,6 +3398,7 @@ function main() {
 				d.currentCriteriaStatus.originX = -1;
 				d.currentCriteriaStatus.originValue = -1;
 				d.currentCriteriaStatus.commentBox = "";
+				$(currentElement).css("z-index", "");
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 				return false;
@@ -3370,6 +3412,7 @@ function main() {
 				d.currentCriteriaStatus.originX = -1;
 				d.currentCriteriaStatus.originValue = -1;
 				d.currentCriteriaStatus.commentBox = "";
+				$(currentElement).css("z-index", "");
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 				return false;
@@ -3388,8 +3431,13 @@ function main() {
 			}
 		}
 		var removeCommentBox = function(parent, currentCommentBox) {
-			if ($(parent).hasClass(".procid-new-comment"))
+			if ($(parent).find(".procid-new-comment").length > 0){
+			//if ($(parent).hasClass(".procid-new-comment")){
 				parent.removeChild(currentCommentBox);
+				$(parent).css("z-index", "");
+				$('#procid-dialog-overlay').hide();
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+			}
 		}
 		var updateCriteriaCircleLocation = function(d, value, cx, circle) {
 			//updating the value
@@ -3759,4 +3807,5 @@ function main() {
 };
 
 // load jQuery and execute the main function
-addJQuery(main);
+//addJQuery(main);
+loadAndExecute("//raw.github.com/headjs/headjs/v0.99/dist/head.min.js", main);
