@@ -91,6 +91,7 @@ function main() {
 		var criteria = [];
 		var allCriteriaStatuses = [];
 		var currentUser = "";
+		var currentUserLink = "";
 		var username = "";
 		var password = "";
 		var issue = {
@@ -161,6 +162,7 @@ function main() {
 			//find the currentUser
 			var currentUserInfo = $("#userinfo a").first().text();
 			currentUser = currentUserInfo.substr(13);
+			currentUserLink = $($($.find('#edit-author--2')[0]).children()[1]).attr("href");
 
 			if (currentUser == "")
 				currentUser = "Anonymous";
@@ -371,7 +373,7 @@ function main() {
 						'async' : true
 					});
 					$.post(serverURL + "newIdeaComment", {
-						"authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
+						"authorLink" : currentUserLink,
 						"content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
 						"issueLink" : issue.link
 					});
@@ -394,7 +396,7 @@ function main() {
 						'async' : true
 					});
 					$.post(serverURL + "newIdeaReference", {
-						"authorLink" : $($($.find('#edit-author--2')[0]).children()[1]).attr("href"),
+						"authorLink" : currentUserLink,
 						"content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
 						"issueLink" : issue.link,
 						"ideaNum" : parseInt($($.find("#procid-drop-down-text")[0]).text().replace(/^\D+/, '')),
@@ -1023,6 +1025,7 @@ function main() {
 						$("#procid-search-input-form").val("");
 
 					}
+					
 					return false;
 				});
 			else
