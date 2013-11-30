@@ -1792,9 +1792,9 @@ function main() {
 				tableC3.innerHTML = "";
 				tableR.appendChild(tableC3);
 
-				var tableC4 = document.createElement("td");
+				/*var tableC4 = document.createElement("td");
 				tableC4.innerHTML = "";
-				tableR.appendChild(tableC4);
+				tableR.appendChild(tableC4);*/
 				index++;
 
 			}
@@ -1824,7 +1824,7 @@ function main() {
 					});
 						
 					console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
-					if (this.action === "delete") {
+					/*if (this.action === "delete") {
 						criteriaToBeDeleted.push(this.id);
 						$.post(serverURL + "deleteCriteria", {
 							"issueLink" : issue.link,
@@ -1834,7 +1834,7 @@ function main() {
 							console.log("delete criteria success");
 							changed = true;
 						});
-					} else if (this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
+					} else*/ if (this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
 						setCriteriaTitle(this.id, this.title);
 						setCriteriaDescription(this.id, this.description);
 						$.post(serverURL + "editCriteria", {
@@ -1871,10 +1871,10 @@ function main() {
 
 				});
 
-				$.each(criteriaToBeDeleted, function() {
+				/*$.each(criteriaToBeDeleted, function() {
 					deleteCriteria(this);
 					//TODO: delete the related comments
-				});
+				});*/
 				if (changed)
 					updateCriteriaStatusList();
 
@@ -1927,12 +1927,12 @@ function main() {
 			tableR.appendChild(tableC3);
 
 			var tableC4 = document.createElement("th");
-			tableC4.innerHTML = "";
+			tableC4.innerHTML = "Edit";
 			tableR.appendChild(tableC4);
 
-			var tableC5 = document.createElement("th");
+			/*var tableC5 = document.createElement("th");
 			tableC5.innerHTML = "";
-			tableR.appendChild(tableC5);
+			tableR.appendChild(tableC5);*/
 
 			var tableBody = document.createElement("tbody");
 			tableBody.setAttribute('id', 'procid-editCriteriaBox-table-body');
@@ -1962,7 +1962,7 @@ function main() {
 
 			var tableC2 = document.createElement('td');
 			tableC2.innerHTML = currentCriteria.description;
-			tableC2.setAttribute('style', 'width:120px');
+			tableC2.setAttribute('style', 'width:180px');
 			tableR.appendChild(tableC2);
 
 			var tableC5 = document.createElement('td');
@@ -2021,7 +2021,7 @@ function main() {
 			$(editImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			editCriteria.appendChild(editImage);
 
-			var tableC4 = document.createElement('td');
+			/*var tableC4 = document.createElement('td');
 			tableR.appendChild(tableC4);
 
 			var deleteCriteriaLink = document.createElement('a');
@@ -2047,7 +2047,7 @@ function main() {
 			var deleteImage = document.createElement('div');
 			deleteImage.setAttribute('class', "procid-edit-criteria-icons-delete");
 			$(deleteImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-			deleteCriteriaLink.appendChild(deleteImage);
+			deleteCriteriaLink.appendChild(deleteImage);*/
 		}
 		var createAddCriteriaLink = function(tempCriteria, index, numCriteria) {
 			var addCriteria = document.createElement('a');
@@ -2107,9 +2107,9 @@ function main() {
 				tableC3.innerHTML = "";
 				tableR.appendChild(tableC3);
 
-				var tableC4 = document.createElement("td");
+				/*var tableC4 = document.createElement("td");
 				tableC4.innerHTML = "";
-				tableR.appendChild(tableC4);
+				tableR.appendChild(tableC4);*/
 				index++;
 				numCriteria.num = numCriteria.num + 1;
 				if (numCriteria.num >= 4) {
@@ -3505,13 +3505,9 @@ console.log("images: " + $(currentElement).find("image").length);
 			//currentElement, className, submitText, midElement, placeHolderString
 			var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "", "div", content, "200px", arrowPosition, "30px", "", false);
 
-			$("#procid-dialog-overlay").click(function() {
-				parent.removeChild(divNewComment);
-				$('#procid-dialog-overlay').hide();
-				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
-				return false;
-			});
-
+			$('#procid-dialog-overlay').hide();
+			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+		
 			return divNewComment;
 		}
 		var removeCriteriaStatusCommentBox = function(prevCommentBox, circle) {
