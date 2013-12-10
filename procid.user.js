@@ -916,7 +916,7 @@ function main() {
 			feedbackLink.onclick = function gofeedback(evt) {	
 				var content = "<strong style='color:black; text-align:center;'> Ideas? Something not look right? </strong>";
 				var content2 = "<span style='color:black; text-align:center;' >Or, write us at </span> <a href='mailto:rzilouc2@illinois.edu' style='color: #0678be'>rzilouc2@illinois.edu</a><br/>";
-				var parent = this;
+				var parent = this.parentNode;
 				//currentElement, className, submitText, midElement, placeHolderString
 				var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "Send", "feedback", content, "200px", "50px", "30px", content2, false);	
 				
