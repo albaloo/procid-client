@@ -1796,21 +1796,21 @@ function main() {
 		var createEditCriteriaBox = function(currentElement) {
 			var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save", "", "", "400px", "20px", "", "", false);
 			var tempCriteria = [];
-			var index = 0;
+			//var index = 0;
 
 			var table = createTableHeader();
 			$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(table);
 
 			if (criteria.length === 0) {
 				var tempNewCriteria = {
-					title : "Title...",
-					description : "Description...",
+					title : "",
+					description : "",
 					id : createNewCriteriaId(tempCriteria.length),
 					action : "add",
 					author : currentUser
 				};
 
-				var currentIndex = index;
+			    var currentIndex = findTempCriteriaIndex(tempNewCriteria.id, tempCriteria);
 				tempCriteria.push(tempNewCriteria);
 
 				var tableR = document.createElement("tr");
@@ -1825,8 +1825,9 @@ function main() {
 				titleInput.setAttribute('type', 'text');
 				titleInput.setAttribute('maxlength', '20');
 				titleInput.setAttribute('name', 'labelInput');
-				titleInput.placeholder = tempNewCriteria.title;
+				titleInput.placeholder = "Title...";
 				tableC1.appendChild(titleInput);
+	
 				$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
 					tempCriteria[currentIndex].title = this.value;
 				});
@@ -1839,7 +1840,7 @@ function main() {
 				description.setAttribute('class', 'descriptionInput');
 				description.setAttribute('type', 'text');
 				description.setAttribute('name', 'description');
-				description.placeholder = tempNewCriteria.description;
+				description.placeholder = "Description...";
 				$(description).keyup(function() {
 					tempCriteria[currentIndex].description = this.value;
 				});
@@ -1853,9 +1854,9 @@ function main() {
 				tableC3.innerHTML = "";
 				tableR.appendChild(tableC3);
 
-				/*var tableC4 = document.createElement("td");
+				var tableC4 = document.createElement("td");
 				tableC4.innerHTML = "";
-				tableR.appendChild(tableC4);*/
+				tableR.appendChild(tableC4);
 				index++;
 
 			}
@@ -1865,13 +1866,12 @@ function main() {
 			};
 
 			$.each(criteria, function() {
-				createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, index, numCriteria);
-				index++;
+				createCriteriaEditBoxBlock(divNewCriteriaEditBox, tempCriteria, this, numCriteria);
 			});
 
 			//They shouldn't be able to add more than 4 criteria
 			if (numCriteria.num < 4) {
-				var addCriteria = createAddCriteriaLink(tempCriteria, index, numCriteria);
+				var addCriteria = createAddCriteriaLink(tempCriteria, numCriteria);
 				$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
 			}
 
@@ -1884,7 +1884,7 @@ function main() {
 						'async' : false
 					});
 						
-					console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
+					//console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
 					/*if (this.action === "delete") {
 						criteriaToBeDeleted.push(this.id);
 						$.post(serverURL + "deleteCriteria", {
@@ -1895,7 +1895,7 @@ function main() {
 							console.log("delete criteria success");
 							changed = true;
 						});
-					} else*/ if (this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
+					} else */if (this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
 						setCriteriaTitle(this.id, this.title);
 						setCriteriaDescription(this.id, this.description);
 						$.post(serverURL + "editCriteria", {
@@ -1909,7 +1909,8 @@ function main() {
 							changed = true;
 						});
 
-					} else if (this.action == "add") {
+					} else if (this.action == "add" && this.title != "") {
+						console.log("criteria ID: " + this.id);
 						var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
 						var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
 						titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
@@ -1936,6 +1937,7 @@ function main() {
 					deleteCriteria(this);
 					//TODO: delete the related comments
 				});*/
+				
 				if (changed)
 					updateCriteriaStatusList();
 
@@ -2001,7 +2003,7 @@ function main() {
 
 			return table;
 		}
-		var createCriteriaEditBoxBlock = function(divNewCriteriaEditBox, tempCriteria, currentCriteria, index, numCriteria) {
+		var createCriteriaEditBoxBlock = function(divNewCriteriaEditBox, tempCriteria, currentCriteria, numCriteria) {
 
 			tempCurrentCriteria = {
 				title : currentCriteria.title,
@@ -2012,7 +2014,7 @@ function main() {
 			};
 			tempCriteria.push(tempCurrentCriteria);
 
-			var currentIndex = index;
+			var currentIndex = findTempCriteriaIndex(currentCriteria.id, tempCriteria);
 			var tableR = document.createElement('tr');
 			$("#procid-editCriteriaBox-table-body").append(tableR);
 
@@ -2097,7 +2099,7 @@ function main() {
 				tempCriteria[currentIndex].action = "delete";
 				numCriteria.num = numCriteria.num - 1;
 				if (numCriteria.num < 4 && !($(divNewCriteriaEditBox).find("#procid-addcriteria-link").length > 0)) {
-					var addCriteria = createAddCriteriaLink(tempCriteria, index, numCriteria);
+					var addCriteria = createAddCriteriaLink(tempCriteria, numCriteria);
 					$(divNewCriteriaEditBox).children(".procid-new-comment-box").first().children(".procid-button-submit").first().before(addCriteria);
 				}
 
@@ -2110,7 +2112,7 @@ function main() {
 			$(deleteImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			deleteCriteriaLink.appendChild(deleteImage);*/
 		}
-		var createAddCriteriaLink = function(tempCriteria, index, numCriteria) {
+		var createAddCriteriaLink = function(tempCriteria, numCriteria) {
 			var addCriteria = document.createElement('a');
 			addCriteria.setAttribute('href', "#");
 			addCriteria.setAttribute('rel', "tooltip");
@@ -2119,15 +2121,15 @@ function main() {
 			addCriteria.innerHTML = "Add Criteria +";
 			addCriteria.onclick = function(e) {
 				var tempNewCriteria = {
-					title : "Title...",
-					description : "Description...",
+					title : "",
+					description : "",
 					id : createNewCriteriaId(tempCriteria.length),
 					action : "add",
 					author : currentUser
 				};
 
 				tempCriteria.push(tempNewCriteria);
-				var currentIndex = index;
+				var currentIndex = findTempCriteriaIndex(tempNewCriteria.id, tempCriteria);//index;
 				var tableR = document.createElement("tr");
 				$("#procid-editCriteriaBox-table tbody").append(tableR);
 
@@ -2140,10 +2142,11 @@ function main() {
 				titleInput.setAttribute('maxlength', '20');
 				titleInput.setAttribute('type', 'text');
 				titleInput.setAttribute('name', 'labelInput');
-				titleInput.placeholder = tempNewCriteria.title;
+				titleInput.placeholder = "Title...";
 				tableC1.appendChild(titleInput);
 				$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
 					tempCriteria[currentIndex].title = this.value;
+					console.log("current Index: " + currentIndex);
 				});
 
 				var tableC2 = document.createElement("td");
@@ -2154,7 +2157,7 @@ function main() {
 				description.setAttribute('class', 'descriptionInput');
 				description.setAttribute('type', 'text');
 				description.setAttribute('name', 'description');
-				description.placeholder = tempNewCriteria.description;
+				description.placeholder = "Description...";
 				$(description).keyup(function() {
 					tempCriteria[currentIndex].description = this.value;
 				});
@@ -2171,7 +2174,7 @@ function main() {
 				/*var tableC4 = document.createElement("td");
 				tableC4.innerHTML = "";
 				tableR.appendChild(tableC4);*/
-				index++;
+				
 				numCriteria.num = numCriteria.num + 1;
 				if (numCriteria.num >= 4) {
 					addCriteria.parentNode.removeChild(addCriteria);
@@ -2953,7 +2956,20 @@ function main() {
 					newId = this.id;
 			});
 			newId = newId + (tempCriteriaSize - criteria.length) + 1;
+				console.log("temp Criteria Size: " + newId);
 			return newId;
+		}
+		var findTempCriteriaIndex = function(id, tempCriteria) {
+			var result = $.grep(tempCriteria, function(e) {
+				return e.id == id;
+			});
+			if (result.length == 0)
+				return -1;
+			else{
+				var index = tempCriteria.indexOf(result[0])
+				return index;
+				}
+
 		}
 		var findCriteriaTitle = function(id) {
 			var result = $.grep(criteria, function(e) {
@@ -3057,9 +3073,9 @@ function main() {
 			}
 
 			if (criteria.length > 3)
-				$('.procid-idea-block-criteria').css('overflow-y', 'auto');
+				$(divCriteria).css('overflow-y', 'auto');
 			else if (criteria.length <= 3)
-				$('.procid-idea-block-criteria').css('overflow-y', 'visible');
+				$(divCriteria).css('overflow-y', 'visible');
 
 			$.each(criteria, function() {
 				var divCriteriaStatus = document.createElement('div');
