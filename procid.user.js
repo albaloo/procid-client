@@ -919,19 +919,20 @@ function main() {
 				var parent = this.parentNode;
 				//currentElement, className, submitText, midElement, placeHolderString
 				var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "Send", "feedback", content, "200px", "50px", "30px", content2, false);	
-				
+				divNewComment.style.marginLeft = "50%";
+				divNewComment.style.marginTop = "30px";
 				$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 					$.ajaxSetup({
 						'async' : true
 					});
 
-					/*$.post(serverURL + "sendFeedback", {
+					$.post(serverURL + "sendFeedback", {
 						"issueLink" : issue.link,
 						"userName" : currentUser,
-						"content" : ""
+						"content" : $(".procid-new-comment-textarea").val()
 					}, function(data) {
 						console.log("sendFeedback success");
-					});*/
+					});
 
 					//close the comment Input box
 					parent.removeChild(divNewComment);
