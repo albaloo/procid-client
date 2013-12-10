@@ -3,7 +3,7 @@
 // @description    Interactive system supporting consensus building.
 // @icon           https://github.com/albaloo/procid-client/blob/master/images/procid-icon.png
 // @author         Roshanak Zilouchian
-// @version        1.0
+// @version        1.1
 // @grant          none
 // @include        http://drupal.org/node/*
 // @include        https://drupal.org/node/*
@@ -902,6 +902,60 @@ function main() {
 			$(divInviteImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-main-page.png)");
 			$("#procid-invite-link").append(divInviteImage);
 
+			//Feedback
+			//$('<li />').attr({
+			//	id : 'procid-feedback',
+		//	}).appendTo("#procid-menus-navigation-panel");
+
+			
+			var feedbackLink = document.createElement('a');
+			feedbackLink.setAttribute('id', 'procid-feedback-link');
+			feedbackLink.setAttribute('href' , '#');
+			//feedbackLink.setAttribute('rel', 'tooltip');
+			//feedbackLink.setAttribute('title', 'Give Feedback on Procid');
+			feedbackLink.onclick = function gofeedback(evt) {	
+				var content = "<strong style='color:black; text-align:center;'> Ideas? Something not look right? </strong>";
+				var content2 = "<span style='color:black; text-align:center;' >Or, write us at </span> <a href='mailto:rzilouc2@illinois.edu' style='color: #0678be'>rzilouc2@illinois.edu</a><br/>";
+				var parent = this;
+				//currentElement, className, submitText, midElement, placeHolderString
+				var divNewComment = createNewCommentBoxFrame(parent, 'procid-new-comment', "Send", "feedback", content, "200px", "50px", "30px", content2, false);	
+				
+				$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
+					$.ajaxSetup({
+						'async' : true
+					});
+
+					/*$.post(serverURL + "sendFeedback", {
+						"issueLink" : issue.link,
+						"userName" : currentUser,
+						"content" : ""
+					}, function(data) {
+						console.log("sendFeedback success");
+					});*/
+
+					//close the comment Input box
+					parent.removeChild(divNewComment);
+					$('#procid-dialog-overlay').hide();
+					document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+					return false;
+			});
+	
+	
+				$("#procid-dialog-overlay").click(function() {
+					parent.removeChild(divNewComment);
+					$('#procid-dialog-overlay').hide();
+					document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+					return false;
+				});	
+			};
+			$("#procid-menus-navigation-panel").append(feedbackLink);
+			$("#procid-feedback-link").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
+
+			var divFeedback = document.createElement('div');
+			divFeedback.innerHTML = "Give Feedback on Procid";
+			feedbackLink.appendChild(divFeedback);
+
+
 			$("#procid-menus li").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
 		}
 		/*************HOME PAGE BODY*********************/
@@ -1342,6 +1396,9 @@ function main() {
 					});
 				}
 
+				//if(returnValue.indexOf("http://drupal.org/") == 0)
+				//	returnValue = returnValue.replace("http://drupal.org/", "https://drupal.org/");
+		
 				return returnValue;
 			});
 
@@ -2707,7 +2764,22 @@ function main() {
 					divNewCommentBox.appendChild(divPlaceHolder);
 				}
 
-			} else if (midElement === "div") {
+			}else if (midElement === "feedback") {
+				var divNewCommentBoxMessage1 = document.createElement('div');
+				divNewCommentBoxMessage1.setAttribute('class', 'procid-feedback-comment-text');
+				divNewCommentBoxMessage1.innerHTML = placeHolderString;
+				divNewCommentBox.appendChild(divNewCommentBoxMessage1); 
+				
+				var divNewCommentBoxInput = document.createElement('textarea');
+				divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
+				divNewCommentBox.appendChild(divNewCommentBoxInput);
+
+				var divNewCommentBoxMessage2 = document.createElement('div');
+				divNewCommentBoxMessage2.setAttribute('class', 'procid-feedback-comment-text');
+				divNewCommentBoxMessage2.innerHTML = registerString;
+				divNewCommentBox.appendChild(divNewCommentBoxMessage2); 
+				
+			}else if (midElement === "div") {
 				var divNewCommentBoxInput = document.createElement('div');
 				divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
 				divNewCommentBoxInput.innerHTML = placeHolderString;
@@ -2790,8 +2862,31 @@ function main() {
 			divShadow.setAttribute('class', 'shadow');
 			divShadow.style.left = arrowPosition;
 			divNewComment.appendChild(divShadow);
+			
+			if(submitText == "Send"){
+				var divNewCommentBoxSubmit = document.createElement('input');
+				divNewCommentBoxSubmit.setAttribute('class', 'procid-button-submit');
+				divNewCommentBoxSubmit.setAttribute('type', 'submit');
+				divNewCommentBoxSubmit.setAttribute('value', "Send");
+				divNewCommentBoxSubmit.setAttribute('name', 'submit');
+				divNewCommentBox.appendChild(divNewCommentBoxSubmit);
+				divNewCommentBoxSubmit.style.fontSize="13px";
+				divNewCommentBoxSubmit.style.marginLeft="90px";
+				
+				var divNewCommentBoxTooltip = document.createElement('div');
+				divNewCommentBoxTooltip.setAttribute('class', 'procid-button-tooltip');
+				divNewCommentBoxTooltip.innerHTML = 'Send your feedback to Procid team.';
+				divNewCommentBox.appendChild(divNewCommentBoxTooltip);
+				divNewCommentBoxTooltip.style.display = "none";
 
-			if (submitText != "") {
+				divNewCommentBoxSubmit.onmouseover = function(e) {
+					divNewCommentBoxTooltip.style.display = "inline";
+				};
+				divNewCommentBoxSubmit.onmouseout = function(e) {
+					divNewCommentBoxTooltip.style.display = "none";
+				};
+			}
+			else if (submitText != "") {
 				var divNewCommentBoxSubmit = document.createElement('input');
 				divNewCommentBoxSubmit.setAttribute('class', 'procid-button-submit');
 				divNewCommentBoxSubmit.setAttribute('type', 'submit');
