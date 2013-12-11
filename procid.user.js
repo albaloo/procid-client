@@ -1809,9 +1809,9 @@ function main() {
 					action : "add",
 					author : currentUser
 				};
-
-			    var currentIndex = findTempCriteriaIndex(tempNewCriteria.id, tempCriteria);
+				
 				tempCriteria.push(tempNewCriteria);
+				var currentIndex = findTempCriteriaIndex(tempNewCriteria.id, tempCriteria);
 
 				var tableR = document.createElement("tr");
 				$("#procid-editCriteriaBox-table tbody").append(tableR);
@@ -1829,6 +1829,7 @@ function main() {
 				tableC1.appendChild(titleInput);
 	
 				$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
+					console.log("currentIndex: " + currentIndex);
 					tempCriteria[currentIndex].title = this.value;
 				});
 
@@ -1854,10 +1855,10 @@ function main() {
 				tableC3.innerHTML = "";
 				tableR.appendChild(tableC3);
 
-				var tableC4 = document.createElement("td");
+				/*var tableC4 = document.createElement("td");
 				tableC4.innerHTML = "";
-				tableR.appendChild(tableC4);
-				index++;
+				tableR.appendChild(tableC4);*/
+				//index++;
 
 			}
 
