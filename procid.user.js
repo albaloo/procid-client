@@ -309,7 +309,8 @@ function main() {
 			divReferalCheckBoxInput.setAttribute('class', 'procid-comment-composition-checkbox-input');
 			divReferalCheckBoxInput.setAttribute('name', 'check');
 			divReferalCheckBox.appendChild(divReferalCheckBoxInput);
-			divReferalCheckBox.onclick = function(cb) {
+			
+			divReferalCheckBoxInput.onclick = function(cb) {
 				if ($('#procid-comment-composition-checkbox-input2').prop('checked')) {
 					createRadioButtonsForCommentReferal(divReferalHolder);
 					$(divReferalHolder).find("div[class='procid-radio-button-divider']").css("display", "inline-block");
