@@ -13,6 +13,10 @@
 // @include        https://drupal.org/comment/*
 // @include        http://*.drupal.org/comment/*
 // @include        https://*.drupal.org/comment/*
+// @match        http://drupal.org/*
+// @match        https://drupal.org/*
+// @match        http://*.drupal.org/*
+// @match        https://*.drupal.org/*                                                
                                              
 // @include        https://web.engr.illinois.edu/~rzilouc2/procid/example*
 // ==/UserScript==
