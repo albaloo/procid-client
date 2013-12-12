@@ -21,7 +21,7 @@ Please download the [procid.user.js](https://github.com/albaloo/procid-client/ra
 To verify that procid was installed successfully, click on this link: http://drupal.org/node/331893. After a few moments, you should be able to see procid's header added to the discussion ([view screenshot](https://raw.github.com/albaloo/procid-client/master/screenshots/survey-install-check.png)).
 
 How do I provide Feedback?
-==================
+==========================
 You can provide feedback on Procid using one of the following methods:
 
 1. Creating a new [issue on github](https://github.com/albaloo/procid-client/issues).
@@ -29,6 +29,11 @@ You can provide feedback on Procid using one of the following methods:
 1. Sending an email to <a href="mailto:rzilouc2@illinois.edu">Roshanak Zilouchian</a>.
 1. Commenting on a [discussion about Procid](https://groups.drupal.org/node/327438) on Drupal.org.
 1. Using the <img src="https://raw.github.com/albaloo/procid-client/master/screenshots/GiveFeedbackOnProcid.jpg" alt="Give Feedback on Procid Button" style="width: 100px; height: 40px;"/> button on Procid's first page.
+
+How do I upgrade to a newer version?
+==============================================
+- In Chrome, go to chrome://extensions/, remove Procid from the list of extensions, and follow the installation instructions again. 
+- In Firefox, click on GreaseMonkey extention icon, go to Manage User Scripts..., remove Procid from the list of user scripts, follow the installation instructions again. 
 
 How do I use Procid?
 ===================
