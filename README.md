@@ -8,6 +8,10 @@ License
 
 This software is licensed under [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
+Instructions for Evaluation
+===========================
+If you are here to help evaluate Procid, please follow these instructions: [How can I help evaluate Procid?](https://github.com/albaloo/procid-client/blob/master/EvaluatingProcid.md)
+
 Instructions to Run
 ===================
 
