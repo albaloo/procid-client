@@ -28,7 +28,7 @@ You can provide feedback on Procid using one of the following methods:
 1. Creating a new [issue on Procid's Issue Queue on Drupal.org](https://drupal.org/project/issues/2032763).
 1. Sending an email to <a href="mailto:rzilouc2@illinois.edu">Roshanak Zilouchian</a>.
 1. Commenting on a [discussion about Procid](https://groups.drupal.org/node/327438) on Drupal.org.
-1. Using the ![Figure 0](https://raw.github.com/albaloo/procid-client/master/screenshots/GiveFeedbackOnProcid.jpg) button on Procid's first page.
+1. Using the <img src="https://raw.github.com/albaloo/procid-client/master/screenshots/GiveFeedbackOnProcid.jpg" alt="Give Feedback on Procid Button" style="width: 100px; height: 40px;"/> button on Procid's first page.
 
 How do I use Procid?
 ===================
