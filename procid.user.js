@@ -369,10 +369,12 @@ function main() {
 
 			var saveComment = document.getElementById('edit-submit');
 			saveComment.onclick = function(e) {
+			
 				if ($('#procid-comment-composition-checkbox-input1').prop('checked')) {
 					$.ajaxSetup({
-						'async' : true
+						'async' : false
 					});
+					
 					$.post(serverURL + "newIdeaComment", {
 						"authorLink" : currentUserLink,
 						"content" : $($.find('#edit-comment-body-und-0-value')[0]).val(),
@@ -394,7 +396,7 @@ function main() {
 						type = "positive-strong";
 					}
 					$.ajaxSetup({
-						'async' : true
+						'async' : false
 					});
 					$.post(serverURL + "newIdeaReference", {
 						"authorLink" : currentUserLink,
