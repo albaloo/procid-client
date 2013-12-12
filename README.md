@@ -2,6 +2,7 @@ Procid
 ======
 
 Procid is an interactive system supporting consensus building in open source issue management systems.
+You can [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ).
 
 License
 =======
