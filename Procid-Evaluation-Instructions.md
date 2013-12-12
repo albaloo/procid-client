@@ -28,6 +28,7 @@ You can provide feedback on Procid using one of the following methods:
 1. Creating a new [issue on Procid's Issue Queue on Drupal.org](https://drupal.org/project/issues/2032763).
 1. Sending an email to <a href="mailto:rzilouc2@illinois.edu">Roshanak Zilouchian</a>.
 1. Commenting on a [discussion about Procid](https://groups.drupal.org/node/327438) on Drupal.org.
+1. Using the "Give Feedback on Procid" button on Procid's first interface.
 
 How do I use Procid?
 ===================
