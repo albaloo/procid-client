@@ -21,33 +21,6 @@
 // @include        https://web.engr.illinois.edu/~rzilouc2/procid/example*
 // ==/UserScript==
 
-//TODO: authentication:
-// Prevent users from starting to review patches when not logged in.
-//  if (!$(context).find('#comment-form').length) {
-//    return;
-//  }
-
-//<div id="userinfo"><a href="/user" title="View &amp; edit your user profile">Logged in as rzilouc2</a> <a href="/logout">Log out</a></div>        </div>
-
-//TODO: multi tab problem
-//You should be able to store values in tab elements in order to avoid them being global to all tabs. I recommend you being with a tutorial like XUL School to get an idea of how JS is handled in Firefox and what you can do from extension code.
-
-// a function that loads head.js which then loads jQuery and d3
-/*function addJQuery(callback) {
-	//Jquery Script
-	var script = document.createElement("script");
-	script.setAttribute("src", "//raw.github.com/headjs/headjs/v0.99/dist/head.min.js");
-	script.addEventListener('load', function() {
-		var script = document.createElement("script");
-		script.textContent = "window.jQ=jQuery.noConflict(true);(" + callback.toString() + ")();";
-		var body = document.getElementsByTagName('head')[0];
-		body.appendChild(script);
-	}, false);
-
-	var body1 = document.getElementsByTagName('head')[0];
-	body1.appendChild(script);
-};*/
-
 function load(url, onLoad, onError) {
     e = document.createElement("script");
     e.setAttribute("src", url);
@@ -90,7 +63,6 @@ function main() {
 		var CSSSERVERPATH = 'https://web.engr.illinois.edu/~rzilouc2/procid';
 		//var serverURL='http://0.0.0.0:3000/';
 		var serverURL = 'https://procid-server.herokuapp.com/';
-		//'http://protected-dawn-3784.herokuapp.com/';
 		var commentInfos = [];
 		var criteria = [];
 		var allCriteriaStatuses = [];
@@ -593,8 +565,8 @@ function main() {
 			var maskWidth = $(window).width();
 
 			// calculate the values for center alignment
-			var dialogTop = (windowHeight / 2) - ($('#procid-dialog-box').height());
-			var dialogLeft = (maskWidth / 2) - ($('#procid-dialog-box').width() / 2);
+			//var dialogTop = (windowHeight / 2) - ($('#procid-dialog-box').height());
+			//var dialogLeft = (maskWidth / 2) - ($('#procid-dialog-box').width() / 2);
 
 			// assign values to the overlay and dialog box
 			$('#procid-dialog-overlay').css({
@@ -602,29 +574,40 @@ function main() {
 				width : maskWidth
 			}).show();
 			$('#procid-dialog-box').css({
-				top : dialogTop,
-				left : dialogLeft,
-				height : "auto"
+				width: "620px",
+				height : "auto",
+				top: "180px"
 			}).show();
+			
+			$("#procid-dialog-div-buttons").css({
+				margin: "17px 50px 7px 170px"
+			});
 
 			$('.procid-dialog-content .procid-button-ok').click(function() {
 				document.getElementById('edit-submit').click();
 
 				$('#procid-dialog-overlay, #procid-dialog-box').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
-				document.body.removeChild(document.getElementById("procid-dialog-box"));
+				document.getElementById("main").removeChild(document.getElementById("procid-dialog-box"));
 				return false;
 			});
 
 			$('.procid-dialog-content .procid-button-cancel').click(function() {
 				$('#procid-dialog-overlay, #procid-dialog-box').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
-				document.body.removeChild(document.getElementById("procid-dialog-box"));
+				document.getElementById("main").removeChild(document.getElementById("procid-dialog-box"));
+				return false;
+			});
+			
+			$('#procid-dialog-overlay').click(function() {
+				$('#procid-dialog-overlay, #procid-dialog-box').hide();
+				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.getElementById("main").removeChild(document.getElementById("procid-dialog-box"));
 				return false;
 			});
 
 			// display the message
-			$('#procid-dialog-message').html(message);
+			$('#procid-sentiment-dialog-message').html(message);
 		}
 		var addSentimentDialog = function(comment, highlightedWords) {
 			var dialogOverlay = document.createElement('div');
@@ -654,7 +637,7 @@ function main() {
 			dialogContent.appendChild(dialogImage);
 
 			var dialogMessage = document.createElement('div');
-			dialogMessage.setAttribute('id', 'procid-dialog-message');
+			dialogMessage.setAttribute('id', 'procid-sentiment-dialog-message');
 			dialogContent.appendChild(dialogMessage);
 
 			var divButtons = document.createElement('div');
@@ -676,7 +659,7 @@ function main() {
 			divButtons.appendChild(dialogCancel);
 
 			$('body').prepend(dialogOverlay);
-			$('body').prepend(dialogBox);
+			$('#main').prepend(dialogBox);
 		}
 		var addConfirmationDialog = function() {
 			var dialogOverlay = document.createElement('div');
@@ -1440,7 +1423,6 @@ function main() {
 						summary : ""
 					};
 
-					//console.log("comment: " + comment.title + ", " + comment.image + ", " + comment.tags.length + ", " + comment.content);
 					commentInfos.push(comment);
 				}
 			}
@@ -1836,7 +1818,6 @@ function main() {
 				tableC1.appendChild(titleInput);
 	
 				$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
-					console.log("currentIndex: " + currentIndex);
 					tempCriteria[currentIndex].title = this.value;
 				});
 
@@ -1892,7 +1873,6 @@ function main() {
 						'async' : false
 					});
 						
-					//console.log("this.id: " + this.id + " this.title: " + this.title + " this.action: " + this.action + " currentCriteri.title: " + currentCriteria.title + " cur.id: " + currentCriteria.id);
 					/*if (this.action === "delete") {
 						criteriaToBeDeleted.push(this.id);
 						$.post(serverURL + "deleteCriteria", {
@@ -1918,7 +1898,6 @@ function main() {
 						});
 
 					} else if (this.action == "add" && this.title != "") {
-						console.log("criteria ID: " + this.id);
 						var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
 						var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
 						titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
@@ -2154,7 +2133,6 @@ function main() {
 				tableC1.appendChild(titleInput);
 				$("#procid-editCriteriaBox-title-input" + tempNewCriteria.id).keyup(function() {
 					tempCriteria[currentIndex].title = this.value;
-					console.log("current Index: " + currentIndex);
 				});
 
 				var tableC2 = document.createElement("td");
@@ -2964,7 +2942,6 @@ function main() {
 					newId = this.id;
 			});
 			newId = newId + (tempCriteriaSize - criteria.length) + 1;
-				console.log("temp Criteria Size: " + newId);
 			return newId;
 		}
 		var findTempCriteriaIndex = function(id, tempCriteria) {
@@ -3226,14 +3203,14 @@ function main() {
 			d3.selectAll(".selector").data(allCriteriaStatuses).append("image").attr("xlink:href", ABSOLUTEPATH + "/images/criteria-bar-plus.png").attr("width", "30").attr("x", "217").attr('y', "15").attr("height", "30").on("click", function(d) {
 				var tempTitle = d.currentCriteriaStatus.title.substr(1);
 				var identifier = "#procid-criteria-circle-" + tempTitle + "-" + d.currentCriteriaStatus.id;
-console.log("clicked");
+
 				var currentCircle = d3.select(identifier).node();
 
 				if (d.currentCriteriaStatus.originX == -1) {
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
 				}
-console.log("d.currentCriteriaStatus.value: " + d.currentCriteriaStatus.value );
+
 				var value = d.currentCriteriaStatus.value + 1;
 				if (value <= 6) {
 					if (d.currentCriteriaStatus.commentBox != "") {
@@ -3241,7 +3218,7 @@ console.log("d.currentCriteriaStatus.value: " + d.currentCriteriaStatus.value );
 						d.currentCriteriaStatus.commentBox = "";
 					}
 					var cx = x(value);
-					console.log("value: " + value + " cx:" +  cx);
+					
 					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
 					if (d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
 						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value) - 30), d);
@@ -3422,9 +3399,7 @@ console.log("d.currentCriteriaStatus.value: " + d.currentCriteriaStatus.value );
 			});
 			$(divNewCommentBoxInput).focus();
 
-			//$(currentElement).find("image").css("z-index", "5000");
-$(currentElement).css("z-index", "4000");
-console.log("images: " + $(currentElement).find("image").length);
+			$(currentElement).css("z-index", "4000");
 
 			$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-submit").first().click(function(e) {
 				var newCommentTitle = "";

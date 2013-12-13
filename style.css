@@ -238,8 +238,9 @@ input.procid-button-start {
 	color: #222;
 	font-family: arial;
 	font-size: 15px;
-	padding: 0 0 20px 30px;
-	border-bottom: 1px solid #999;
+	padding: 0 0 10px 30px;
+	overflow-y: auto;
+	height: 150px;
 }
 .procid-dialog-content-image {
 	position: absolute;
@@ -248,6 +249,16 @@ input.procid-button-start {
 	background-position: -80px -122px;
 	width: 14px;
 	height: 13px;
+}
+#procid-sentiment-dialog-message {
+	/* style the content */
+	text-align: center;
+	color: #666;
+	font-family: arial;
+	font-size: 13px;
+	padding-top: 15px;
+	border-top: 1px solid #999;
+	margin: 10px;
 }
 #procid-dialog-message {
 	/* style the content */
