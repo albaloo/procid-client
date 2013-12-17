@@ -38,7 +38,7 @@ How do I upgrade to a newer version?
 How do I use Procid?
 ===================
 Please see below for a quick overview of Procid's features.
-You can also [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ).
+You can also [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ&cc_load_policy=1).
 
 ##Start Procid
 To minimize interference with evaluators' work process, Procid will not automatically start on new issues. To start Procid on these issues, you can click on the "Start Procid" button.
