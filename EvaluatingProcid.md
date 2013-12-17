@@ -1,7 +1,7 @@
 What is Procid?
 ===============
 Procid is a user script for drupal.org. It offers multiple interactive features to make the Drupal issue queue a more effective medium for resolving issues. 
-You can [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ).
+You can [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ&cc_load_policy=1).
 
 How can I help evaluating Procid?
 ==================================
