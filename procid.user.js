@@ -233,8 +233,29 @@ function main() {
 			createHomePageBody();
 
 			updateAddCommentBox();
+			
+			setupPanelsScroller();
 
 		}
+		//Setup the scroller for left panel and main page content
+		var setupPanelsScroller = function(){
+		
+			var maskHeight = $(document).height();
+			var windowHeight = $(window).height();
+
+			// assign values to the panel and content heights
+			$('#procid-left-panel-body').css({
+				height : windowHeight,
+				overflowY : "auto"
+			});
+			
+			$('#procid-page-wrapper').css({
+				height : windowHeight,
+				overflowY : "auto"
+			});
+		
+		}
+		
 		//find and change the add comment box
 		var updateAddCommentBox = function() {
 			var commentForm = document.getElementById('comment-form');
