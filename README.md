@@ -4,6 +4,8 @@ Procid
 Procid is an interactive system supporting consensus building in open source issue management systems.
 You can [watch a demo on YouTube](https://www.youtube.com/watch?v=a_kHWOjXEtQ).
 
+Procid is also a [sanbox project on Drupal.org](https://drupal.org/sandbox/rzilouc2/2032763) with an active [issue queue](https://drupal.org/project/issues/2032763?status=All&categories=All).
+
 License
 =======
 
