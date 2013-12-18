@@ -15,7 +15,7 @@ Instructions for Evaluation
 ===========================
 If you are here to help evaluate Procid, please follow these instructions: [How can I help evaluate Procid?](https://github.com/albaloo/procid-client/blob/master/EvaluatingProcid.md)
 
-Instructions to Run
+Instructions to Run (Chrome Only)
 ===================
 
 1. Install Google chrome if you don't have it already
