@@ -15,11 +15,11 @@
 // ==/UserScript==
 
 function load(url, onLoad, onError) {
-    e = document.createElement("script");
+    var e = document.createElement("script");
     e.setAttribute("src", url);
 
-    if (onLoad != null) { e.addEventListener("load", onLoad); }
-    if (onError != null) { e.addEventListener("error", onError); }
+    if (onLoad !== null) { e.addEventListener("load", onLoad); }
+    if (onError !== null) { e.addEventListener("error", onError); }
 
     var body = document.getElementsByTagName('head')[0];
 	body.appendChild(e);
@@ -34,7 +34,7 @@ function execute(functionOrCode) {
         code = functionOrCode;
     }
 
-    e = document.createElement("script");
+    var e = document.createElement("script");
     e.textContent = code;
 
     var body = document.getElementsByTagName('head')[0];
@@ -133,7 +133,7 @@ function main() {
 			currentUser = currentUserInfo.substr(13);
 			currentUserLink = $($($.find('#edit-author--2')[0]).children()[1]).attr("href");
 
-			if (currentUser == "")
+			if (currentUser === "")
 				currentUser = "Anonymous";
 
 			//Program Starts From here
@@ -160,9 +160,9 @@ function main() {
 			});
 
 			console.log("username: " + currentUser);
-		}
+		};
 		var preSetupProcid = function(numIssueComments){
-			if (numIssueComments == 0) {
+			if (numIssueComments === 0) {
 				var startProcidButton = document.createElement('input');
 				startProcidButton.setAttribute('class', 'procid-button-start');
 				startProcidButton.setAttribute('type', 'submit');
@@ -174,22 +174,22 @@ function main() {
 					$(".procid-button-start").remove();
 					
 					$.ajaxSetup({
-				      'async' : true
-			        });
-			        
-					$.post(serverURL + "startProcid", {
-							"issueLink" : issue.link,
-						    "userName" : currentUser,
-						}, function(data) {
-							console.log("procid started.");
-						});
+						'async' : true
+					});
 					
+					$.post(serverURL + "startProcid", {
+						"issueLink" : issue.link,
+						"userName" : currentUser,
+					}, function(data) {
+						console.log("procid started.");
+					});
+			
 					return false;
 				};
 
 			}else 
 				startProcid();
-		}
+		};
 		var addCSSToHeader = function() {
 			var header = document.getElementsByTagName('head')[0];
 			var csslink = document.createElement('link');
@@ -197,7 +197,7 @@ function main() {
 			csslink.setAttribute('rel', 'stylesheet');
 			csslink.setAttribute('type', 'text/css');
 			header.appendChild(csslink);
-		}
+		};
 		var startProcid = function() {
 			createStatusVar();
 
@@ -236,7 +236,7 @@ function main() {
 			
 			setupPanelsScroller();
 
-		}
+		};
 		//Setup the scroller for left panel and main page content
 		var setupPanelsScroller = function(){
 		
@@ -254,7 +254,7 @@ function main() {
 				overflowY : "auto"
 			});
 		
-		}
+		};
 		
 		//find and change the add comment box
 		var updateAddCommentBox = function() {
@@ -321,7 +321,7 @@ function main() {
 			var result = createListOfIdeaNumbers();
 			divReferalCheckBox.appendChild(result.dropDownIdeaNumbers);
 
-			if (result.ideaSize == 0)
+			if (result.ideaSize === 0)
 				divReferalCheckBoxInput.disabled = true;
 
 			$(commentWrapper).before(divCommentOptionHolder);
@@ -336,9 +336,9 @@ function main() {
 				var message = "";
 				var highlightedWords = [];
 				var commentContent = "";
-				if (commentInput.value != "") {
-				    $.ajaxSetup({
-					  'async' : false
+				if (commentInput.value !== "") {
+					$.ajaxSetup({
+						'async' : false
 					});
 					$.post(serverURL + "findNegativeWords", {
 						"comment" : commentInput.value,
@@ -350,7 +350,7 @@ function main() {
 						commentContent = commentInput.value;
 						console.log("findNegativeWords success");
 					});
-					sentimentDialogPopup(message, highlightedWords, commentContent);
+				sentimentDialogPopup(message, highlightedWords, commentContent);
 				} else {
 					sentimentDialogPopup("Your comment was empty. Please enter a valid comment.", [], "");
 				}
@@ -398,7 +398,7 @@ function main() {
 				}
 			};
 			$(saveComment).before(checkTone);
-		}
+		};
 		var createListOfIdeaNumbers = function() {
 
 			var divIdeaNumbers = document.createElement('div');
@@ -413,7 +413,6 @@ function main() {
 				return false;
 			};
 			divIdeaNumbers.appendChild(wrapperDropdown);
-			var statusArray = [];
 
 			var statusArray = findAllProposedIdeas();
 			var firstIdea = "N/A";
@@ -466,17 +465,17 @@ function main() {
 				ideaSize : statusArray.length
 			};
 
-		}
+		};
 		var findAllProposedIdeas = function() {
 			var ideas = [];
 			for (var i = 0; i < commentInfos.length; i++) {
-				if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				if ($.inArray("idea", commentInfos[i].tags) !== -1 && commentInfos[i].content !== "") {
 					ideas.push(commentInfos[i].title);
 
 				}
 			}
 			return ideas;
-		}
+		};
 		var createRadioButtonsForCommentReferal = function(divReferalHolder) {
 			var divRadioButtonDivider1 = document.createElement('div');
 			divRadioButtonDivider1.setAttribute('class', 'procid-radio-button-divider');
@@ -567,10 +566,10 @@ function main() {
 			radioLabel5.setAttribute('for', 'procid-radio-button-5');
 			radioLabel5.innerHTML = 'Strongly Support';
 			divRadioButtonDivider5.appendChild(radioLabel5);
-		}
+		};
 		var removeRadioButtonsForCommentReferal = function() {
 			$(".procid-radio-button-divider").remove();
-		}
+		};
 		var sentimentDialogPopup = function(message, highlightedWords, comment) {
 			addSentimentDialog(comment, highlightedWords);
 			// get the screen height and width
@@ -622,7 +621,7 @@ function main() {
 
 			// display the message
 			$('#procid-sentiment-dialog-message').html(message);
-		}
+		};
 		var addSentimentDialog = function(comment, highlightedWords) {
 			var dialogOverlay = document.createElement('div');
 			dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
@@ -674,7 +673,7 @@ function main() {
 
 			$('body').prepend(dialogOverlay);
 			$('#main').prepend(dialogBox);
-		}
+		};
 		var addConfirmationDialog = function() {
 			var dialogOverlay = document.createElement('div');
 			dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
@@ -712,7 +711,7 @@ function main() {
 
 			$('body').prepend(dialogOverlay);
 			$('body').prepend(dialogBox);
-		}
+		};
 		var confirmationDialogPopup = function(message, confirmText, submit) {
 			addConfirmationDialog();
 			// get the screen height and width
@@ -754,7 +753,7 @@ function main() {
 
 			// display the message
 			$('#procid-dialog-message').html(message);
-		}
+		};
 		//Add Procid Panel
 		var addLeftPanel = function() {
 			var leftPanel = document.createElement('div');
@@ -773,7 +772,7 @@ function main() {
 			leftPanel.appendChild(leftPanelBody);
 
 			return leftPanel;
-		}
+		};
 		//StatusVar used for changing pages
 		var createStatusVar = function() {
 			var statusVar = document.createElement('div');
@@ -781,13 +780,13 @@ function main() {
 			statusVar.innerHTML = 'home';
 			$('#footer').append(statusVar);
 			$('#procid-status-var').toggle(false);
-		}
+		};
 		var getStatusVar = function() {
 			return $('#procid-status-var').text();
-		}
+		};
 		var setStatusVar = function(status) {
 			$('#procid-status-var').text(status);
-		}
+		};
 		var changePage = function(destination) {
 			var map = {
 				home : ['procid-left-panel-body', 'procid-page-wrapper'],
@@ -802,14 +801,14 @@ function main() {
 
 			var destionationDivIds = map[destination];
 			$.each(destionationDivIds, function() {
-				if (destination == "idea" && $("#" + this).children("div.procid-ideaPage-header").length == 0)
+				if (destination === "idea" && $("#" + this).children("div.procid-ideaPage-header").length === 0)
 					createIdeaPageBody();
-				else if (destination == "invite" && $("#" + this).children("#procid-invite-title").length == 0)
+				else if (destination === "invite" && $("#" + this).children("#procid-invite-title").length === 0)
 					createInvitePageBody();
 				$("#" + this).toggle();
 			});
 			setStatusVar(destination);
-		}
+		};
 		var createProcidHeader = function() {
 			//Ruler
 			var procidRuler = document.createElement('span');
@@ -828,22 +827,23 @@ function main() {
 			$(procidLabel).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-main-page.png)");
 			$("#procid-menus").append(procidLabel);
 
+
 			//Setting
 			/*$('<a />').attr({
-			 id : 'procid-setting-link',
-			 href : '#',
-			 rel : 'tooltip',
-			 title : 'Settings'
-			 }).click(function goSetting(evt) {
+				id : 'procid-setting-link',
+				href : '#',
+				rel : 'tooltip',
+				title : 'Settings'
+			}).click(function goSetting(evt) {
 
-			 }).appendTo("#procid-menus");
+			}).appendTo("#procid-menus");
 
-			 var divSettingImage = document.createElement('div');
-			 divSettingImage.setAttribute('id', 'procid-setting-image');
-			 $(divSettingImage).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-main-page.png)");
-			 $("#procid-setting-link").append(divSettingImage);*/
+			var divSettingImage = document.createElement('div');
+			divSettingImage.setAttribute('id', 'procid-setting-image');
+			$(divSettingImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-main-page.png)");
+			$("#procid-setting-link").append(divSettingImage); */
 
-			$('<div />').attr({
+		$('<div />').attr({
 				id : 'procid-menus-navigation-panel',
 			}).appendTo("#procid-menus");
 
@@ -962,7 +962,7 @@ function main() {
 
 
 			$("#procid-menus li").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
-		}
+		};
 		/*************HOME PAGE BODY*********************/
 		var createHomePageBody = function() {
 			//Procid Home Body
@@ -1010,7 +1010,7 @@ function main() {
 							summary : comment.summary
 						};
 						commentInfos.push(newComment);
-						applyTags(newComment)
+						applyTags(newComment);
 					} else {
 						commentInfos[i].tags = comment.tags;
 						commentInfos[i].tone = comment.tone;
@@ -1020,7 +1020,7 @@ function main() {
 						});
 						commentInfos[i].status = comment.status;
 						commentInfos[i].summary = comment.summary;
-						if (commentInfos[i].content === "" && comment.content != "") {
+						if (commentInfos[i].content === "" && comment.content !== "") {
 							commentInfos[i].content = comment.content;
 							commentInfos[i].image = comment.image;
 						}
@@ -1044,7 +1044,7 @@ function main() {
 					index++;
 				}
 			});
-		}
+		};
 		var chosenLens = "";
 
 		var createLens = function(name, parent, tooltipText) {
@@ -1061,10 +1061,10 @@ function main() {
 				class : 'unselected'
 			}).appendTo("#procid-" + name);
 
-			if (name == "search")
+			if (name === "search")
 				$("#procid-" + name + "-link").click(function addthePanel(evt) {
 					if ($("#procid-" + name + "-link").hasClass('unselected')) {
-						if ($(".procid-lens-selected").length > 0 && chosenLens != "") {
+						if ($(".procid-lens-selected").length > 0 && chosenLens !== "") {
 							$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
 							$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
 							$("div[id='procid-" + chosenLens + "-image']").attr('class', 'procid-' + chosenLens + '-image-unselected');
@@ -1091,7 +1091,7 @@ function main() {
 				$("#procid-" + name + "-link").click(function highlightComments(evt) {
 					if ($("div[id='procid-comment-" + name + "'] a").hasClass('procid-lens-unselected')) {
 						//free the previous lens
-						if ($(".procid-lens-selected").length > 0 && chosenLens != "") {
+						if ($(".procid-lens-selected").length > 0 && chosenLens !== "") {
 							$("div[id='procid-comment-" + chosenLens + "'] a").attr('class', 'procid-lens-unselected');
 							$("div[id='procid-comment-" + chosenLens + "'] img").attr('class', 'procid-lens-image-unselected');
 							$("div[id='procid-" + chosenLens + "-image']").attr('class', 'procid-' + chosenLens + '-image-unselected');
@@ -1111,19 +1111,19 @@ function main() {
 						});
 
 					} else {
-						if ($("div[id='procid-comment-" + name + "'] a").length == 0) {
+						if ($("div[id='procid-comment-" + name + "'] a").length === 0) {
 							var message;
-							if(name=="patch")
-								message = "No " + name + "es to show."
+							if(name ==="patch")
+								message = "No " + name + "es to show.";
 							else
-								message = "No " + name + "s to show."
+								message = "No " + name + "s to show.";
 							var instruction = "";
-							if (name == "idea" || name == "mustread")
-								instruction = "You can identify " + name + "s by toggling the icon in the bottom right of each comment."
+							if (name === "idea" || name === "mustread")
+								instruction = "You can identify " + name + "s by toggling the icon in the bottom right of each comment.";
 							else
 								instruction = "We didn't identify any " + name + " comments in this thread.";
 							var x = getOffset(this).left - getOffset($("#procid-" + name).parentNode).left + 5;
-							currentBox = addWarningBox($("#procid-"+name)[0], message, instruction, x + "px", "40px", "");
+							var currentBox = addWarningBox($("#procid-"+name)[0], message, instruction, x + "px", "40px", "");
 							$("#procid-dialog-overlay").click(function() {
 								$("#procid-"+name)[0].parentNode.removeChild(currentBox);
 								$('#procid-dialog-overlay').hide();
@@ -1163,7 +1163,7 @@ function main() {
 			divLensImage.setAttribute('class', 'procid-' + name + '-image-unselected');
 			$("#procid-" + name + '-link').append(divLensImage);
 
-		}
+		};
 		var addWarningBox = function(icon, message, instruction, arrowPosition, topPosition, positionStyle) {
 			var dialogOverlay = document.createElement('div');
 			dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
@@ -1237,7 +1237,7 @@ function main() {
 			divNewWarning.appendChild(divShadow);
 
 			return divNewWarning;
-		}
+		};
 		var addSearchPanel = function(name, parent) {
 			$('<div />').attr({
 				id : name + "-panel",
@@ -1254,7 +1254,7 @@ function main() {
 				placeholder : 'Search...',
 			}).appendTo("#" + name + "-panel");
 
-			if (name == "procid-search") {
+			if (name === "procid-search") {
 				//Search comments
 				$("#" + name + "-input-form").keyup(function() {
 					$("div[class='procid-comment'] a").map(function() {
@@ -1281,10 +1281,10 @@ function main() {
 					});
 				});
 			}
-		}
+		};
 		var removeSearchPanel = function(name, parent) {
 			$("#" + parent).remove("#" + name + "-panel");
-		}
+		};
 		var initializeIssueInfo = function() {
 			var issueAuthor = $("#content-inner div[class='submitted'] a").first().text();
 			var issueAuthorLink = $("#content-inner div[class='submitted'] a").first().attr('href');
@@ -1308,8 +1308,7 @@ function main() {
 			issue.authorLink = issueAuthorLink;
 			issue.status = issueStatus;
 			issue.created_at = issueCreationDate;
-
-		}
+		};
 		var initializeCommentInfo = function() {
 			var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
 				if ($(this).is("a"))
@@ -1391,7 +1390,7 @@ function main() {
 					}
 				});
 
-				if (returnValue == " ") {
+				if (returnValue === " ") {
 					var imgs = $(this).find("img [class!='file-icon']");
 					$.each(imgs, function() {
 						var link = $(this).attr("src");
@@ -1401,7 +1400,7 @@ function main() {
 					});
 				}
 
-				//if(returnValue.indexOf("http://drupal.org/") == 0)
+				//if(returnValue.indexOf("http://drupal.org/") === 0)
 				//	returnValue = returnValue.replace("http://drupal.org/", "https://drupal.org/");
 		
 				return returnValue;
@@ -1409,7 +1408,7 @@ function main() {
 
 			var len = array_title.length;
 			for (var i = 0; i < len; i++) {
-				initTags = [];
+				var initTags = [];
 				while (array_title[i] === "NonIntTitle") {
 					array_title.splice(i, 1);
 					array_links.splice(i, 1);
@@ -1419,7 +1418,7 @@ function main() {
 				}
 				if (array_patches[i] > 0)
 					initTags.push("patch");
-				if (!(array_title[i].indexOf(".") > 0)) {
+				if (array_title[i].indexOf(".") <= 0) {
 					var comment = {
 						title : array_title[i],
 						link : array_links[i],
@@ -1441,7 +1440,7 @@ function main() {
 				}
 			}
 			return commentInfos;
-		}
+		};
 		
 		var applyTags = function(commentInfo) {
 			//update the left panel
@@ -1475,16 +1474,16 @@ function main() {
 			}).text(commentInfo.title + "\t" + commentInfo.author + commentInfo.summary).appendTo(divinner);
 
 			$("#procid-left-panel-body").append(div1);
-		}
+		};
 		
 		var createLensSelectorForIndividualComments = function(parent, name, commentInfo, tooltipText) {
 			var className = 'procid-lens-tag-unselected';
 			var imgClassName = 'procid-lens-tag-image-unselected';
 			var imgSource = ABSOLUTEPATH + '/images/' + name + '-1.png';
-			if ($.inArray(name, commentInfo.tags) != -1) {
+			if ($.inArray(name, commentInfo.tags) !== -1) {
 				className = 'procid-lens-tag-selected';
 				imgClassName = 'procid-lens-tag-image-selected';
-				tooltipText = "Remove " + name + " tag from this comment"
+				tooltipText = "Remove " + name + " tag from this comment";
 				imgSource = ABSOLUTEPATH + '/images/' + name + '-3.png';
 			}
 
@@ -1522,7 +1521,7 @@ function main() {
 						$.ajaxSetup({
 							'async' : true
 						});
-						
+
 						$.post(serverURL + "addTag", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -1530,21 +1529,21 @@ function main() {
 							"tag" : name
 						}, function() {
 							console.log("addTag success");
-						});
+						}); 
 
 						if (name === "idea") {
 							//create and add idea
 							removeIdeaBlocks();
-							if ($("#procid-idea-page-wrapper").children("div.procid-ideaPage-header").length == 0)
+							if ($("#procid-idea-page-wrapper").children("div.procid-ideaPage-header").length === 0)
 								createIdeaPageBody();
 							else
 								createIdeaBlocks();
 							var newSummary = "";
 							
 							$.ajaxSetup({
-							'async' : false
+								'async' : false
 							});
-						
+
 							$.post(serverURL + "addNewIdea", {
 								"issueLink" : issue.link,
 								"commentTitle" : commentInfo.title,
@@ -1553,7 +1552,7 @@ function main() {
 								console.log("addNewIdea success");
 								newSummary = data.summary;
 								commentInfo.summary = newSummary;
-							});
+							}); 
 
 							//update the sumamry
 							$("#procid-comment" + commentInfo.title.substr(1) + " a[id='procid-comment-link']").text(commentInfo.title + "\t" + commentInfo.author + commentInfo.summary);
@@ -1578,7 +1577,7 @@ function main() {
 						$.ajaxSetup({
 							'async' : true
 						});
-						
+
 						$.post(serverURL + "removeTag", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -1586,16 +1585,17 @@ function main() {
 							"tag" : name
 						}, function() {
 							console.log("removeTag success");
-						});
+						}); 
 
 						if (name === "idea") {
 							//delete idea
 							$('#procid-idea-block-' + commentInfo.title.substr(1)).remove();
 							var newSummary = "";
+
 							$.ajaxSetup({
 								'async' : false
 							});
-						
+
 							$.post(serverURL + "deleteIdea", {
 								"issueLink" : issue.link,
 								"commentTitle" : commentInfo.title,
@@ -1604,7 +1604,7 @@ function main() {
 								console.log("deleteIdea success");
 								newSummary = data.summary;
 								commentInfo.summary = newSummary;
-							});
+							}); 
 
 							//update the sumamry
 							//id : 'procid-comment-link',
@@ -1616,9 +1616,8 @@ function main() {
 				return false;
 			});
 
-		}
+		};
 		/*********************IDEA PAGE BODY************************/
-
 		var createIdeaPageBody = function() {
 			//Header
 			var ideaPageHeader = document.createElement('div');
@@ -1634,11 +1633,11 @@ function main() {
 
 			//Body
 			createIdeaBlocks();
-		}
+		};
 		var createIdeaBlocks = function() {
 			for (var i = 0; i < commentInfos.length; i++) {
 
-				if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				if ($.inArray("idea", commentInfos[i].tags) !== -1 && commentInfos[i].content !== "") {
 					var divIdeaBlock = createEachIdeaBlock(commentInfos[i]);
 					$("#procid-idea-page-wrapper").append(divIdeaBlock);
 				}
@@ -1647,11 +1646,11 @@ function main() {
 			createCriteriaStatusTracks();
 			createCriterionSelectors();
 
-		}
+		};
 		var removeIdeaBlocks = function() {
 			allCriteriaStatuses = [];
 			$('.procid-idea-block').remove();
-		}
+		};
 		var createEachIdeaBlock = function(commentInfo) {
 			var divIdeaBlock = document.createElement('div');
 			divIdeaBlock.setAttribute('id', 'procid-idea-block-' + commentInfo.title.substr(1));
@@ -1669,21 +1668,22 @@ function main() {
 					var buttonId = currentLink.id;
 					var commentNumber = parseInt(buttonId.match(/\d+/)[0], 10);
 					var commentTitle = "#" + commentNumber;
+	
 					$.ajaxSetup({
 						'async' : true
 					});
-						
+
 					$.post(serverURL + "deleteIdea", {
 						"issueLink" : issue.link,
 						"commentTitle" : commentTitle,
 						"userName" : currentUser
 					}, function() {
 						console.log("deleteIdea success");
-					});
+					}); 
 
 				});
 				return false;
-			}
+			};
 
 			divIdeaBlock.appendChild(closeButtonLink);
 
@@ -1699,7 +1699,7 @@ function main() {
 			createIdeaComments(divIdeaBlock, commentInfo);
 
 			return divIdeaBlock;
-		}
+		};
 		var createLabel = function(name, link) {
 			var label = document.createElement('a');
 			label.setAttribute('class', 'ideaPage-header-label-inactive');
@@ -1732,7 +1732,7 @@ function main() {
 						return sortIdeasOnStatus(strA, strB);
 					});
 					return false;
-				}
+				};
 			}
 
 			if (link === "(edit)") {
@@ -1743,7 +1743,7 @@ function main() {
 				link1.setAttribute('rel', "tooltip");
 				link1.setAttribute('title', "Edit Criteria List");
 				link1.onclick = function(e) {
-					if ($(".procid-ideaPage-header .procid-edit-criteria").length == 0)
+					if ($(".procid-ideaPage-header .procid-edit-criteria").length === 0)
 						createEditCriteriaBox($(".procid-ideaPage-header")[0]);
 					else
 						$(".procid-ideaPage-header")[0].removeChild($('.procid-edit-criteria')[0]);
@@ -1753,12 +1753,12 @@ function main() {
 				$(".procid-ideaPage-header").append(link1);
 
 				/*var img1 = document.createElement('div');
-				 img1.setAttribute('id', 'procid-edit-img');
-				 //img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
-				 $(img1).css('background-image', "url("+ABSOLUTEPATH + "/images/sprites-idea-page.png)");
-				 link1.appendChild(img1);*/
+				img1.setAttribute('id', 'procid-edit-img');
+				//img1.setAttribute('src', ABSOLUTEPATH + '/images/edit.png');
+				$(img1).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-idea-page.png)");
+				link1.appendChild(img1); */
 			}
-		}
+		};
 		var sortIdeasOnStatus = function(strA, strB) {
 			var numA = 0;
 			var numB = 0;
@@ -1773,7 +1773,7 @@ function main() {
 				numB = 2;
 
 			return numA >= numB ? -1 : 1;
-		}
+		};
 		var sortIdeasOnTime = function(strA, strB) {
 			var aStrings = strA.split(" ");
 			var bStrings = strB.split(" ");
@@ -1794,7 +1794,7 @@ function main() {
 			var numA = new Date(dateStringA);
 			var numB = new Date(dateStringB);
 			return numA > numB ? 1 : -1;
-		}
+		};
 		/**********IdeaPage-Criteria Edit Box**********/
 		var createEditCriteriaBox = function(currentElement) {
 			var divNewCriteriaEditBox = createNewCommentBoxFrame(currentElement, 'procid-edit-criteria', "Save", "", "", "400px", "20px", "", "", false);
@@ -1861,7 +1861,6 @@ function main() {
 				tableC4.innerHTML = "";
 				tableR.appendChild(tableC4);*/
 				//index++;
-
 			}
 
 			var numCriteria = {
@@ -1883,9 +1882,10 @@ function main() {
 				var changed = false;
 				$.each(tempCriteria, function() {
 					var currentCriteria = findCriteriaById(this.id);
+
 					$.ajaxSetup({
 						'async' : false
-					});
+					}); 
 						
 					/*if (this.action === "delete") {
 						criteriaToBeDeleted.push(this.id);
@@ -1897,9 +1897,10 @@ function main() {
 							console.log("delete criteria success");
 							changed = true;
 						});
-					} else */if (this.action === "edit" && (currentCriteria.title != this.title || currentCriteria.description != this.description)) {
+					} else */if (this.action === "edit" && (currentCriteria.title !== this.title || currentCriteria.description !== this.description)) {
 						setCriteriaTitle(this.id, this.title);
 						setCriteriaDescription(this.id, this.description);
+	
 						$.post(serverURL + "editCriteria", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -1909,12 +1910,12 @@ function main() {
 						}, function() {
 							console.log("edit criteria success");
 							changed = true;
-						});
+						}); 
 
-					} else if (this.action == "add" && this.title != "") {
+					} else if (this.action === "add" && this.title !== "") {
 						var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
 						var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
-						titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+						var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
 
 						$.post(serverURL + "addCriteria", {
 							"issueLink" : issue.link,
@@ -1963,7 +1964,7 @@ function main() {
 			});
 
 			return divNewCriteriaEditBox;
-		}
+		};
 		var createTableHeader = function() {
 			var table = document.createElement("table");
 			table.setAttribute('id', 'procid-editCriteriaBox-table');
@@ -2003,10 +2004,10 @@ function main() {
 			table.appendChild(tableBody);
 
 			return table;
-		}
+		};
 		var createCriteriaEditBoxBlock = function(divNewCriteriaEditBox, tempCriteria, currentCriteria, numCriteria) {
 
-			tempCurrentCriteria = {
+			var tempCurrentCriteria = {
 				title : currentCriteria.title,
 				description : currentCriteria.description,
 				id : currentCriteria.id,
@@ -2043,12 +2044,11 @@ function main() {
 			editCriteria.setAttribute('class', "procid-addcomment-link");
 			editCriteria.setAttribute('title', "Edit this criteria");
 			editCriteria.onclick = function(e) {
-				if ($(editImage).attr('class') === "procid-edit-criteria-icons-edit") {
-					var par = $(this).parent().parent();
-					//tr
-					var tdTitle = par.children("td:nth-child(1)");
-					var tdDescription = par.children("td:nth-child(2)");
+				var par = $(this).parent().parent();
+				var tdTitle = par.children("td:nth-child(1)");
+				var tdDescription = par.children("td:nth-child(2)");
 
+				if ($(editImage).attr('class') === "procid-edit-criteria-icons-edit") {
 					tdTitle.html("<input type='text' class = 'titleInput' id='procid-editCriteriaBox-title-input" + currentCriteria.id + "' value='" + tdTitle.html() + "'/>");
 					$("#procid-editCriteriaBox-title-input" + currentCriteria.id).keyup(function() {
 						tempCriteria[currentIndex].title = this.value;
@@ -2064,11 +2064,6 @@ function main() {
 					editCriteria.setAttribute('title', "Undo your edit");
 					tempCriteria[currentIndex].action = "edit";
 				} else {
-					var par = $(this).parent().parent();
-					//tr
-					var tdTitle = par.children("td:nth-child(1)");
-					var tdDescription = par.children("td:nth-child(2)");
-
 					tdTitle.html(currentCriteria.title);
 					tdDescription.html(currentCriteria.description);
 
@@ -2112,7 +2107,7 @@ function main() {
 			deleteImage.setAttribute('class', "procid-edit-criteria-icons-delete");
 			$(deleteImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-idea-page.png)");
 			deleteCriteriaLink.appendChild(deleteImage);*/
-		}
+		};
 		var createAddCriteriaLink = function(tempCriteria, numCriteria) {
 			var addCriteria = document.createElement('a');
 			addCriteria.setAttribute('href', "#");
@@ -2183,7 +2178,7 @@ function main() {
 			};
 
 			return addCriteria;
-		}
+		};
 		/**********IdeaPage-Image**********/
 
 		var createIdeaImage = function(divIdeaBlock, commentInfo) {
@@ -2200,7 +2195,7 @@ function main() {
 				changePage('home');
 				window.location = commentInfo.link;
 				return false;
-			}
+			};
 			var contentString = "<a style='color: #29abe2; font-size: 1.023em; font-weight: bold; padding-left:0px;' href='" + commentInfo.link + "' onClick='window.open(\"" + commentInfo.link + "\");'>" + commentInfo.title + "</a> <small><i>Posted by " + commentInfo.author + "</i></small> <br/>" + commentInfo.content;
 
 			var divIdeaImage = document.createElement('div');
@@ -2210,7 +2205,7 @@ function main() {
 				addCommentContentBox(this, contentString, x + "px", "-65px", "relative");
 			};
 
-			if (commentInfo.image != " ") {//image attachment
+			if (commentInfo.image !== " ") {//image attachment
 				var image1 = document.createElement('img');
 				image1.setAttribute('id', 'procid-ideaPage-image');
 				image1.setAttribute('src', commentInfo.image);
@@ -2221,7 +2216,7 @@ function main() {
 			divIdea.appendChild(link1);
 			divIdea.appendChild(divIdeaImage);
 
-		}
+		};
 		/**********IdeaPage-Status**********/
 		var createIdeaStatus = function(divIdeaBlock, commentInfo) {
 			var divStatus = document.createElement('div');
@@ -2264,11 +2259,11 @@ function main() {
 					obj.val = opt.text();
 					obj.index = opt.index();
 					wrapperDropdownText.innerHTML = obj.val;
-					
+
 					$.ajaxSetup({
 						'async' : true
 					});
-						
+
 					$.post(serverURL + "setIdeaStatus", {
 						"issueLink" : issue.link,
 						"commentTitle" : commentInfo.title,
@@ -2277,7 +2272,7 @@ function main() {
 					}, function() {
 						console.log("setIdeaStatus success");
 					});
-					return false;
+				return false;
 				};
 
 				var wrapperDropdownListOptionLink = document.createElement('a');
@@ -2290,7 +2285,7 @@ function main() {
 				wrapperDropdownListOptionLink.appendChild(wrapperDropdownListOptionLinkIcon);
 
 			});
-		}
+		};
 		/**********IdeaPage-Comments**********/
 		var createIdeaComments = function(divIdeaBlock, commentInfo) {
 			//comments on an idea
@@ -2375,7 +2370,7 @@ function main() {
 
 				createCommentAuthorBox(divEachComment, authorName, "20px", "1px");
 				var sentimentTuning = false;
-				if (this.tone == "neutral")
+				if (this.tone === "neutral")
 					sentimentTuning = true;
 
 				//Size of the string comments are larger
@@ -2386,7 +2381,7 @@ function main() {
 				if (this.tone.indexOf("positive") >= 0) {
 					divProsRowContent.appendChild(divEachComment);
 					numPositiveOrNeutralComments++;
-				} else if (this.tone == "neutral") {
+				} else if (this.tone === "neutral") {
 					//addImage(divEachComment, srcPath, 'procid-idea-comment-img', this.content);
 					divNeutralRowContent.appendChild(divEachComment);
 					numPositiveOrNeutralComments++;
@@ -2486,7 +2481,7 @@ function main() {
 			if ($(divConsRowContent).find(".procid-idea-comment-img-div").length > 0)
 				divAddConsComment.style.top = "16px";
 			addIcon(divConsRowBody, ABSOLUTEPATH + "/images/sprites-idea-page.png", 'procid-idea-comment-div-divider', "procid-idea-comment-divider-end", "");
-		}
+		};
 		var addIcon = function(divParent, iconPath, divClass, iconClass, tooltipText) {
 			var divIcon = document.createElement('div');
 			divIcon.setAttribute('class', divClass);
@@ -2496,7 +2491,7 @@ function main() {
 			divParent.appendChild(divIcon);
 
 			addImage(divIcon, iconPath, iconClass, "", false);
-		}
+		};
 		var getOffset = function(el) {
 			var _x = 0;
 			var _y = 0;
@@ -2509,20 +2504,20 @@ function main() {
 				top : _y,
 				left : _x
 			};
-		}
+		};
 		var addImage = function(divParent, iconPath, iconClass, content, sentimentTuning) {
 			var icon = document.createElement('div');
 			icon.setAttribute('class', iconClass);
 			$(icon).css("background-image", "url(" + iconPath + ")");
 			divParent.appendChild(icon);
 
-			if (content != "") {
+			if (content !== "") {
 				icon.onclick = function(e) {
 					var x = getOffset(this).left - getOffset(this.parentNode.parentNode).left + 5;
 					addCommentContentBox(this, content, x + "px", "50px", "", sentimentTuning);
 				};
 			}
-		}
+		};
 		var addCommentContentBox = function(image, content, arrowPosition, topPosition, positionStyle, sentimentTuning) {
 			var parent = image.parentNode.parentNode;
 			//currentElement, className, submitText, midElement, placeHolderString
@@ -2535,18 +2530,18 @@ function main() {
 			});
 
 			divNewComment.style.top = topPosition;
-			if (positionStyle != "")
+			if (positionStyle !== "")
 				divNewComment.style.position = positionStyle;
 			return divNewComment;
-		}
+		};
 		var removeCommentContentBox = function(image, prevCommentBox) {
 			var parent = image.parentNode.parentNode;
 			parent.removeChild(prevCommentBox);
-		}
+		};
 		var createCommentAuthorBox = function(currentElement, authorName, arrowPosition, marginLeft) {
 			var divAuthorName = document.createElement('div');
 			divAuthorName.setAttribute('class', "procid-comment-author");
-			//		if(marginLeft != "")
+			//		if(marginLeft !== "")
 			//			divAuthorName.style.marginLeft = marginLeft;
 			currentElement.appendChild(divAuthorName);
 
@@ -2570,16 +2565,16 @@ function main() {
 			divAuthorName.appendChild(divShadow);
 
 			return divAuthorName;
-		}
+		};
 		var findCommentInfoIndex = function(number) {
 			var result = $.grep(commentInfos, function(e) {
-				return e.title == number;
+				return e.title === number;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else
 				return commentInfos.indexOf(result[0]);
-		}
+		};
 		var createNewCommentBox = function(currentElement, tone, commentInfo, arrowPosition) {
 
 			var toneString = "I like this idea because ...";
@@ -2651,7 +2646,7 @@ function main() {
 			});
 
 			return divNewComment;
-		}
+		};
 		var saveCommentToDrupal = function(commentText, issueLink) {
 			var title = "";
 			var link = "";
@@ -2668,8 +2663,8 @@ function main() {
 
 			link = issue.link + "#" + link.split("#")[1];
 			$("#edit-comment-body-und-0-value").val("");
-			return [title, link]
-		}
+			return [title, link];
+		};
 		var saveCurrentCommentToDrupal = function(issueLink) {
 			var title = "";
 			var link = "";
@@ -2683,8 +2678,8 @@ function main() {
 			});
 			link = issue.link + "#" + link.split("#")[1];
 			$("#edit-comment-body-und-0-value").val("");
-			return [title, link]
-		}
+			return [title, link];
+		};
 		var addNewComment = function(title_, link_, author_, content_, tone_, time_, summary_) {
 			var comment = {
 				title : title_,
@@ -2704,7 +2699,7 @@ function main() {
 			};
 
 			commentInfos.push(comment);
-		}
+		};
 		var addCommentToIdea = function(commentInfo, title_, link_, content_, tone_, author_) {
 			var relatedComment = {
 				title : title_,
@@ -2712,9 +2707,9 @@ function main() {
 				content : content_,
 				tone : tone_,
 				author : author_
-			}
+			};
 			commentInfo.comments.push(relatedComment);
-		}
+		};
 		var createNewCommentBoxFrame = function(currentElement, className, submitText, midElement, placeHolderString, width, arrowPosition, marginLeft, registerString, sentimentTuning) {
 			var divProcidOverlay = document.createElement('div');
 			divProcidOverlay.setAttribute('id', 'procid-dialog-overlay');
@@ -2731,7 +2726,7 @@ function main() {
 			var divNewComment = document.createElement('div');
 			divNewComment.setAttribute('class', className);
 			divNewComment.style.width = width;
-			if (marginLeft != "")
+			if (marginLeft !== "")
 				divNewComment.style.marginLeft = marginLeft;
 
 			currentElement.appendChild(divNewComment);
@@ -2746,7 +2741,7 @@ function main() {
 				divNewCommentBoxInput.innerHTML = placeHolderString;
 				divNewCommentBox.appendChild(divNewCommentBoxInput);
 
-				if (registerString != "") {
+				if (registerString !== "") {
 					var divCheckBox = document.createElement('div');
 					divCheckBox.setAttribute('class', 'procid-checkbox');
 					divNewCommentBox.appendChild(divCheckBox);
@@ -2774,9 +2769,9 @@ function main() {
 				divNewCommentBoxMessage1.innerHTML = placeHolderString;
 				divNewCommentBox.appendChild(divNewCommentBoxMessage1); 
 				
-				var divNewCommentBoxInput = document.createElement('textarea');
-				divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
-				divNewCommentBox.appendChild(divNewCommentBoxInput);
+				var divNewCommentBoxFeedbackInput = document.createElement('textarea');
+				divNewCommentBoxFeedbackInput.setAttribute('class', 'procid-new-comment-textarea');
+				divNewCommentBox.appendChild(divNewCommentBoxFeedbackInput);
 
 				var divNewCommentBoxMessage2 = document.createElement('div');
 				divNewCommentBoxMessage2.setAttribute('class', 'procid-feedback-comment-text');
@@ -2784,10 +2779,10 @@ function main() {
 				divNewCommentBox.appendChild(divNewCommentBoxMessage2); 
 				
 			}else if (midElement === "div") {
-				var divNewCommentBoxInput = document.createElement('div');
-				divNewCommentBoxInput.setAttribute('class', 'procid-prev-comment-text');
-				divNewCommentBoxInput.innerHTML = placeHolderString;
-				divNewCommentBox.appendChild(divNewCommentBoxInput);
+				var divNewCommentBoxDivInput = document.createElement('div');
+				divNewCommentBoxDivInput.setAttribute('class', 'procid-prev-comment-text');
+				divNewCommentBoxDivInput.innerHTML = placeHolderString;
+				divNewCommentBox.appendChild(divNewCommentBoxDivInput);
 
 				if (sentimentTuning) {
 					/*var divNewSentimentTuner = document.createElement('div');
@@ -2806,7 +2801,7 @@ function main() {
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImagePos).parent().prev().children("a").attr("href"),
 							"issueLink" : issue.link,
-						    "userName" : currentUser,
+							"userName" : currentUser,
 							"tone" : "positive",
 						}, function(data) {
 							updateCommentsList();
@@ -2827,7 +2822,7 @@ function main() {
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImageNeutral).parent().prev().children("a").attr("href"),
 							"issueLink" : issue.link,
-						    "userName" : currentUser,
+							"userName" : currentUser,
 							"tone" : "neutral",
 						}, function(data) {
 
@@ -2846,7 +2841,7 @@ function main() {
 						$.post(serverURL + "changeCommentTone", {
 							"commentLink" : $(sentimentTunerImageCons).parent().prev().children("a").attr("href"),
 							"issueLink" : issue.link,
-						    "userName" : currentUser,
+							"userName" : currentUser,
 							"tone" : "negative",
 						}, function(data) {
 
@@ -2867,30 +2862,30 @@ function main() {
 			divShadow.style.left = arrowPosition;
 			divNewComment.appendChild(divShadow);
 			
-			if(submitText == "Send"){
-				var divNewCommentBoxSubmit = document.createElement('input');
-				divNewCommentBoxSubmit.setAttribute('class', 'procid-button-submit');
-				divNewCommentBoxSubmit.setAttribute('type', 'submit');
-				divNewCommentBoxSubmit.setAttribute('value', "Send");
-				divNewCommentBoxSubmit.setAttribute('name', 'submit');
-				divNewCommentBox.appendChild(divNewCommentBoxSubmit);
-				divNewCommentBoxSubmit.style.fontSize="13px";
-				divNewCommentBoxSubmit.style.marginLeft="90px";
+			if(submitText === "Send"){
+				var divNewCommentBoxSend = document.createElement('input');
+				divNewCommentBoxSend.setAttribute('class', 'procid-button-submit');
+				divNewCommentBoxSend.setAttribute('type', 'submit');
+				divNewCommentBoxSend.setAttribute('value', "Send");
+				divNewCommentBoxSend.setAttribute('name', 'submit');
+				divNewCommentBox.appendChild(divNewCommentBoxSend);
+				divNewCommentBoxSend.style.fontSize="13px";
+				divNewCommentBoxSend.style.marginLeft="90px";
 				
-				var divNewCommentBoxTooltip = document.createElement('div');
-				divNewCommentBoxTooltip.setAttribute('class', 'procid-button-tooltip');
-				divNewCommentBoxTooltip.innerHTML = 'Send your feedback to Procid team.';
-				divNewCommentBox.appendChild(divNewCommentBoxTooltip);
-				divNewCommentBoxTooltip.style.display = "none";
+				var divNewCommentBoxSendTooltip = document.createElement('div');
+				divNewCommentBoxSendTooltip.setAttribute('class', 'procid-button-tooltip');
+				divNewCommentBoxSendTooltip.innerHTML = 'Send your feedback to Procid team.';
+				divNewCommentBox.appendChild(divNewCommentBoxSendTooltip);
+				divNewCommentBoxSendTooltip.style.display = "none";
 
-				divNewCommentBoxSubmit.onmouseover = function(e) {
-					divNewCommentBoxTooltip.style.display = "inline";
+				divNewCommentBoxSend.onmouseover = function(e) {
+					divNewCommentBoxSendTooltip.style.display = "inline";
 				};
-				divNewCommentBoxSubmit.onmouseout = function(e) {
-					divNewCommentBoxTooltip.style.display = "none";
+				divNewCommentBoxSend.onmouseout = function(e) {
+					divNewCommentBoxSendTooltip.style.display = "none";
 				};
 			}
-			else if (submitText != "") {
+			else if (submitText !== "") {
 				var divNewCommentBoxSubmit = document.createElement('input');
 				divNewCommentBoxSubmit.setAttribute('class', 'procid-button-submit');
 				divNewCommentBoxSubmit.setAttribute('type', 'submit');
@@ -2921,117 +2916,112 @@ function main() {
 				divNewCommentBox.style.paddingBottom = "4px";
 			}
 			return divNewComment;
-		}
+		};
 		var updateCommentsList = function(commentInfo) {
 			var divIdeaBlock = document.getElementById('procid-idea-block-' + commentInfo.title.substr(1));
 			divIdeaBlock.removeChild($(divIdeaBlock).children('.procid-idea-block-comments')[0]);
 			createIdeaComments(divIdeaBlock, commentInfo);
-		}
+		};
 		/*******IdeaPage-Criteria List Manipulation*********/
-
 		var createNewCritera = function(title_, description_, id_, author_) {
 			var newCriteria = {
 				id : id_,
 				title : title_,
 				description : description_,
 				author : author_
-			}
+			};
 
 			criteria.push(newCriteria);
 			return newCriteria;
-		}
+		};
 		var findCriteriaById = function(id) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else
 				return result[0];
-		}
+		};
 		var createNewCriteriaId = function(tempCriteriaSize) {
-			newId = 0;
+			var newId = 0;
 			$.each(criteria, function() {
 				if (this.id > newId)
 					newId = this.id;
 			});
 			newId = newId + (tempCriteriaSize - criteria.length) + 1;
 			return newId;
-		}
+		};
 		var findTempCriteriaIndex = function(id, tempCriteria) {
 			var result = $.grep(tempCriteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else{
-				var index = tempCriteria.indexOf(result[0])
+				var index = tempCriteria.indexOf(result[0]);
 				return index;
 				}
-
-		}
+		};
 		var findCriteriaTitle = function(id) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else
 				return result[0].title;
-
-		}
+		};
 		var findCriteriaDescription = function(id) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else
 				return result[0].description;
-
-		}
+		};
 		var deleteCriteria = function(id) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else {
-				var index = criteria.indexOf(result[0])
+				var index = criteria.indexOf(result[0]);
 				criteria.splice(index, 1);
 			}
-
-		}
+		};
 		var setCriteriaTitle = function(id, title) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else {
-				var index = criteria.indexOf(result[0])
+				var index = criteria.indexOf(result[0]);
 				criteria[index].title = title;
 			}
-		}
+		};
 		var setCriteriaDescription = function(id, description) {
 			var result = $.grep(criteria, function(e) {
-				return e.id == id;
+				return e.id === id;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else {
-				var index = criteria.indexOf(result[0])
+				var index = criteria.indexOf(result[0]);
 				criteria[index].description = description;
 			}
 
-		}
+		};
 		var updateCriteriaStatusList = function() {
 			//remove previous criteria statuses
 			allCriteriaStatuses = [];
 
 			//create new criteria statuses
 			for (var i = 0; i < commentInfos.length; i++) {
-				if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				if ($.inArray("idea", commentInfos[i].tags) !== -1 && commentInfos[i].content !== "") {
 					var divIdeaBlock = document.getElementById('procid-idea-block-' + commentInfos[i].title.substr(1));
 					divIdeaBlock.removeChild($(divIdeaBlock).children('.procid-idea-block-criteria')[0]);
 					createIdeaCriteria(divIdeaBlock, commentInfos[i], "edit");
@@ -3044,20 +3034,20 @@ function main() {
 
 			createCriteriaStatusTracks();
 			createCriterionSelectors();
-		}
+		};
 		/**********IdeaPage-Criteria-Statuses**********/
 
 		var createIdeaCriteria = function(divIdeaBlock, commentInfo, mode) {
 			//criteris
 			var divCriteria = document.createElement('div');
 			divCriteria.setAttribute('class', 'procid-idea-block-criteria');
-			if (mode == "edit")
+			if (mode === "edit")
 				divIdeaBlock.insertBefore(divCriteria, divIdeaBlock.children[3]);
 			else
 				divIdeaBlock.appendChild(divCriteria);
 			var counter = 0;
 
-			if (criteria.length == 0) {
+			if (criteria.length === 0) {
 				var link1 = document.createElement('a');
 				link1.setAttribute('class', 'procid-edit-criteria-link');
 				link1.setAttribute('href', "#");
@@ -3065,7 +3055,7 @@ function main() {
 				divCriteria.appendChild(link1);
 				link1.onclick = function(e) {
 					createEditCriteriaBox($(".procid-ideaPage-header")[0]);
-					if (criteria.length != 0)
+					if (criteria.length !== 0)
 						$(".procid-idea-block-criteria").remove(".procid-edit-criteria-link");
 					//return false;
 				};
@@ -3082,11 +3072,11 @@ function main() {
 				divCriteria.appendChild(divCriteriaStatus);
 
 				var criteriaStatus = findCriteriaStatus(commentInfo, this.id);
-				if (criteriaStatus == -1) {
+				if (criteriaStatus === -1) {
 					criteriaStatus = addCriteriaStatus(commentInfo, 0, "", this.id, "", "");
 				}
 			});
-		}
+		};
 		var addCriteriaStatus = function(commentInfo, value_, comment_, id_, author_, statusCommentTitle_) {
 			var found = false;
 			var criteriaStatus = {
@@ -3098,7 +3088,7 @@ function main() {
 			};
 
 			for (var i = 0; i < commentInfo.criteriaStatuses.length; i++) {
-				if (commentInfo.criteriaStatuses[i].id == id_ && commentInfo.criteriaStatuses[i].author == author_) {
+				if (commentInfo.criteriaStatuses[i].id === id_ && commentInfo.criteriaStatuses[i].author === author_) {
 					found = true;
 					commentInfo.criteriaStatuses[i].value = criteriaStatus.value;
 					commentInfo.criteriaStatuses[i].comment = criteriaStatus.comment;
@@ -3110,16 +3100,16 @@ function main() {
 			if (!found)
 				commentInfo.criteriaStatuses.push(criteriaStatus);
 			return criteriaStatus;
-		}
+		};
 		var findCriteriaStatus = function(commentInfo, id_) {
 			var result = $.grep(commentInfo.criteriaStatuses, function(e) {
-				return e.id == id_;
+				return e.id === id_;
 			});
-			if (result.length == 0)
+			if (result.length === 0)
 				return -1;
 			else
 				return result[0];
-		}
+		};
 		var findAllCriteriaStatuses = function(statuses, id_) {
 			var result = [];
 			$.each(statuses, function() {
@@ -3128,11 +3118,10 @@ function main() {
 			});
 			return result;
 		};
-
 		var createCriteriaStatusTracks = function() {
 			var recId = 0;
 			for (var i = 0; i < commentInfos.length; i++) {
-				if ($.inArray("idea", commentInfos[i].tags) != -1 && commentInfos[i].content != "") {
+				if ($.inArray("idea", commentInfos[i].tags) !== -1 && commentInfos[i].content !== "") {
 					if (commentInfos[i].criteriaStatuses.length > 0) {
 						$.each(criteria, function() {
 							var currentStatusArray = findAllCriteriaStatuses(commentInfos[i].criteriaStatuses, this.id);
@@ -3140,7 +3129,7 @@ function main() {
 							var prevStatusArray = [];
 							for (var j = 0; j < currentStatusArray.length - 1; j++) {
 								var currentCriteriaStatus = currentStatusArray[j];
-								var criterion_track = {
+								var current_criterion_track = {
 									value : currentCriteriaStatus.value,
 									comment : currentCriteriaStatus.comment,
 									id : currentCriteriaStatus.id,
@@ -3151,7 +3140,7 @@ function main() {
 									originX : -1,
 									originValue : -1,
 								};
-								prevStatusArray.push(criterion_track);
+								prevStatusArray.push(current_criterion_track);
 							}
 
 							var lastCriteriaStatus = currentStatusArray[currentStatusArray.length - 1];
@@ -3167,7 +3156,7 @@ function main() {
 								originValue : -1,
 							};
 
-							currentCriteriaStatusRecord = {
+							var currentCriteriaStatusRecord = {
 								currentCriteriaStatus : criterion_track,
 								previousCriteriaStatuses : prevStatusArray,
 								recordId : recId
@@ -3178,7 +3167,7 @@ function main() {
 					}
 				}
 			}
-		}
+		};
 		var createCriterionSelectors = function() {
 			var color = "lightgray";
 
@@ -3195,20 +3184,20 @@ function main() {
 
 				var currentCircle = d3.select(identifier).node();
 
-				if (d.currentCriteriaStatus.originX == -1) {
+				if (d.currentCriteriaStatus.originX === -1) {
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
 				}
 
 				var value = d.currentCriteriaStatus.value - 1;
 				if (value >= 0) {
-					if (d.currentCriteriaStatus.commentBox != "") {
-						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox)
+					if (d.currentCriteriaStatus.commentBox !== "") {
+						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox);
 						d.currentCriteriaStatus.commentBox = "";
 					}
 					var cx = x(value);
 					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
-					if (d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
+					if (d.currentCriteriaStatus.originX !== x(d.currentCriteriaStatus.value))
 						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value) - 30), d);
 				}
 
@@ -3220,21 +3209,21 @@ function main() {
 
 				var currentCircle = d3.select(identifier).node();
 
-				if (d.currentCriteriaStatus.originX == -1) {
+				if (d.currentCriteriaStatus.originX === -1) {
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
 				}
 
 				var value = d.currentCriteriaStatus.value + 1;
 				if (value <= 6) {
-					if (d.currentCriteriaStatus.commentBox != "") {
-						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox)
+					if (d.currentCriteriaStatus.commentBox !== "") {
+						removeCommentBox(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.commentBox);
 						d.currentCriteriaStatus.commentBox = "";
 					}
 					var cx = x(value);
 					
 					updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, identifier);
-					if (d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value))
+					if (d.currentCriteriaStatus.originX !== x(d.currentCriteriaStatus.value))
 						d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(currentCircle.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, currentCircle, (x(d.currentCriteriaStatus.value) - 30), d);
 				}
 			}).append("svg:title").text("Increase Criteria Rating");
@@ -3258,7 +3247,7 @@ function main() {
 				else
 					return "display:none;";
 			}).attr("x", x(6) - 10).attr('y', "0").attr("height", "20").on("click", function(d) {
-				d.recordId
+				//d.recordId
 				if (!d3.select(".selector .procid-selector-circle-history-" + d.recordId).empty()) {
 					d3.selectAll(".selector .procid-selector-circle-history-" + d.recordId).attr("style", "cursor: pointer");
 					d3.selectAll(".selector .procid-selector-circle-history-" + d.recordId).attr("class", "procid-selector-circle-shown-" + d.recordId);
@@ -3281,7 +3270,7 @@ function main() {
 			}).attr("x1", "36").attr("y1", "28").attr("x2", function(d) {
 				return x(d.currentCriteriaStatus.value);
 			}).attr("y2", "28").attr("stroke", function(d) {
-				if (d.currentCriteriaStatus.value == 3)
+				if (d.currentCriteriaStatus.value === 3)
 					return "#999999";
 				else if (d.currentCriteriaStatus.value < 3)
 					return "#29abe2";
@@ -3295,42 +3284,42 @@ function main() {
 			}).attr("class", "procid-selector-circle-default").attr("fill", function(d) {
 				if (d.currentCriteriaStatus.comment === "")
 					return "white";
-				if (d.currentCriteriaStatus.value == 3)
+				if (d.currentCriteriaStatus.value === 3)
 					return "#F0F0F0";
 				else if (d.currentCriteriaStatus.value < 3)
 					return "#29abe2";
 				else
 					return "#8dc53c";
 			}).attr("stroke", function(d) {
-				if (d.currentCriteriaStatus.comment == "")
+				if (d.currentCriteriaStatus.comment === "")
 					return "#999999";
 				//"white";
-				else if (d.currentCriteriaStatus.value == 3)
+				else if (d.currentCriteriaStatus.value === 3)
 					return "#999999";
 				else
 					return color;
 			}).attr("stroke-width", function(d) {
-				if (d.currentCriteriaStatus.value == 3)
+				if (d.currentCriteriaStatus.value === 3)
 					return "1.5";
 				else
 					return "0.25";
 			}).attr("style", "cursor: pointer").attr("cy", "28").attr("cx", function(d) {
 				return x(d.currentCriteriaStatus.value);
 			}).attr("r", "7").on("mouseover", function(d) {
-				d3.select(this).style("fill-opacity", .9);
-				if (d.currentCriteriaStatus.comment != "")
+				d3.select(this).style("fill-opacity", 0.9);
+				if (d.currentCriteriaStatus.comment !== "")
 					this.prevCommentBox = addCriteriaStatusCommentBox(d.currentCriteriaStatus.comment, d.currentCriteriaStatus.author, d.currentCriteriaStatus.statusCommentTitle, this, (x(d.currentCriteriaStatus.value) - 30) + "px");
 			}).on("mouseout", function(d) {
-				if (d.currentCriteriaStatus.comment != "")
+				if (d.currentCriteriaStatus.comment !== "")
 					removeCriteriaStatusCommentBox(this.prevCommentBox, this);
 				d3.select(this).style("fill-opacity", 1);
 			}).call(d3.behavior.drag().on("dragstart", function(d) {
 				this.__origin__ = [x(d.currentCriteriaStatus.value), 28];
-				if (d.currentCriteriaStatus.originX == -1) {
+				if (d.currentCriteriaStatus.originX === -1) {
 					d.currentCriteriaStatus.originX = x(d.currentCriteriaStatus.value);
 					d.currentCriteriaStatus.originValue = d.currentCriteriaStatus.value;
 				}
-				if (d.currentCriteriaStatus.commentBox != null && d.currentCriteriaStatus.commentBox != "") {
+				if (d.currentCriteriaStatus.commentBox !== null && d.currentCriteriaStatus.commentBox !== "") {
 					removeCommentBox(this.parentNode.parentNode, d.currentCriteriaStatus.commentBox);
 					d.currentCriteriaStatus.commentBox = "";
 				}
@@ -3345,11 +3334,11 @@ function main() {
 				updateCriteriaCircleLocation(d.currentCriteriaStatus, value, cx, this);
 
 			}).on("dragend", function(d) {
-				if (d.currentCriteriaStatus.originX != x(d.currentCriteriaStatus.value)) {
+				if (d.currentCriteriaStatus.originX !== x(d.currentCriteriaStatus.value)) {
 					d.currentCriteriaStatus.commentBox = createNewCommentBoxForCriteria(this.parentNode.parentNode, d.currentCriteriaStatus.originX, d.currentCriteriaStatus.originValue, d.currentCriteriaStatus, this, (x(d.currentCriteriaStatus.value) - 30), d);
 				}
 			})).append("svg:title").text(function(d) {
-				return "Drag to change the ranking"
+				return "Drag to change the ranking";
 			});
 
 			var index = 0;
@@ -3360,7 +3349,7 @@ function main() {
 				if (allCriteriaStatuses[index].previousCriteriaStatuses.length > 0) {
 					var recordId = allCriteriaStatuses[index].recordId;
 					d3.select(this).selectAll(".procid-selector-circle-history-" + recordId).data(allCriteriaStatuses[index].previousCriteriaStatuses).enter().append("svg:circle").attr("class", "procid-selector-circle-history-" + recordId).attr("fill", function(d) {
-						if (d.value == 3)
+						if (d.value === 3)
 							return "#999999";
 						//"#F0F0F0";
 						else if (d.value < 3)
@@ -3368,14 +3357,14 @@ function main() {
 						else
 							return "#8dc53c";
 					}).attr("stroke", function(d) {
-						if (d.comment != "")
+						if (d.comment !== "")
 							return "white";
-						else if (d.value == 3)
+						else if (d.value === 3)
 							return "#999999";
 						else
 							return color;
 					}).attr("stroke-width", function(d) {
-						if (d.value == 3)
+						if (d.value === 3)
 							return "0.25";
 						//"1.5";
 						else
@@ -3385,7 +3374,7 @@ function main() {
 					.attr("cy", "30").attr("cx", function(d) {
 						return x(d.value);
 					}).attr("r", "8").on("mouseover", function(d) {
-						d3.select(this).style("fill-opacity", .9);
+						d3.select(this).style("fill-opacity", 0.9);
 						this.prevCommentBox = addCriteriaStatusCommentBox(d.comment, d.author, d.statusCommentTitle, this, (x(d.value) - 30) + "px");
 					}).on("mouseout", function() {
 						removeCriteriaStatusCommentBox(this.prevCommentBox, this);
@@ -3394,15 +3383,14 @@ function main() {
 				}
 				index++;
 			});
-
-		}
+		};
 		var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle, currentPosition, d) {
 
 			var satisfaction = " satisfies";
 			if (criterion_track.value >= 2 && criterion_track.value <= 4)
-				satisfaction = " somewhat satisfies"
+				satisfaction = " somewhat satisfies";
 			else if (criterion_track.value < 2)
-				satisfaction = " doesn't satisfy"
+				satisfaction = " doesn't satisfy";
 			var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction + ' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
 
 			var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Save", "textarea", placeHolderStr, "200px", currentPosition + "px", "30px", "", false);
@@ -3472,7 +3460,7 @@ function main() {
 					commentBox : "",
 				};
 
-				if (d.currentCriteriaStatus.author != currentUser && d.currentCriteriaStatus.author != "") {
+				if (d.currentCriteriaStatus.author !== currentUser && d.currentCriteriaStatus.author !== "") {
 					var index = -1;
 					for (var i = 0; i < d.previousCriteriaStatuses.length - 1; i++) {
 						if (d.previousCriteriaStatuses[i].author === currentUser) {
@@ -3531,17 +3519,17 @@ function main() {
 			});
 
 			return divNewComment;
-		}
+		};
 		var setCaretPosition = function(elem, caretPos) {
-			if ( typeof elem.selectionStart == "number") {
+			if ( typeof elem.selectionStart === "number") {
 				elem.selectionStart = elem.selectionEnd = elem.value.length;
-			} else if ( typeof elem.createTextRange != "undefined") {
+			} else if ( typeof elem.createTextRange !== "undefined") {
 				elem.focus();
 				var range = elem.createTextRange();
 				range.collapse(false);
 				range.select();
 			}
-		}
+		};
 		var removeCommentBox = function(parent, currentCommentBox) {
 			if ($(parent).find(".procid-new-comment").length > 0){
 			//if ($(parent).hasClass(".procid-new-comment")){
@@ -3550,27 +3538,27 @@ function main() {
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 			}
-		}
+		};
 		var updateCriteriaCircleLocation = function(d, value, cx, circle) {
 			//updating the value
 			d.value = value;
 			d3.select(circle).attr("cx", cx);
 			d3.select(circle).attr("fill", function() {
-				if (value == 0 && d.author == "")
+				if (value === 0 && d.author === "")
 					return "white";
-				if (value == 3)
+				if (value === 3)
 					return "#F0F0F0";
 				else if (value < 3)
 					return "#29abe2";
 				else
 					return "#8dc53c";
 			}).attr("stroke", function() {
-				if (value == 3 || (value == 0 && d.author == ""))
+				if (value === 3 || (value === 0 && d.author === ""))
 					return "#999999";
 				else
 					return "white";
 			}).attr("stroke-width", function() {
-				if (value == 3)
+				if (value === 3)
 					return "1.5";
 				else
 					return "0.25";
@@ -3580,7 +3568,7 @@ function main() {
 			var identifier = "#procid-cline-" + d.title.substr(1) + "-" + d.id;
 			d3.select(identifier).attr("x2", cx);
 			d3.select(identifier).attr("stroke", function() {
-				if (value == 3)
+				if (value === 3)
 					return "#999999";
 				else if (value < 3)
 					return "#29abe2";
@@ -3588,27 +3576,27 @@ function main() {
 					return "#8dc53c";
 			});
 
-		}
+		};
 		var updateCriteriaCircleStyle = function(value, circle) {
 			d3.select(circle).attr("fill", function() {
-				if (value == 3)
+				if (value === 3)
 					return "#F0F0F0";
 				else if (value < 3)
 					return "#29abe2";
 				else
 					return "#8dc53c";
 			}).attr("stroke", function() {
-				if (value == 3)
+				if (value === 3)
 					return "#999999";
 				else
 					return "white";
 			}).attr("stroke-width", function() {
-				if (value == 3)
+				if (value === 3)
 					return "1.5";
 				else
 					return "0.25";
 			});
-		}
+		};
 		var addCriteriaStatusCommentBox = function(comment, author, statusCommentTitle, circle, arrowPosition) {
 
 			var content = "<strong style='color: #29abe2;'>" + statusCommentTitle + "</strong> <small><i>Posted by " + author + "</i></small> <br/>" + comment;
@@ -3621,11 +3609,11 @@ function main() {
 			document.body.removeChild(document.getElementById("procid-dialog-overlay"));
 		
 			return divNewComment;
-		}
+		};
 		var removeCriteriaStatusCommentBox = function(prevCommentBox, circle) {
 			var parent = circle.parentNode.parentNode;
 			parent.removeChild(prevCommentBox);
-		}
+		};
 		/***********************INVITE PAGE********************/
 		var createInvitePageBody = function() {
 			//Procid Invite Page Body
@@ -3677,7 +3665,7 @@ function main() {
 				var divInviteLink = document.createElement('a');
 				divInviteLink.setAttribute('class', 'procid-invite-invitationlink');
 				divInviteLink.setAttribute('href', '#' + i);
-				divInviteLink.setAttribute('rel', 'tooltip')
+				divInviteLink.setAttribute('rel', 'tooltip');
 				divInviteLink.setAttribute('title', 'Invite this person');
 				divInviteLink.onclick = function invitePerson(evt) {
 					var currentI = parseInt($(this).attr('href').substr(1), 10);
@@ -3700,12 +3688,12 @@ function main() {
 					var popup = window.open(personContactUrl);
 					popup.onload = function() {
 						setTimeout(function() {
-							if (!(popup.document.getElementById("page-title").innerHTML === "Access denied")) {
+							if (popup.document.getElementById("page-title").innerHTML !== "Access denied") {
 								popup.document.getElementById("edit-subject").value = "Invite to a discussion";
 								popup.document.getElementById("edit-message").innerHTML = "I would like to invite you to this discussion: <a href='" + issue.link + "'>" + issue.title + "</a> .";
 							}
 						}, 2000);
-					}
+					};
 					return false;
 				};
 
@@ -3718,7 +3706,7 @@ function main() {
 				$("#procid-invite-page-wrapper").append(divInviteBlock);
 
 			}
-		}
+		};
 		var selectedInviteLens = "";
 		var selectedImagePath = "";
 
@@ -3731,7 +3719,7 @@ function main() {
 				class : 'procid-invite-lens-unselected'
 			}).appendTo("#" + parent);
 
-			if (name == "search")
+			if (name === "search")
 				$("#procid-invite-" + name + "-link").click(function addthePanel(evt) {
 					if ($("#procid-invite-" + name + "-link").hasClass('procid-invite-lens-unselected')) {
 						$("#procid-invite-" + name + "-link").attr('class', 'procid-invite-lens-selected');
@@ -3775,9 +3763,9 @@ function main() {
 								$(this).html(strings[0] + ", <b>" + strings[1] + "</b>, " + strings[2] + ", " + strings[3] + ", " + strings[4]);
 							} else if (name === "consensus") {//closed threads
 								$(this).html(strings[0] + ", " + strings[1] + ", <b>" + strings[2] + "</b>, " + strings[3] + ", " + strings[4]);
-							} else if (name == "recency") {//recency
+							} else if (name === "recency") {//recency
 								$(this).html(strings[0] + ", " + strings[1] + ", " + strings[2] + ", <b>" + strings[3] + "</b>" + ", " + strings[4]);
-							} else if (name == "connections") {//connections
+							} else if (name === "connections") {//connections
 								$(this).html(strings[0] + ", " + strings[1] + ", " + strings[2] + ", " + strings[3] + ", <b>" + strings[4] + "</b>");
 							}
 						});
@@ -3815,7 +3803,7 @@ function main() {
 			divInviteLensImage.setAttribute('class', 'procid-invite-' + name + '-image-unselected');
 			$("#procid-invite-" + name + '-link').append(divInviteLensImage);
 
-		}
+		};
 		var findPeopletoInvite = function() {
 			var suggestedMembers = [];
 			$.ajaxSetup({
@@ -3831,27 +3819,29 @@ function main() {
 			});
 
 			return suggestedMembers;
-		}
+		};
 		var sortInvitedMembers = function(name, strA, strB) {
 			var aStrings = strA.split(",");
 			var bStrings = strB.split(",");
+			var numA = 0;
+			var numB = 0;
 			//experience
 			if (name === "experience") {
-				var numA = findNumExperience(aStrings[0]);
-				var numB = findNumExperience(bStrings[0]);
+				numA = findNumExperience(aStrings[0]);
+				numB = findNumExperience(bStrings[0]);
 				return numA > numB ? -1 : 1;
 			} else if (name === "patches") {//usability patches
-				var numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i, '$1'), 10);
+				numA = parseInt(aStrings[1].replace(/(^\d+)(.+$)/i, '$1'), 10);
 				if (isNaN(numA))
 					numA = 0;
-				var numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i, '$1'), 10);
+				numB = parseInt(bStrings[1].replace(/(^\d+)(.+$)/i, '$1'), 10);
 				if (isNaN(numB))
 					numB = 0;
 
 				return numA > numB ? -1 : 1;
 			} else if (name === "consensus") {//closed threads
-				var numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i, '$1'), 10);
-				var numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i, '$1'), 10);
+				numA = parseInt(aStrings[2].replace(/(^\d+)(.+$)/i, '$1'), 10);
+				numB = parseInt(bStrings[2].replace(/(^\d+)(.+$)/i, '$1'), 10);
 				return numA > numB ? -1 : 1;
 			} else if (name === "connections") {//triads
 				if (aStrings[4].indexOf("no previous interactions with current participants") > 0)
@@ -3859,10 +3849,10 @@ function main() {
 				else if (bStrings[4].indexOf("no previous interactions with current participants") > 0)
 					return -1;
 
-				var numA = parseInt(aStrings[4].match(/\d+/)[0], 10);
+				numA = parseInt(aStrings[4].match(/\d+/)[0], 10);
 				if (isNaN(numA))
 					numA = 0;
-				var numB = parseInt(bStrings[4].match(/\d+/)[0], 10);
+				numB = parseInt(bStrings[4].match(/\d+/)[0], 10);
 				if (isNaN(numB))
 					numB = 0;
 
@@ -3874,45 +3864,45 @@ function main() {
 				else if (bStrings[3].indexOf("not recently commented on a usability thread") > 0)
 					return -1;
 
-				var numA = parseInt(aStrings[3].match(/\d+/)[0], 10);
+				numA = parseInt(aStrings[3].match(/\d+/)[0], 10);
 				var aSubStrings = aStrings[3].split(" ");
 				var date = aSubStrings[aSubStrings.length - 2];
-				if (date.indexOf("month") != -1)
+				if (date.indexOf("month") !== -1)
 					numA = numA * 30;
-				else if (date.indexOf("year") != -1)
+				else if (date.indexOf("year") !== -1)
 					numA = numA * 365;
-				var numB = parseInt(bStrings[3].match(/\d+/)[0], 10);
+				numB = parseInt(bStrings[3].match(/\d+/)[0], 10);
 				var bSubStrings = bStrings[3].split(" ");
 				var dateB = bSubStrings[bSubStrings.length - 2];
 
-				if (dateB.indexOf("month") != -1)
+				if (dateB.indexOf("month") !== -1)
 					numB = numB * 30;
-				else if (dateB.indexOf("year") != -1)
+				else if (dateB.indexOf("year") !== -1)
 					numB = numB * 365;
 
 				return numA > numB ? 1 : -1;
 			}
 
-		}
+		};
 		var findNumExperience = function(str) {
 			var pattern = /[0-9]+/g;
 			var matches = str.match(pattern);
 			var result = 0;
-			if (matches != null && matches != []) {
+			if (matches !== null && matches !== []) {
 				if (matches.length > 1) {
 					result = parseInt(matches[0], 10) * 52 + parseInt(matches[1], 10);
-				} else if (matches.length == 1 && str.indexOf('year') > 0) {
+				} else if (matches.length === 1 && str.indexOf('year') > 0) {
 					result = parseInt(matches[0], 10) * 52;
-				} else if (matches.length == 1 && str.indexOf('week') > 0) {
+				} else if (matches.length === 1 && str.indexOf('week') > 0) {
 					result = parseInt(matches[0], 10);
 				}
 			}
 			return result;
-		}
+		};
 		setUpProcid();
 		console.log("done");
 	});
-};
+}
 
 // load jQuery and execute the main function
 //addJQuery(main);
