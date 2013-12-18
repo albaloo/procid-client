@@ -15,7 +15,7 @@ Instructions for Evaluation
 ===========================
 If you are here to help evaluate Procid, please follow these instructions: [How can I help evaluate Procid?](https://github.com/albaloo/procid-client/blob/master/EvaluatingProcid.md)
 
-Instructions to Run
+Instructions to Run (Chrome Only)
 ===================
 
 1. Install Google chrome if you don't have it already
@@ -23,8 +23,9 @@ Instructions to Run
 1. Go to chrome extensions page by typing chrome://chrome/extensions/ in the address-bar
 1. Drag procid.user.js file and drop it in the extensions page
 1. Click on 'Add' and you'll see Procid added to the list of your extensions
-1. Go to a drupal issue: http://drupal.org/node/331893
+1. Go to any drupal issue like http://drupal.org/node/331893
 1. Procid panel will be added to the normal Drupal page
+1. For issues not having a ProcID started notice the blue button on the top right.
 
 Instructions to Build and Contribute
 ====================================
