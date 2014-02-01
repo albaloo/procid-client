@@ -2738,7 +2738,7 @@ function main() {
 			if (midElement === "textarea") {
 				var divNewCommentBoxInput = document.createElement('textarea');
 				divNewCommentBoxInput.setAttribute('class', 'procid-new-comment-textarea');
-				divNewCommentBoxInput.innerHTML = placeHolderString;
+				divNewCommentBoxInput.placeholder = placeHolderString;
 				divNewCommentBox.appendChild(divNewCommentBoxInput);
 
 				if (registerString !== "") {
@@ -2766,7 +2766,7 @@ function main() {
 			}else if (midElement === "feedback") {
 				var divNewCommentBoxMessage1 = document.createElement('div');
 				divNewCommentBoxMessage1.setAttribute('class', 'procid-feedback-comment-text');
-				divNewCommentBoxMessage1.innerHTML = placeHolderString;
+				divNewCommentBoxMessage1.placeholder = placeHolderString;
 				divNewCommentBox.appendChild(divNewCommentBoxMessage1); 
 				
 				var divNewCommentBoxFeedbackInput = document.createElement('textarea');
@@ -2781,7 +2781,7 @@ function main() {
 			}else if (midElement === "div") {
 				var divNewCommentBoxDivInput = document.createElement('div');
 				divNewCommentBoxDivInput.setAttribute('class', 'procid-prev-comment-text');
-				divNewCommentBoxDivInput.innerHTML = placeHolderString;
+				divNewCommentBoxDivInput.placeholder = placeHolderString;
 				divNewCommentBox.appendChild(divNewCommentBoxDivInput);
 
 				if (sentimentTuning) {
@@ -3387,11 +3387,11 @@ function main() {
 		var createNewCommentBoxForCriteria = function(currentElement, originalPosition, originalValue, criterion_track, circle, currentPosition, d) {
 
 			var satisfaction = " satisfies";
-			if (criterion_track.value >= 2 && criterion_track.value <= 4)
+			if (criterion_track.value > 2 && criterion_track.value < 4)
 				satisfaction = " somewhat satisfies";
 			else if (criterion_track.value < 2)
 				satisfaction = " doesn't satisfy";
-			var placeHolderStr = 'I think the idea proposed in ' + criterion_track.title + satisfaction + ' the ' + findCriteriaTitle(criterion_track.id) + ' criteria, because...';
+			var placeHolderStr = 'Explain why this idea ' + satisfaction + ' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
 
 			var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Save", "textarea", placeHolderStr, "200px", currentPosition + "px", "30px", "", false);
 
