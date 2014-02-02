@@ -810,6 +810,16 @@ function main() {
 			setStatusVar(destination);
 		};
 		var createProcidHeader = function() {
+			//checking for hash change to support browser back button
+			if ("onhashchange" in window) {
+    			window.onhashchange = function () {
+        			var hashValue = window.location.hash;
+        			if(hashValue === null || hashValue === "" || hashValue.length <= 1)
+        				hashValue = "#home"
+        			changePage(hashValue.substr(1));
+    			}
+			}
+			
 			//Ruler
 			var procidRuler = document.createElement('span');
 			procidRuler.setAttribute('id', 'procid-ruler');
@@ -854,7 +864,7 @@ function main() {
 
 			$('<a />').attr({
 				id : 'procid-home-link',
-				href : '#',
+				href : '#home',
 				rel : 'tooltip',
 				title : 'Home'
 			}).click(function goHome(evt) {
@@ -873,7 +883,7 @@ function main() {
 
 			$('<a />').attr({
 				id : 'procid-ideaBased-link',
-				href : '#',
+				href : '#idea',
 				rel : 'tooltip',
 				title : 'View the List of Ideas'
 			}).click(function goIdeaBased(evt) {
@@ -894,7 +904,7 @@ function main() {
 
 			$('<a />').attr({
 				id : 'procid-invite-link',
-				href : '#',
+				href : '#invite',
 				rel : 'tooltip',
 				title : 'Invite New Participants'
 			}).click(function goInvite(evt) {
