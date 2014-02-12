@@ -121,7 +121,7 @@ function main() {
 
 		var setUpProcid = function() {
 			//Check if the user has logged in Drupal
-			if (!$("#page").find('#comment-form').length)
+			if (!$("#page").find('#project-issue-node-form').length)
 				return;
 			
 			//Check if this is an issue page
@@ -135,6 +135,8 @@ function main() {
 
 			if (currentUser === "")
 				currentUser = "Anonymous";
+				
+				console.log("username: " + currentUser);
 
 			//Program Starts From here
 			addCSSToHeader();
