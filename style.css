@@ -39,7 +39,7 @@ input.procid-button-start {
 	background: -moz-linear-gradient(top,  #0A7BC1,  #6bb3e2);
 }
 .procid-comment-composition-holder {
-	background: rgba(0,0,0,0.08);
+	background: #F6F6F2;
 	padding: 10px;
 	margin-bottom: 15px;
 }
@@ -56,7 +56,7 @@ input.procid-button-start {
 	height: 16px;
 	text-align: center;
 	vertical-align: top;
-	width: 21px;
+	width: 60px;
 }
 .procid-comment-composition-checkbox-input {
 	float: left;
@@ -83,7 +83,7 @@ input.procid-button-start {
 	padding-left: 3px;
 }
 #procid-comment-composition-checkbox-label2 {
-	width: 66%;
+	width: 44%;
 	margin: 0;
 	display: inline-block;
 }
