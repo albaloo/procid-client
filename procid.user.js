@@ -192,8 +192,14 @@ function main() {
 					return false;
 				};
 
-			}else 
-				startProcid();
+			}else {
+				//startProcid();
+				var worker = new Worker(startProcid());
+    			//worker.onmessage = function(event) {
+        			//document.getElementById("divText").innerHTML = event.data;
+    			//}
+    		}
+				
 		};
 		var addCSSToHeader = function() {
 			var header = document.getElementsByTagName('head')[0];
