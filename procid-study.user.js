@@ -5,8 +5,8 @@
 // @author         Roshanak Zilouchian
 // @version        1.2
 // @grant          none
-// @include        http://drupal.org/node/*
-// @include        https://drupal.org/node/*
+// @include        http://drupal.org/node/2214271*
+// @include        https://drupal.org/node/2214271*
 // @include        http://drupal.org/comment/*
 // @include        https://drupal.org/comment/*
 // @match        http://drupal.org/*
@@ -55,7 +55,7 @@ function main() {
 		var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
 		var CSSSERVERPATH = 'https://web.engr.illinois.edu/~rzilouc2/procid';
 		//var serverURL='http://0.0.0.0:3000/';
-		var serverURL = 'http://procid-lab-study-server.herokuapp.com/';
+		var serverURL = 'https://procid-lab-study-server.herokuapp.com/';
 		var commentInfos = [];
 		var criteria = [];
 		var allCriteriaStatuses = [];
@@ -151,56 +151,11 @@ function main() {
 			else
 				issueLink = $("link[rel='shortlink']").attr('href');
 
-			var numIssueComments=0;
-			$.ajaxSetup({
-				'async' : false
-			});
-			
-			$.post(serverURL + "issueExists", {
-				"issueLink" : issueLink
-			}, function(data) {
-				numIssueComments = data.result;
-				console.log("issue exists check success");
-				preSetupProcid(numIssueComments);
-			});
+			var worker = new Worker(startProcid());
 
 			console.log("username: " + currentUser);
 		};
-		var preSetupProcid = function(numIssueComments){
-			if (numIssueComments === 0) {
-				var startProcidButton = document.createElement('input');
-				startProcidButton.setAttribute('class', 'procid-button-start');
-				startProcidButton.setAttribute('type', 'submit');
-				startProcidButton.setAttribute('value', 'Start Procid');
-				startProcidButton.setAttribute('name', 'start');
-				$("#aside").prepend(startProcidButton);
-				startProcidButton.onclick = function(cb) {
-					startProcid();
-					$(".procid-button-start").remove();
-					
-					$.ajaxSetup({
-						'async' : true
-					});
-					
-					$.post(serverURL + "startProcid", {
-						"issueLink" : issue.link,
-						"userName" : currentUser,
-					}, function(data) {
-						console.log("procid started.");
-					});
-			
-					return false;
-				};
-
-			}else {
-				//startProcid();
-				var worker = new Worker(startProcid());
-    			//worker.onmessage = function(event) {
-        			//document.getElementById("divText").innerHTML = event.data;
-    			//}
-    		}
-				
-		};
+		
 		var addCSSToHeader = function() {
 			var header = document.getElementsByTagName('head')[0];
 			var csslink = document.createElement('link');
@@ -881,6 +836,8 @@ function main() {
 			$('<li />').attr({
 				id : 'procid-ideaBased',
 			}).appendTo("#procid-menus-navigation-panel");
+			
+			$("#procid-ideaBased").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
 
 			$('<a />').attr({
 				id : 'procid-ideaBased-link',
@@ -897,7 +854,7 @@ function main() {
 			$("#procid-ideaBased-link").append(divIdeaBasedImage);
 
 			//Invite
-			$('<li />').attr({
+			/*$('<li />').attr({
 				id : 'procid-invite',
 			}).appendTo("#procid-menus-navigation-panel");
 
@@ -915,7 +872,7 @@ function main() {
 			var divInviteImage = document.createElement('div');
 			divInviteImage.setAttribute('id', 'procid-invite-image');
 			$(divInviteImage).css('background-image', "url(" + ABSOLUTEPATH + "/images/sprites-main-page.png)");
-			$("#procid-invite-link").append(divInviteImage);
+			$("#procid-invite-link").append(divInviteImage);*/
 
 			//Feedback
 			//$('<li />').attr({
