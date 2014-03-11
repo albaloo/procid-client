@@ -4,7 +4,7 @@ Procid is a user script for drupal.org. It offers multiple interactive features 
 
 How can I help?
 ==================================
-Try Procid on [a startup naming discussions](https://drupal.org/node/2214271) for a couple of days and let us know what you think. We would like to understand the effectiveness of our tool and gather your comments to improve the next version.
+Try Procid on [a startup naming discussion](https://drupal.org/node/2214271) for a couple of days and let us know what you think. We would like to understand the effectiveness of our tool and gather your comments to improve the next version.
 
 How do I install Procid?
 ========================
