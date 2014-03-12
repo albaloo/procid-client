@@ -7,6 +7,8 @@
 // @grant          none
 // @include        http://drupal.org/node/2214271*
 // @include        https://drupal.org/node/2214271*
+// @include        http://drupal.org/node/2035259*
+// @include        https://drupal.org/node/2035259*
 // @include        http://drupal.org/comment/*
 // @include        https://drupal.org/comment/*
 // @match        http://drupal.org/*
@@ -2624,13 +2626,13 @@ function main() {
 				'async' : false
 			});
 						
-			$("#edit-nodechanges-comment-body-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
-			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
-				var result = $(data).find("div[class^='comment comment-new']").last();
+			$("#edit-nodechanges-comment-body-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid-study.user.js'>Procid</a></i>");
+			$.post('https://drupal.org/' + issueLink, $("#project-issue-node-form").serialize(), function(data) {
+				var result = $(data).find("div[class^='comment ']").last();
 				title = $(result).find(".permalink").text();
 				link = $(result).find(".permalink").attr("href");
 			});
-
+			console.log("link: " + link);
 			link = issue.link + "#" + link.split("#")[1];
 			$("#edit-nodechanges-comment-body-value").val("");
 			return [title, link];
