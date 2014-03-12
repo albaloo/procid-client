@@ -1278,8 +1278,12 @@ function main() {
 		};
 		var initializeCommentInfo = function() {
 			var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-				if ($(this).is("a"))
-					return $(this).text();
+				if ($(this).is("a")){
+					var title = $(this).text();
+					if(title.indexOf("Comment ") == 0)
+						title = title.substring(8);
+					return title;
+				}
 				else
 					return "NonIntTitle";
 			});

@@ -1321,8 +1321,12 @@ function main() {
 		};
 		var initializeCommentInfo = function() {
 			var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-				if ($(this).is("a"))
-					return $(this).text();
+				if ($(this).is("a")){
+					var title = $(this).text();
+					if(title.indexOf("Comment ") == 0)
+						title = title.substring(8);
+					return title;
+				}
 				else
 					return "NonIntTitle";
 			});
@@ -3134,7 +3138,6 @@ function main() {
 					if (commentInfos[i].criteriaStatuses.length > 0) {
 						$.each(criteria, function() {
 							var currentStatusArray = findAllCriteriaStatuses(commentInfos[i].criteriaStatuses, this.id);
-
 							var prevStatusArray = [];
 							for (var j = 0; j < currentStatusArray.length - 1; j++) {
 								var currentCriteriaStatus = currentStatusArray[j];
