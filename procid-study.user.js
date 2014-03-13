@@ -153,7 +153,8 @@ function main() {
 			else
 				issueLink = $("link[rel='shortlink']").attr('href');
 
-			var worker = new Worker(startProcid());
+			//var worker = new Worker(startProcid());
+			startProcid();
 
 			console.log("username: " + currentUser);
 		};
@@ -203,6 +204,11 @@ function main() {
 			updateAddCommentBox();
 			
 			setupPanelsScroller();
+			
+			var hashValue = window.location.hash;
+        	if(hashValue === null || hashValue === "" || hashValue.length <= 1)
+        		hashValue = "#home"
+        	changePage(hashValue.substr(1));
 
 		};
 		//Setup the scroller for left panel and main page content
@@ -777,6 +783,7 @@ function main() {
         			changePage(hashValue.substr(1));
     			}
 			}
+			
 			
 			//Ruler
 			var procidRuler = document.createElement('span');
@@ -1903,6 +1910,7 @@ function main() {
 							changed = true;
 							addNewComment(titleAndLink[0], titleAndLink[1], currentUser, newCommentContent, "neutral", data.commented_at, data.summary);
 						});
+
 					}
 
 				});
@@ -1918,6 +1926,7 @@ function main() {
 				currentElement.removeChild(divNewCriteriaEditBox);
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 
 			});
 
@@ -2600,6 +2609,7 @@ function main() {
 				currentElement.removeChild(divNewComment);
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 				return false;
 			});
 
@@ -2630,6 +2640,8 @@ function main() {
 			$.post('https://drupal.org/' + issueLink, $("#project-issue-node-form").serialize(), function(data) {
 				var result = $(data).find("div[class^='comment ']").last();
 				title = $(result).find(".permalink").text();
+				if(title.indexOf("Comment ") == 0)
+					title = title.substring(8);
 				link = $(result).find(".permalink").attr("href");
 			});
 			console.log("link: " + link);
@@ -2643,9 +2655,11 @@ function main() {
 			$.ajaxSetup({
 				'async' : false
 			});
-			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
-				var result = $(data).find("div[class^='comment comment-new']").last();
+			$.post('https://drupal.org/' + issueLink, $("#project-issue-node-form").serialize(), function(data) {
+				var result = $(data).find("div[class^='comment ']").last();
 				title = $(result).find(".permalink").text();
+				if(title.indexOf("Comment ") == 0)
+					title = title.substring(8);
 				link = $(result).find(".permalink").attr("href");
 			});
 			link = issue.link + "#" + link.split("#")[1];
@@ -3460,6 +3474,7 @@ function main() {
 				$(currentElement).css("z-index", "");
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 			});
 
 			$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {

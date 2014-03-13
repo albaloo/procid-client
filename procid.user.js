@@ -193,8 +193,8 @@ function main() {
 				};
 
 			}else {
-				//startProcid();
-				var worker = new Worker(startProcid());
+				startProcid();
+				//var worker = new Worker(startProcid());
     			//worker.onmessage = function(event) {
         			//document.getElementById("divText").innerHTML = event.data;
     			//}
@@ -1959,6 +1959,7 @@ function main() {
 				currentElement.removeChild(divNewCriteriaEditBox);
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 
 			});
 
@@ -2641,6 +2642,7 @@ function main() {
 				currentElement.removeChild(divNewComment);
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 				return false;
 			});
 
@@ -2668,9 +2670,11 @@ function main() {
 			});
 						
 			$("#edit-nodechanges-comment-body-value").val(commentText + "\n\n\n <i>Powered by <a href='https:\/\/github.com\/albaloo\/procid-client\/blob\/master\/procid.user.js'>Procid</a></i>");
-			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
-				var result = $(data).find("div[class^='comment comment-new']").last();
+			$.post('https://drupal.org/' + issueLink, $("#project-issue-node-form").serialize(), function(data) {
+				var result = $(data).find("div[class^='comment ']").last();
 				title = $(result).find(".permalink").text();
+				if(title.indexOf("Comment ") == 0)
+					title = title.substring(8);
 				link = $(result).find(".permalink").attr("href");
 			});
 
@@ -2684,9 +2688,11 @@ function main() {
 			$.ajaxSetup({
 				'async' : false
 			});
-			$.post('https://drupal.org/' + issueLink, $("#comment-form").serialize(), function(data) {
-				var result = $(data).find("div[class^='comment comment-new']").last();
+			$.post('https://drupal.org/' + issueLink, $("#project-issue-node-form").serialize(), function(data) {
+				var result = $(data).find("div[class^='comment ']").last();
 				title = $(result).find(".permalink").text();
+				if(title.indexOf("Comment ") == 0)
+					title = title.substring(8);
 				link = $(result).find(".permalink").attr("href");
 			});
 			link = issue.link + "#" + link.split("#")[1];
@@ -3500,6 +3506,7 @@ function main() {
 				$(currentElement).css("z-index", "");
 				$('#procid-dialog-overlay').hide();
 				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
+				document.location.reload(true);
 			});
 
 			$(divNewComment).children(".procid-new-comment-box").first().children(".procid-button-cancel").first().click(function(e) {
