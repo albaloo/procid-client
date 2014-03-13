@@ -1927,7 +1927,7 @@ function main() {
 
 					} else if (this.action === "add" && this.title !== "") {
 						var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
-						var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
+						var newCommentContent = "Let's consider this criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
 						var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
 
 						$.post(serverURL + "addCriteria", {

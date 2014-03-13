@@ -369,7 +369,6 @@ function main() {
 						"content" : $($.find('#edit-nodechanges-comment-body-value')[0]).val(),
 						"issueLink" : issue.link
 					});
-					console.log("content: " + $($.find('#edit-nodechanges-comment-body-value')[0]).val());
 				}
 
 				if ($('#procid-comment-composition-checkbox-input2').prop('checked')) {
@@ -387,7 +386,7 @@ function main() {
 					}
 					var e = document.getElementById("procid-comment-composition-inner-div");
 					var ideaNumber = e.options[e.selectedIndex].text; 
-					console.log('parseInt: ' + parseInt(ideaNumber.replace(/^\D+/, '')));
+					
 					$.ajaxSetup({
 						'async' : false
 					});
@@ -752,6 +751,8 @@ function main() {
 			$('#procid-status-var').text(status);
 		};
 		var changePage = function(destination) {
+			if(destination.indexOf("comment-")===0)
+				destination = "home";
 			var map = {
 				home : ['procid-left-panel-body', 'procid-page-wrapper'],
 				idea : ['procid-idea-page-wrapper'],
@@ -1893,9 +1894,9 @@ function main() {
 
 					} else if (this.action === "add" && this.title !== "") {
 						var newCriteria = createNewCritera(this.title, this.description, this.id, currentUser);
-						var newCommentContent = "We need to consider another criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
+						var newCommentContent = "Let's consider this criterion when evaluating ideas: " + newCriteria.title + ": " + newCriteria.description + ".";
 						var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
-
+						
 						$.post(serverURL + "addCriteria", {
 							"issueLink" : issue.link,
 							"userName" : currentUser,
@@ -2644,7 +2645,7 @@ function main() {
 					title = title.substring(8);
 				link = $(result).find(".permalink").attr("href");
 			});
-			console.log("link: " + link);
+			
 			link = issue.link + "#" + link.split("#")[1];
 			$("#edit-nodechanges-comment-body-value").val("");
 			return [title, link];
@@ -3397,6 +3398,7 @@ function main() {
 				var newCommentSummary = "";
 				var newCommentContent = divNewCommentBoxInput.value;
 				var titleAndLink = saveCommentToDrupal(newCommentContent, issue.link);
+				
 				$.ajaxSetup({
 					'async' : false
 				});
