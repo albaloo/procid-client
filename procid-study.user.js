@@ -218,7 +218,7 @@ function main() {
 			var windowHeight = $(window).height();
 
 			// assign values to the panel and content heights
-			$('#procid-left-panel-body').css({
+			/*$('#procid-left-panel-body').css({
 				height : windowHeight,
 				overflowY : "auto"
 			});
@@ -226,7 +226,7 @@ function main() {
 			$('#procid-page-wrapper').css({
 				height : windowHeight,
 				overflowY : "auto"
-			});
+			});*/
 		
 		};
 		
@@ -890,7 +890,7 @@ function main() {
 		//	}).appendTo("#procid-menus-navigation-panel");
 
 			
-			var feedbackLink = document.createElement('a');
+			/*var feedbackLink = document.createElement('a');
 			feedbackLink.setAttribute('id', 'procid-feedback-link');
 			//feedbackLink.setAttribute('rel', 'tooltip');
 			//feedbackLink.setAttribute('title', 'Give Feedback on Procid');
@@ -938,7 +938,7 @@ function main() {
 			feedbackLink.appendChild(divFeedback);
 
 
-			$("#procid-menus li").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
+			$("#procid-menus li").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");*/
 		};
 		/*************HOME PAGE BODY*********************/
 		var createHomePageBody = function() {
@@ -951,7 +951,7 @@ function main() {
 			createLens('idea', 'procid-lenses', 'View Ideas');
 			createLens('conversation', 'procid-lenses', 'View Conversation Comments');
 			createLens('expert', 'procid-lenses', 'View Comments Posted by Experienced Participants');
-			createLens('patch', 'procid-lenses', 'View Patches');
+			//createLens('patch', 'procid-lenses', 'View Patches');
 			createLens('search', 'procid-lenses', 'Search');
 			$("#procid-search-link").css("border-image", "url(" + ABSOLUTEPATH + "/images/icon-border-left.png) 2 5 round");
 
@@ -2232,7 +2232,7 @@ function main() {
 				index : -1
 			};
 
-			var statusArray = ["Ongoing", "Implemented", "Dropped"];
+			var statusArray = ["Ongoing", "Dropped"];
 			$.each(statusArray, function() {
 				var wrapperDropdownListOption = document.createElement('li');
 				wrapperDropdownList.appendChild(wrapperDropdownListOption);
