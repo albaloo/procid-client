@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Interface B
-// @description    Interactive system supporting consensus building.
+// @description    Add-on for Drupal.org
 // @icon           https://github.com/albaloo/procid-client/blob/master/images/procid-icon.png
 // @author         Roshanak Zilouchian
 // @version        1.2
@@ -51,7 +51,7 @@ function loadAndExecute(url, functionOrCode) {
 
 // the main function of this userscript
 function main() {
-
+//head.ready(document, function(){
 	head.js("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js", "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js", function() {
 		console.log("begin");
 		var ABSOLUTEPATH = 'https://raw.github.com/albaloo/procid-client/master';
@@ -140,8 +140,11 @@ function main() {
 			if (!$("#page").find('#project-issue-node-form').length){ 
 				//window.alert("Please Login to Drupal to view Interface B's features.");
 				
-				loginErrorDialogPopup("<p>You are not Logged in</p> Please Log in to Drupal to view Interface B's features: <a style='color: #0678be' href='https://drupal.org/user?destination="+issueLink.substr(1)+"'>Click to Log in</a>", "Ok", function() {
-
+				$("<div id='dialog' style='padding:10px;' title='You are not Logged in'><p>Please Log in to Drupal to view Interface B's features: <a style='color: #0678be' href='https://drupal.org/user?destination="+issueLink.substr(1)+"'>Click to Log in</a></p></div>").dialog({
+					height: 120,
+					width: 350,
+					modal: true,
+					resizable:false,
 				});
 				
 				return;
@@ -173,6 +176,12 @@ function main() {
 			csslink.setAttribute('rel', 'stylesheet');
 			csslink.setAttribute('type', 'text/css');
 			header.appendChild(csslink);
+			
+			var csslink2 = document.createElement('link');
+			csslink2.setAttribute('href', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
+			csslink2.setAttribute('rel', 'stylesheet');
+			//csslink2.setAttribute('type', 'text/css');
+			header.appendChild(csslink2);
 		};
 		var startProcid = function() {
 			createStatusVar();
@@ -644,7 +653,7 @@ function main() {
 			$('body').prepend(dialogOverlay);
 			$('#main').prepend(dialogBox);
 		};
-		var addConfirmationDialog = function(cancelButton) {
+		var addConfirmationDialog = function() {
 			var dialogOverlay = document.createElement('div');
 			dialogOverlay.setAttribute('id', 'procid-dialog-overlay');
 
@@ -672,20 +681,20 @@ function main() {
 			dialogSubmit.setAttribute('name', 'submit');
 			divButtons.appendChild(dialogSubmit);
 			
-			if(cancelButton){
-				var dialogCancel = document.createElement('input');
-				dialogCancel.setAttribute('class', 'procid-button-cancel');
-				dialogCancel.setAttribute('type', 'submit');
-				dialogCancel.setAttribute('value', 'Cancel');
-				dialogCancel.setAttribute('name', 'cancel');
-				divButtons.appendChild(dialogCancel);
-			}
+			
+			var dialogCancel = document.createElement('input');
+			dialogCancel.setAttribute('class', 'procid-button-cancel');
+			dialogCancel.setAttribute('type', 'submit');
+			dialogCancel.setAttribute('value', 'Cancel');
+			dialogCancel.setAttribute('name', 'cancel');
+			divButtons.appendChild(dialogCancel);
+			
 
 			$('body').prepend(dialogOverlay);
 			$('body').prepend(dialogBox);
 		};
 		var confirmationDialogPopup = function(message, confirmText, submit) {
-			addConfirmationDialog(true);
+			addConfirmationDialog();
 			// get the screen height and width
 			var maskHeight = $(document).height();
 			var windowHeight = $(window).height();
@@ -727,49 +736,7 @@ function main() {
 			$('#procid-dialog-message').html(message);
 		};
 		
-		var loginErrorDialogPopup = function(message, confirmText, submit) {
-			addConfirmationDialog(false);
-			// get the screen height and width
-			var maskHeight = $(document).height();
-			var windowHeight = $(window).height();
-			var maskWidth = $(window).width();
-
-			// calculate the values for center alignment
-			var dialogTop = (windowHeight / 2) - ($('#procid-dialog-box').height());
-			var dialogLeft = (maskWidth / 2) - ($('#procid-dialog-box').width() / 2);
-
-			// assign values to the overlay and dialog box
-			$('#procid-dialog-overlay').css({
-				height : maskHeight,
-				width : maskWidth
-			}).show();
-			$('#procid-dialog-box').css({
-				top : dialogTop,
-				left : dialogLeft
-			}).show();
-
-			//Update the submit button's text
-			$('.procid-dialog-content .procid-button-submit').attr("value", confirmText);
-
-			$(".procid-dialog-content input[class='procid-button-cancel'], #procid-dialog-overlay").click(function() {
-				$('#procid-dialog-overlay, #procid-dialog-box').hide();
-				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
-				document.body.removeChild(document.getElementById("procid-dialog-box"));
-				return false;
-			});
-
-			$('.procid-dialog-content .procid-button-submit').click(function() {
-				$('#procid-dialog-overlay, #procid-dialog-box').hide();
-				document.body.removeChild(document.getElementById("procid-dialog-overlay"));
-				document.body.removeChild(document.getElementById("procid-dialog-box"));
-				submit();
-				return false;
-			});
-
-			// display the message
-			$('#procid-dialog-message').html(message);
-		};
-		
+				
 		//Add Procid Panel
 		var addLeftPanel = function() {
 			var leftPanel = document.createElement('div');
@@ -825,16 +792,45 @@ function main() {
 					createInvitePageBody();
 				$("#" + this).toggle();
 			});
+			
+			$.ajaxSetup({
+					'async' : true
+				});
+
+				$.post(serverURL + "pageChanged", {
+					"issueLink" : issue.link,
+					"userName" : currentUser,
+					"newPage" : destination,
+					"prevPage" : getStatusVar()
+				}, function(data) {
+					console.log("pageChanged success");
+			});
+				
 			setStatusVar(destination);
 		};
 		var createProcidHeader = function() {
+			window.onbeforeunload = function (){
+				$.ajaxSetup({
+					'async' : true
+				});
+
+				$.post(serverURL + "pageClosed", {
+					"issueLink" : issue.link,
+					"userName" : currentUser,
+					"currPage" : getStatusVar()
+				}, function(data) {
+					console.log("pageClosed success");
+				});
+
+			}
 			//checking for hash change to support browser back button
 			if ("onhashchange" in window) {
     			window.onhashchange = function () {
         			var hashValue = window.location.hash;
         			if(hashValue === null || hashValue === "" || hashValue.length <= 1)
         				hashValue = "#home"
-        			changePage(hashValue.substr(1));
+        			if(getStatusVar() !== hashValue.substr(1))
+        				changePage(hashValue.substr(1));
     			}
 			}
 			
@@ -1537,8 +1533,11 @@ function main() {
 			$(lensLink).append(lensImage);
 
 			$(lensLink).click(function addRemoveTag(evt) {
+				var messageName = name;
+				if(name === 'idea')
+					messageName = "name proposal";
 				if ($(lensLink).hasClass('procid-lens-tag-unselected')) {
-					confirmationDialogPopup("Are you sure you want to apply " + name + " tag to this comment?", "Apply", function() {
+					confirmationDialogPopup("Are you sure you want to tag this comment as a " + messageName + "?", "Apply", function() {
 						//if(getConfirmationDialogStatusVar() === "submit"){
 						$(lensLink).attr('class', 'procid-lens-tag-selected');
 						$(lensImage).attr('class', 'procid-lens-tag-image-selected');
@@ -1594,7 +1593,7 @@ function main() {
 					});
 
 				} else {
-					confirmationDialogPopup("Are you sure you want to remove " + name + " tag from this comment?", "Remove", function() {
+					confirmationDialogPopup("Are you sure you want to remove " + messageName + " tag from this comment?", "Remove", function() {
 						//if(getConfirmationDialogStatusVar() === "submit"){
 						$(lensLink).attr('class', 'procid-lens-tag-unselected');
 						$(lensImage).attr('class', 'procid-lens-tag-image-unselected');
@@ -1609,7 +1608,7 @@ function main() {
 						$("#procid-comment" + commentInfo.title.substr(1) + " div[id=procid-comment-" + name + "]").replaceWith($(cnt));
 						
 						$.ajaxSetup({
-							'async' : true
+							'async' : false
 						});
 
 						$.post(serverURL + "removeTag", {
@@ -2613,13 +2612,13 @@ function main() {
 		};
 		var createNewCommentBox = function(currentElement, tone, commentInfo, arrowPosition) {
 
-			var toneString = "I like this idea because ...";
+			var toneString = "I like this name because ...";
 			var registerString = "I strongly support it.";
 			if (tone === "negative") {
-				toneString = "I disagree with this idea because ...";
+				toneString = "I disagree with this name because ...";
 				registerString = "I strongly object it.";
 			} else if (tone === "neutral") {
-				toneString = "I think this idea ...";
+				toneString = "I think this name ...";
 				registerString = "";
 			}
 
@@ -3432,7 +3431,7 @@ function main() {
 				satisfaction = " somewhat satisfies";
 			else if (criterion_track.value < 2)
 				satisfaction = " doesn't satisfy";
-			var placeHolderStr = 'Explain why this idea ' + satisfaction + ' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
+			var placeHolderStr = 'Explain why this name ' + satisfaction + ' the ' + findCriteriaTitle(criterion_track.id) + ' criteria.';
 
 			var divNewComment = createNewCommentBoxFrame(currentElement, 'procid-new-comment', "Save", "textarea", placeHolderStr, "200px", currentPosition + "px", "30px", "", false);
 
@@ -3945,6 +3944,7 @@ function main() {
 		setUpProcid();
 		console.log("done");
 	});
+//	});
 }
 
 // load jQuery and execute the main function

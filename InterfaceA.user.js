@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Interface A
-// @description    Interactive system supporting consensus building.
+// @description    Add-on for Drupal.org
 // @icon           https://github.com/albaloo/procid-client/blob/master/images/procid-icon.png
 // @author         Roshanak Zilouchian
 // @version        1.2
@@ -81,17 +81,11 @@ function main() {
 			if (!$("#page").find('#project-issue-node-form').length){ 
 				//window.alert("Please Login to Drupal to view InterfaceA's features.");
 				$("<div id='dialog' style='padding:10px;' title='You are not Logged in'><p>Please Log in to Drupal to view Interface A's features: <a style='color: #0678be' href='https://drupal.org/user?destination="+issueLink.substr(1)+"'>Click to Log in</a></p></div>").dialog({
-                height: 70,
-                width: 350,
-                //modal: true,
-                //resizable:false,
-                /*buttons: {
-                    "ok": function() {
-                                   $( this ).dialog( "close" ); 
-                                       },
-                },*/
-            });//<p><a href='https://drupal.org/user?destination="+issueLink+"'>Login</a></p>").dialog();
-				//https://drupal.org/user?destination=node/2214271
+					height: 120,
+					width: 350,
+					modal: true,
+					resizable:false,
+				});
 				
 				return;
 			}
