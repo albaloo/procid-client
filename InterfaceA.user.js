@@ -5,6 +5,10 @@
 // @author         Roshanak Zilouchian
 // @version        1.2
 // @grant          none
+// @include        https://drupal.org/node/2262379*
+// @include        http://drupal.org/node/2262379*
+// @include        https://drupal.org/node/2262365*
+// @include        http://drupal.org/node/2262365*
 // @include        https://drupal.org/node/2258989*
 // @include        http://drupal.org/node/2258989*
 // @include        https://drupal.org/node/2258971*
