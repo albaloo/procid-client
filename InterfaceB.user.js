@@ -1063,6 +1063,11 @@ function main() {
 							commentInfos[i].content = comment.content;
 							commentInfos[i].image = comment.image;
 						}
+						if(commentInfos[i].content != null && commentInfos[i].content.indexOf("Originally posted by") == 0){
+							commentInfos[i].author = commentInfos[i].content.substring(21, commentInfos[i].content.indexOf(":"));
+							commentInfos[i].content = commentInfos[i].content.substring(commentInfos[i].content.indexOf(":")+1);
+						}
+						console.log("commentInfos[i].content: " + commentInfos[i].content);
 						applyTags(commentInfos[i]);
 					}
 				});
