@@ -1049,6 +1049,7 @@ function main() {
 							summary : comment.summary
 						};
 						commentInfos.push(newComment);
+						console.log("title: " + newComment.title + " author:" + newComment.author + " content:" + newComment.content);
 						applyTags(newComment);
 					} else {
 						commentInfos[i].tags = comment.tags;
@@ -1354,47 +1355,51 @@ function main() {
 			issue.created_at = issueCreationDate;
 		};
 		var initializeCommentInfo = function() {
-			var array_title = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-				if ($(this).is("a")){
+			var array_title = $("section[class^='comments comment-wrapper'] h3[class='permalink-wrapper'] a").map(function() {
+				//if ($(this).is("a")){
 					var title = $(this).text();
 					if(title.indexOf("Comment ") == 0)
 						title = title.substring(8);
 					return title;
-				}
-				else
-					return "NonIntTitle";
+				//}
+				//else
+				//	return "NonIntTitle";
 			});
 
-			var array_links = $("section[class='comments comment-wrapper'] h3[class='comment-title']").next().map(function() {
-				if ($(this).is("a")) {
+			var array_links = $("section[class^='comments comment-wrapper'] h3[class='permalink-wrapper'] a").map(function() {
+				//if ($(this).is("a")) {
 					var commentLink = $(this).attr('href');
 					var link = issue.link + "#" + commentLink.split("#")[1];
 					return link;
-				} else
-					return "NonIntTitle";
+				//} else
+				//	return "NonIntTitle";
 			});
 
-			var array_author = $("section[class='comments comment-wrapper'] div[class='submitted']").map(function() {
-				var authors = $(this).find("a");
-				if (authors.length > 0)
-					return $(this).find("a").text();
-				else
-					return "Anonymous";
+			var array_author = $("section[class^='comments comment-wrapper'] div[class='submitted'] h3").next().map(function() {
+				if ($(this).is("a")) {
+					//var authors = $(this).find("a");
+					//if (authors.length > 0)
+						return $(this).text();
+					//else
+					//	return "Anonymous";
+				}
 			});
 
-			var array_author_hrefs = $("section[class='comments comment-wrapper'] div[class='submitted']").map(function() {
-				var authors = $(this).find("a");
-				if (authors.length > 0)
-					return $(this).find("a").attr("href");
-				else
-					return "#";
+			var array_author_hrefs = $("section[class^='comments comment-wrapper'] div[class='submitted'] h3").next().map(function() {
+				if ($(this).is("a")) {
+				//var authors = $(this).find("a");
+				//if (authors.length > 0)
+					return $(this).attr("href");
+				//else
+				//	return "#";
+				}
 			});
 
-			var array_dateTimes = $("section[class='comments comment-wrapper'] div[class='submitted'] time").map(function() {
+			var array_dateTimes = $("section[class^='comments comment-wrapper'] div[class='submitted'] time").map(function() {
 				return $(this).text();
 			});
 
-			var array_contents = $("section[class='comments comment-wrapper'] div[class='content'] div[class^='field field-name-comment-body']").map(function() {
+			var array_contents = $("section[class^='comments comment-wrapper'] div[class='content'] div[class^='field field-name-comment-body']").map(function() {
 				var contents = $(this).find("p");
 				var ulContents = $(this).find("li");
 				var h3Contents = $(this).find("h3");
@@ -1412,7 +1417,7 @@ function main() {
 				return returnValue;
 			});
 
-			var array_patches = $("section[class='comments comment-wrapper'] div[class='content']").map(function() {
+			var array_patches = $("section[class^='comments comment-wrapper'] div[class='content']").map(function() {
 				var returnValue = 0;
 				var patches = $(this).find("tr[class*='pift-pass'],tr[class*='pift-fail']");
 				if (patches.length > 0)
@@ -1428,7 +1433,7 @@ function main() {
 				return returnValue;
 			});
 
-			var array_images = $("section[class='comments comment-wrapper'] div[class='content']").map(function() {
+			var array_images = $("section[class^='comments comment-wrapper'] div[class='content']").map(function() {
 				var returnValue = " ";
 				var contents = $(this).find("a");
 				$.each(contents, function() {
@@ -3966,4 +3971,4 @@ function main() {
 
 // load jQuery and execute the main function
 //addJQuery(main);
-loadAndExecute("//raw.github.com/headjs/headjs/v0.99/dist/head.min.js", main);
+loadAndExecute("//rawgithub.com/headjs/headjs/v0.99/dist/head.min.js", main);
